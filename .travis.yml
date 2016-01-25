@@ -4,7 +4,6 @@ sudo: false
 
 php:
   - 7.0
-  - hhvm
 
 env:
   - DEPENDENCIES=""
