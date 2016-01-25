@@ -2,19 +2,7 @@
 
 namespace PackageVersionsTest;
 
-use Composer\Autoload\AutoloadGenerator;
-use Composer\Composer;
 use Composer\Config;
-use Composer\EventDispatcher\EventDispatcher;
-use Composer\Installer\InstallationManager;
-use Composer\IO\IOInterface;
-use Composer\Package\Locker;
-use Composer\Package\PackageInterface;
-use Composer\Repository\InstalledRepositoryInterface;
-use Composer\Repository\RepositoryManager;
-use Composer\Script\Event;
-use Composer\Script\ScriptEvents;
-use PackageVersions\Installer;
 use PackageVersions\Versions;
 use PHPUnit_Framework_TestCase;
 
