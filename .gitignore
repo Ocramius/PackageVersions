@@ -1,1 +1,3 @@
 /vendor/
+src/FooBar/Versions
+composer.lock
