@@ -94,8 +94,6 @@ PHP;
 
     private function writeVersionClassToFile(string $versionClassSource, Composer $composer)
     {
-        //$rootPackage = $composer->getPackage();
-
         $vendorDir = $composer->getConfig()->get('vendor-dir');
 
         file_put_contents($vendorDir . '/yadda/yadda/src/FooBar/Versions.php', $versionClassSource, 0664);
