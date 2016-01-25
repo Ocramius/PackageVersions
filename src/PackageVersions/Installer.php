@@ -6,6 +6,7 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Package\Locker;
+use Composer\Package\RootPackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
@@ -91,7 +92,7 @@ PHP;
     {
         return sprintf(
             self::$generatedClassTemplate,
-            var_export(iterator_to_array(self::getVersions($composer->getLocker())), true)
+            var_export(iterator_to_array(self::getVersions($composer->getLocker(), $composer->getPackage())), true)
         );
     }
 
@@ -127,7 +128,7 @@ PHP;
      *
      * @return string[]|\Generator
      */
-    private static function getVersions(Locker $locker) : \Generator
+    private static function getVersions(Locker $locker, RootPackageInterface $rootPackage) : \Generator
     {
         $lockData = $locker->getLockData();
 
@@ -135,5 +136,7 @@ PHP;
             yield $package['name']
                 => $package['version'] . '@' . $package['source']['reference'];
         }
+
+        yield $rootPackage->getName() => $rootPackage->getVersion() . '@' . $rootPackage->getSourceReference();
     }
 }
