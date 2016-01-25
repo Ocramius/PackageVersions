@@ -42,6 +42,7 @@ final class Versions
         return self::VERSIONS[$packageName];
     }
 }
+
 PHP;
 
     /**
@@ -79,7 +80,7 @@ PHP;
             $composerEvent->getComposer()
         );
 
-        $this->reDumpAutoloader($composerEvent->getComposer(), $composerEvent->getArguments());
+        $this->reDumpAutoloader($composerEvent->getComposer());
 
         $io->write('<info>...done generating version class</info>');
     }
@@ -96,19 +97,20 @@ PHP;
     {
         $vendorDir = $composer->getConfig()->get('vendor-dir');
 
-        file_put_contents($vendorDir . '/yadda/yadda/src/FooBar/Versions.php', $versionClassSource, 0664);
+        file_put_contents(
+            $vendorDir . '/ocramius/package-versions/src/PackageVersions/Versions.php',
+            $versionClassSource,
+            0664
+        );
     }
 
-    private function reDumpAutoloader(Composer $composer, array $arguments)
+    private function reDumpAutoloader(Composer $composer)
     {
-        $rootPackage         = $composer->getPackage();
-        $installationManager = $composer->getInstallationManager();
-
         $composer->getAutoloadGenerator()->dump(
             $composer->getConfig(),
             $composer->getRepositoryManager()->getLocalRepository(),
-            $rootPackage,
-            $installationManager,
+            $composer->getPackage(),
+            $composer->getInstallationManager(),
             'composer',
             true // CBA to provide this manually, for now
         );
