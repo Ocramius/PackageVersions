@@ -13,7 +13,7 @@
     columns="max"
 >
     <testsuite name="PackageVersions tests">
-        <directory>./tests/ProxyManagerTest</directory>
+        <directory>./test/PackageVersionsTest</directory>
     </testsuite>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
