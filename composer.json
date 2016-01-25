@@ -32,5 +32,9 @@
         "branch-alias": {
             "dev-master": "2.0.x-dev"
         }
+    },
+    "scripts": {
+        "post-update-cmd":  "PackageVersions\\Installer::dumpVersionsClass",
+        "post-install-cmd": "PackageVersions\\Installer::dumpVersionsClass"
     }
 }
