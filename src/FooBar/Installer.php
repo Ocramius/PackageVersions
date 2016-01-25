@@ -125,7 +125,7 @@ PHP;
     {
         foreach ($locker->getLockData()['packages'] as $package) {
             yield $package['name']
-                => $package['name'] . '#' . $package['version'] . '@' . $package['source']['reference'];
+                => $package['version'] . '@' . $package['source']['reference'];
         }
     }
 }
