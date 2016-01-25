@@ -39,7 +39,7 @@ final class Versions
             ));
         }
 
-        self::VERSIONS[$packageName]
+        return self::VERSIONS[$packageName];
     }
 }
 PHP;
