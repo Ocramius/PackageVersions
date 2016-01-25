@@ -9,5 +9,13 @@
             "name": "Marco Pivetta",
             "email": "ocramius@gmail.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "FooBar\\": "src/FooBar"
+        }
+    },
+    "extra": {
+        "class": "FooBar\\Installer"
+    }
 }
