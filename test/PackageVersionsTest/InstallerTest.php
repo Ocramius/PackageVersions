@@ -8,6 +8,9 @@ use Composer\IO\IOInterface;
 use PackageVersions\Installer;
 use PHPUnit_Framework_TestCase;
 
+/**
+ * @covers \PackageVersions\Installer
+ */
 final class InstallerTest extends PHPUnit_Framework_TestCase
 {
     public function testActivate()
