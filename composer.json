@@ -4,6 +4,7 @@
     "type": "composer-plugin",
     "license": "MIT",
     "require": {
+        "php":                 "~7.0",
         "composer-plugin-api": "^1.0"
     },
     "authors": [
