@@ -124,6 +124,7 @@ PHP;
     private function getVersions(Locker $locker) : \Generator
     {
         foreach ($locker->getLockData()['packages'] as $package) {
+            var_dump($package);
             yield $package['name']
                 => $package['name'] . '#' . $package['version'] . '@' . $package['dist']['reference'];
         }
