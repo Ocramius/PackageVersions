@@ -34,9 +34,9 @@ final class Versions
     private static function getVersion(string $packageName) : string
     {
         if (! isset(self::VERSIONS[$packageName])) {
-            throw new \OutOfBoundsException(sprintf(
-                'Required package "%s" is not installed: cannot detect its version'
-            ));
+            throw new \OutOfBoundsException(
+                'Required package "' . $packageName . '" is not installed: cannot detect its version'
+            );
         }
 
         return self::VERSIONS[$packageName];
@@ -58,19 +58,62 @@ PHP;
     public static function getSubscribedEvents()
     {
         return [
-            ScriptEvents::PRE_AUTOLOAD_DUMP => 'generateVersionsMap',
+            ScriptEvents::POST_INSTALL_CMD => 'dumpVersionsClass',
+            ScriptEvents::POST_UPDATE_CMD  => 'dumpVersionsClass',
         ];
     }
 
-    public function generateVersionsMap(Event $scriptEvent)
+    /**
+     * @param Event $composerEvent
+     *
+     * @return void
+     */
+    public function dumpVersionsClass(Event $composerEvent)
     {
-        $generated = sprintf(
-            $this->generatedClassTemplate,
-            var_export(iterator_to_array($this->getVersions($scriptEvent->getComposer()->getLocker())), true)
+        $io = $composerEvent->getIO();
+
+        $io->write('<info>Generating version class...</info>');
+
+        $this->writeVersionClassToFile(
+            $this->generateVersionsClass($composerEvent->getComposer()),
+            $composerEvent->getComposer()
         );
 
-        echo $generated;
-        die();
+        $this->reDumpAutoloader($composerEvent->getComposer(), $composerEvent->getArguments());
+
+        $io->write('<info>...done generating version class</info>');
+    }
+
+    private function generateVersionsClass(Composer $composer) : string
+    {
+        return sprintf(
+            $this->generatedClassTemplate,
+            var_export(iterator_to_array($this->getVersions($composer->getLocker())), true)
+        );
+    }
+
+    private function writeVersionClassToFile(string $versionClassSource, Composer $composer)
+    {
+        //$rootPackage = $composer->getPackage();
+
+        $vendorDir = $composer->getConfig()->get('vendor-dir');
+
+        file_put_contents($vendorDir . '/yadda/yadda/src/FooBar/Versions.php', $versionClassSource, 0664);
+    }
+
+    private function reDumpAutoloader(Composer $composer, array $arguments)
+    {
+        $rootPackage         = $composer->getPackage();
+        $installationManager = $composer->getInstallationManager();
+
+        $composer->getAutoloadGenerator()->dump(
+            $composer->getConfig(),
+            $composer->getRepositoryManager()->getLocalRepository(),
+            $rootPackage,
+            $installationManager,
+            'composer',
+            true // CBA to provide this manually, for now
+        );
     }
 
     /**
@@ -80,6 +123,7 @@ PHP;
      */
     private function getVersions(Locker $locker) : \Generator
     {
+        die(var_dump($locker->getLockData()['packages']));
         foreach ($locker->getLockData()['packages'] as $package) {
             yield $package['name']
                 => $package['name'] . '#' . $package['version'] . '@' . $package['dist']['reference'];
