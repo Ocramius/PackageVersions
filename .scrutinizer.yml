@@ -26,9 +26,6 @@ tools:
         excluded_dirs: ["test", "vendor"]
     php_mess_detector:
         enabled: true
-        config:
-            ruleset: phpmd.xml.dist
-            design_rules: { eval_expression: false }
         filter:
             paths: ["src/*"]
     php_pdepend:
