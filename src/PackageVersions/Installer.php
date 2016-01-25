@@ -10,7 +10,7 @@ use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 
-class Installer implements PluginInterface, EventSubscriberInterface
+final class Installer implements PluginInterface, EventSubscriberInterface
 {
     private $generatedClassTemplate = <<<'PHP'
 <?php
