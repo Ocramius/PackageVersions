@@ -124,9 +124,10 @@ PHP;
     }
 
     /**
-     * @param Locker $locker
+     * @param Locker               $locker
+     * @param RootPackageInterface $rootPackage
      *
-     * @return string[]|\Generator
+     * @return \Generator|\string[]
      */
     private static function getVersions(Locker $locker, RootPackageInterface $rootPackage) : \Generator
     {
