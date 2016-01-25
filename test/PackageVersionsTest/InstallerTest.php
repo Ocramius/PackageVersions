@@ -54,4 +54,21 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
 
         $this->installer->activate($this->composer, $this->io);
     }
+
+    public function testGetSubscribedEvents()
+    {
+        $events = Installer::getSubscribedEvents();
+
+        self::assertSame(
+            [
+                'post-install-cmd' => 'dumpVersionsClass',
+                'post-update-cmd'  => 'dumpVersionsClass',
+            ],
+            $events
+        );
+
+        foreach ($events as $callback) {
+            self::assertInternalType('callable', [$this->installer, $callback]);
+        }
+    }
 }
