@@ -14,10 +14,10 @@
     ],
     "autoload": {
         "psr-4": {
-            "FooBar\\": "src/FooBar"
+            "PackageVersions\\": "src/PackageVersions"
         }
     },
     "extra": {
-        "class": "FooBar\\Installer"
+        "class": "PackageVersions\\Installer"
     }
 }
