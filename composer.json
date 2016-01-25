@@ -2,6 +2,7 @@
     "name": "ocramius/package-versions",
     "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
     "type": "composer-plugin",
+    "license": "MIT",
     "require": {
         "composer-plugin-api": "^1.0"
     },
