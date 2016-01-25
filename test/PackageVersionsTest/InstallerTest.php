@@ -10,6 +10,7 @@ use Composer\Installer\InstallationManager;
 use Composer\IO\IOInterface;
 use Composer\Package\Locker;
 use Composer\Package\PackageInterface;
+use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use Composer\Script\Event;
@@ -96,7 +97,7 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
         $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->getMock(InstalledRepositoryInterface::class);
-        $package           = $this->getMock(PackageInterface::class);
+        $package           = $this->getMock(RootPackageInterface::class);
 
         $locker
             ->expects(self::any())
@@ -139,6 +140,10 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
         $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
 
+        $package->expects(self::any())->method('getName')->willReturn('root/package');
+        $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
+        $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
+
         $this->installer->dumpVersionsClass(new Event(
             'post-install-cmd',
             $this->composer,
@@ -162,6 +167,7 @@ final class Versions
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
   'tar/taz' => '7.8.9@ghi789',
+  'root/package' => '1.3.5@aaabbbcccddd',
 );
 
     private function __construct()
