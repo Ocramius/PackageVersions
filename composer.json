@@ -15,7 +15,7 @@
     },
     "require-dev": {
         "phpunit/phpunit":   "^5.0",
-        "composer/composer": "^1.0@ALPHA"
+        "composer/composer": "^1.0.0-ALPHA8@ALPHA"
     },
     "autoload": {
         "psr-4": {
