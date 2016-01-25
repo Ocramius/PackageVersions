@@ -5,7 +5,7 @@ This utility provides very quick and easy access to installed composer dependenc
 ```php
 $version = \PackageVersions\Versions::getVersion('ocramius/package-versions');
 
-var_dump($versions); // 1.0.0@0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33
+var_dump($version); // 1.0.0@0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33
 ```
 
 [![Build Status](https://travis-ci.org/Ocramius/PackageVersions.svg?branch=master)](https://travis-ci.org/Ocramius/PackageVersions)
