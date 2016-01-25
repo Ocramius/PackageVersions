@@ -21,6 +21,11 @@
             "PackageVersions\\": "src/PackageVersions"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "PackageVersionsTest\\": "test/PackageVersionsTest"
+        }
+    },
     "extra": {
         "class": "PackageVersions\\Installer",
         "branch-alias": {
