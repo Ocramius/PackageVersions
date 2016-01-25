@@ -1,0 +1,20 @@
+language: php
+
+sudo: false
+
+php:
+  - 7.0
+  - hhvm
+
+env:
+  - DEPENDENCIES=""
+  - DEPENDENCIES="--prefer-lowest --prefer-stable"
+
+before_script:
+  - sh .travis.install.sh
+
+script:
+  - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml
+
+after_script:
+  - sh .travis.coverage.sh
