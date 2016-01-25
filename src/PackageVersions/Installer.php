@@ -31,7 +31,7 @@ final class Versions
     /**
      * @throws \OutOfBoundsException if a version cannot be located
      */
-    private static function getVersion(string $packageName) : string
+    public static function getVersion(string $packageName) : string
     {
         if (! isset(self::VERSIONS[$packageName])) {
             throw new \OutOfBoundsException(
@@ -75,9 +75,11 @@ PHP;
 
         $io->write('<info>Generating version class...</info>');
 
-        self::writeVersionClassToFile(self::generateVersionsClass($composerEvent->getComposer()));
+        $composer = $composerEvent->getComposer();
 
-        self::reDumpAutoloader($composerEvent->getComposer());
+        self::writeVersionClassToFile(self::generateVersionsClass($composer));
+
+        self::reDumpAutoloader($composer);
 
         $io->write('<info>...done generating version class</info>');
     }
@@ -90,11 +92,21 @@ PHP;
         );
     }
 
+    /**
+     * @param string $versionClassSource
+     *
+     * @return void
+     */
     private static function writeVersionClassToFile(string $versionClassSource)
     {
         file_put_contents(__DIR__ . '/Versions.php', $versionClassSource, 0664);
     }
 
+    /**
+     * @param Composer $composer
+     *
+     * @return void
+     */
     private static function reDumpAutoloader(Composer $composer)
     {
         $composer->getAutoloadGenerator()->dump(
@@ -114,7 +126,9 @@ PHP;
      */
     private static function getVersions(Locker $locker) : \Generator
     {
-        foreach ($locker->getLockData()['packages'] as $package) {
+        $lockData = $locker->getLockData();
+
+        foreach (array_merge($lockData['packages'], $lockData['packages-dev'])  as $package) {
             yield $package['name']
                 => $package['version'] . '@' . $package['source']['reference'];
         }

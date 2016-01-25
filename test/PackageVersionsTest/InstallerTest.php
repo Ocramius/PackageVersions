@@ -118,6 +118,15 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
                         ],
                     ],
                 ],
+                'packages-dev' => [
+                    [
+                        'name'    => 'tar/taz',
+                        'version' => '7.8.9',
+                        'source'  => [
+                            'reference' => 'ghi789',
+                        ],
+                    ]
+                ],
             ]);
 
         $autoloadGenerator->expects(self::once())->method('dump');
@@ -149,6 +158,7 @@ final class Versions
     const VERSIONS = array (
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
+  'tar/taz' => '7.8.9@ghi789',
 );
 
     private function __construct()
@@ -158,7 +168,7 @@ final class Versions
     /**
      * @throws \OutOfBoundsException if a version cannot be located
      */
-    private static function getVersion(string $packageName) : string
+    public static function getVersion(string $packageName) : string
     {
         if (! isset(self::VERSIONS[$packageName])) {
             throw new \OutOfBoundsException(
