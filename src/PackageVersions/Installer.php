@@ -12,7 +12,7 @@ use Composer\Script\ScriptEvents;
 
 final class Installer implements PluginInterface, EventSubscriberInterface
 {
-    private $generatedClassTemplate = <<<'PHP'
+    private static $generatedClassTemplate = <<<'PHP'
 <?php
 
 namespace PackageVersions;
@@ -69,42 +69,33 @@ PHP;
      *
      * @return void
      */
-    public function dumpVersionsClass(Event $composerEvent)
+    public static function dumpVersionsClass(Event $composerEvent)
     {
         $io = $composerEvent->getIO();
 
         $io->write('<info>Generating version class...</info>');
 
-        $this->writeVersionClassToFile(
-            $this->generateVersionsClass($composerEvent->getComposer()),
-            $composerEvent->getComposer()
-        );
+        self::writeVersionClassToFile(self::generateVersionsClass($composerEvent->getComposer()));
 
-        $this->reDumpAutoloader($composerEvent->getComposer());
+        self::reDumpAutoloader($composerEvent->getComposer());
 
         $io->write('<info>...done generating version class</info>');
     }
 
-    private function generateVersionsClass(Composer $composer) : string
+    private static function generateVersionsClass(Composer $composer) : string
     {
         return sprintf(
-            $this->generatedClassTemplate,
-            var_export(iterator_to_array($this->getVersions($composer->getLocker())), true)
+            self::$generatedClassTemplate,
+            var_export(iterator_to_array(self::getVersions($composer->getLocker())), true)
         );
     }
 
-    private function writeVersionClassToFile(string $versionClassSource, Composer $composer)
+    private static function writeVersionClassToFile(string $versionClassSource)
     {
-        $vendorDir = $composer->getConfig()->get('vendor-dir');
-
-        file_put_contents(
-            $vendorDir . '/ocramius/package-versions/src/PackageVersions/Versions.php',
-            $versionClassSource,
-            0664
-        );
+        file_put_contents(__DIR__ . '/Versions.php', $versionClassSource, 0664);
     }
 
-    private function reDumpAutoloader(Composer $composer)
+    private static function reDumpAutoloader(Composer $composer)
     {
         $composer->getAutoloadGenerator()->dump(
             $composer->getConfig(),
@@ -121,7 +112,7 @@ PHP;
      *
      * @return string[]|\Generator
      */
-    private function getVersions(Locker $locker) : \Generator
+    private static function getVersions(Locker $locker) : \Generator
     {
         foreach ($locker->getLockData()['packages'] as $package) {
             yield $package['name']

@@ -43,10 +43,17 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
     private $installer;
 
     /**
+     * @var string
+     */
+    private $oldVersionContents;
+
+    /**
      * {@inheritDoc}
      */
     protected function setUp()
     {
+        $this->oldVersionContents = file_get_contents(__DIR__ . '/../../src/PackageVersions/Versions.php');
+
         parent::setUp();
 
         $this->installer       = new Installer();
@@ -90,15 +97,6 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->getMock(InstalledRepositoryInterface::class);
         $package           = $this->getMock(PackageInterface::class);
-
-        $tmpPath      = sys_get_temp_dir() . '/' . uniqid('', true) . '/vendor';
-        $expectedPath = $tmpPath . '/ocramius/package-versions/src/PackageVersions';
-
-        mkdir($expectedPath, 0777, true);
-
-        file_put_contents($expectedPath . '/Versions.php', 'foo');
-
-        $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($tmpPath);
 
         $locker
             ->expects(self::any())
@@ -174,7 +172,13 @@ final class Versions
 
 PHP;
 
+        self::assertSame($expectedSource, file_get_contents(__DIR__ . '/../../src/PackageVersions/Versions.php'));
+    }
 
-        self::assertSame($expectedSource, file_get_contents($expectedPath . '/Versions.php'));
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        file_put_contents(__DIR__ . '/../../src/PackageVersions/Versions.php', $this->oldVersionContents);
     }
 }
