@@ -3,22 +3,25 @@
     "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
     "type": "composer-plugin",
     "license": "MIT",
-    "require": {
-        "php":                 "~7.0",
-        "composer-plugin-api": "^1.0"
-    },
     "authors": [
         {
             "name": "Marco Pivetta",
             "email": "ocramius@gmail.com"
         }
     ],
+    "require": {
+        "php":                 "~7.0",
+        "composer-plugin-api": "^1.0"
+    },
     "autoload": {
         "psr-4": {
             "PackageVersions\\": "src/PackageVersions"
         }
     },
     "extra": {
-        "class": "PackageVersions\\Installer"
+        "class": "PackageVersions\\Installer",
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
     }
 }
