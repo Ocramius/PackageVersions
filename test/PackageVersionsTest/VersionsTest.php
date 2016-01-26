@@ -2,7 +2,6 @@
 
 namespace PackageVersionsTest;
 
-use Composer\Config;
 use PackageVersions\Versions;
 use PHPUnit_Framework_TestCase;
 
