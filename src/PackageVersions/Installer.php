@@ -101,6 +101,7 @@ PHP;
 
     /**
      * @param string $versionClassSource
+     * @param Config $composerConfig
      *
      * @return void
      *
