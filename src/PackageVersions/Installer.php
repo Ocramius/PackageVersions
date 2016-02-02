@@ -81,7 +81,10 @@ PHP;
 
         $composer = $composerEvent->getComposer();
 
-        self::writeVersionClassToFile(self::generateVersionsClass($composer));
+        self::writeVersionClassToFile(
+            $composer->getConfig()->get('vendor-dir'),
+            self::generateVersionsClass($composer)
+        );
 
         self::reDumpAutoloader($composer);
 
@@ -97,13 +100,16 @@ PHP;
     }
 
     /**
+     * @param string $vendorDir
      * @param string $versionClassSource
-     *
-     * @return void
      */
-    private static function writeVersionClassToFile(string $versionClassSource)
+    private static function writeVersionClassToFile(string $vendorDir, string $versionClassSource)
     {
-        file_put_contents(__DIR__ . '/Versions.php', $versionClassSource, 0664);
+        file_put_contents(
+            $vendorDir . '/ocramius/package-versions/src/PackageVersions/Versions.php',
+            $versionClassSource,
+            0664
+        );
     }
 
     /**
