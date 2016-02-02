@@ -138,6 +138,8 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
         $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
 
+        $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn('unit-test');
+
         $package->expects(self::any())->method('getName')->willReturn('root/package');
         $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
         $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');

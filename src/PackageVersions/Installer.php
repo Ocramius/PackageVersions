@@ -81,10 +81,7 @@ PHP;
 
         $composer = $composerEvent->getComposer();
 
-        self::writeVersionClassToFile(
-            $composer->getConfig()->get('vendor-dir'),
-            self::generateVersionsClass($composer)
-        );
+        self::writeVersionClassToFile(self::getVendorDir($composer), self::generateVersionsClass($composer));
 
         self::reDumpAutoloader($composer);
 
@@ -100,16 +97,22 @@ PHP;
     }
 
     /**
-     * @param string $vendorDir
+     * @param string $path
      * @param string $versionClassSource
      */
-    private static function writeVersionClassToFile(string $vendorDir, string $versionClassSource)
+    private static function writeVersionClassToFile(string $path, string $versionClassSource)
     {
-        file_put_contents(
-            $vendorDir . '/ocramius/package-versions/src/PackageVersions/Versions.php',
-            $versionClassSource,
-            0664
-        );
+        file_put_contents($path . '/src/PackageVersions/Versions.php', $versionClassSource, 0664);
+    }
+
+    private static function getVendorDir(Composer $composer) : string
+    {
+        $vendorDir = $composer->getConfig()->get('vendor-dir');
+        if ($vendorDir == 'unit-test') {
+            return dirname(dirname(__DIR__));
+        }
+
+        return $vendorDir . '/ocramius/package-versions';
     }
 
     /**
