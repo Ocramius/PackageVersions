@@ -82,7 +82,7 @@ PHP;
     {
         $io = $composerEvent->getIO();
 
-        $io->write('<info>Generating version class...</info>');
+        $io->write('<info>ocramius/package-versions:</info>  Generating version class...');
 
         $composer = $composerEvent->getComposer();
 
@@ -94,7 +94,7 @@ PHP;
 
         self::reDumpAutoloader($composer);
 
-        $io->write('<info>...done generating version class</info>');
+        $io->write('<info>ocramius/package-versions:</info> ...done generating version class');
     }
 
     private static function generateVersionsClass(Composer $composer) : string
