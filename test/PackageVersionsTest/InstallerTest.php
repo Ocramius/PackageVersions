@@ -143,7 +143,7 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
 
         $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
 
-        $this->installer->dumpVersionsClass(new Event(
+        Installer::dumpVersionsClass(new Event(
             'post-install-cmd',
             $this->composer,
             $this->io
