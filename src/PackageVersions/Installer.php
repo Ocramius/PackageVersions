@@ -105,6 +105,8 @@ PHP;
 
     /**
      * @param string $versionClassSource
+     *
+     * @return void
      */
     private static function writeVersionClassToFile(string $versionClassSource)
     {
