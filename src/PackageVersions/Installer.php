@@ -6,7 +6,9 @@ use Composer\Composer;
 use Composer\Config;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
+use Composer\Package\AliasPackage;
 use Composer\Package\Locker;
+use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
@@ -84,7 +86,11 @@ PHP;
 
         $composer = $composerEvent->getComposer();
 
-        self::writeVersionClassToFile(self::generateVersionsClass($composer), $composer->getConfig());
+        self::writeVersionClassToFile(
+            self::generateVersionsClass($composer),
+            $composer->getConfig(),
+            $composer->getPackage()
+        );
 
         self::reDumpAutoloader($composer);
 
@@ -100,20 +106,55 @@ PHP;
     }
 
     /**
-     * @param string $versionClassSource
-     * @param Config $composerConfig
+     * @param string               $versionClassSource
+     * @param Config               $composerConfig
+     * @param RootPackageInterface $rootPackage
      *
      * @return void
      *
      * @throws \RuntimeException
      */
-    private static function writeVersionClassToFile(string $versionClassSource, Config $composerConfig)
-    {
+    private static function writeVersionClassToFile(
+        string $versionClassSource,
+        Config $composerConfig,
+        RootPackageInterface $rootPackage
+    ) {
         file_put_contents(
-            $composerConfig->get('vendor-dir') . '/ocramius/package-versions/src/PackageVersions/Versions.php',
+            self::locateRootPackageInstallPath($composerConfig, $rootPackage)
+            . '/src/PackageVersions/Versions.php',
             $versionClassSource,
             0664
         );
+    }
+
+    /**
+     * @param Config               $composerConfig
+     * @param RootPackageInterface $rootPackage
+     *
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    private static function locateRootPackageInstallPath(
+        Config $composerConfig,
+        RootPackageInterface $rootPackage
+    ) : string {
+        if ('ocramius/package-versions' === self::getRootPackageAlias($rootPackage)->getName()) {
+            return dirname($composerConfig->get('vendor-dir'));
+        }
+
+        return $composerConfig->get('vendor-dir') . '/ocramius/package-versions';
+    }
+
+    private static function getRootPackageAlias(RootPackageInterface $rootPackage) : PackageInterface
+    {
+        $package = $rootPackage;
+
+        while ($package instanceof AliasPackage) {
+            $package = $package->getAliasOf();
+        }
+
+        return $package;
     }
 
     /**
