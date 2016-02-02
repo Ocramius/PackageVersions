@@ -42,17 +42,10 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
     private $installer;
 
     /**
-     * @var string
-     */
-    private $oldVersionContents;
-
-    /**
      * {@inheritDoc}
      */
     protected function setUp()
     {
-        $this->oldVersionContents = file_get_contents(__DIR__ . '/../../src/PackageVersions/Versions.php');
-
         parent::setUp();
 
         $this->installer       = new Installer();
@@ -96,6 +89,12 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->getMock(InstalledRepositoryInterface::class);
         $package           = $this->getMock(RootPackageInterface::class);
+
+        $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
+
+        $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
+
+        mkdir($expectedPath, 0777, true);
 
         $locker
             ->expects(self::any())
@@ -141,6 +140,8 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
         $package->expects(self::any())->method('getName')->willReturn('root/package');
         $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
         $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
+
+        $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
 
         $this->installer->dumpVersionsClass(new Event(
             'post-install-cmd',
@@ -189,13 +190,34 @@ final class Versions
 
 PHP;
 
-        self::assertSame($expectedSource, file_get_contents(__DIR__ . '/../../src/PackageVersions/Versions.php'));
+        self::assertSame($expectedSource, file_get_contents($expectedPath . '/Versions.php'));
+
+        $this->rmDir($vendorDir);
     }
 
-    protected function tearDown()
+    /**
+     * @param string $directory
+     *
+     * @return void
+     */
+    private function rmDir(string $directory)
     {
-        parent::tearDown();
+        if (! is_dir($directory)) {
+            unlink($directory);
 
-        file_put_contents(__DIR__ . '/../../src/PackageVersions/Versions.php', $this->oldVersionContents);
+            return;
+        }
+
+        array_map(
+            function ($item) use ($directory) {
+                $this->rmDir($directory . '/' . $item);
+            },
+            array_filter(
+                scandir($directory),
+                function (string $dirItem) {
+                    return ! in_array($dirItem, ['.', '..'], true);
+                }
+            )
+        );
     }
 }
