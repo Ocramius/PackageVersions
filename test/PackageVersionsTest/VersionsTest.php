@@ -23,6 +23,10 @@ final class VersionsTest extends PHPUnit_Framework_TestCase
                 $package['version'] . '@' . $package['source']['reference'],
                 Versions::getVersion($package['name'])
             );
+            self::assertSame(
+                $package['version'],
+                Versions::getVersionOnly($package['name'])
+            );
         }
     }
 

@@ -48,6 +48,16 @@ final class Versions
 
         return self::VERSIONS[$packageName];
     }
+
+    /**
+     * @throws \OutOfBoundsException if a version cannot be located
+     */
+    public static function getVersionOnly(string $packageName) : string
+    {
+        $version = static::getVersion($packageName);
+        list($version) = explode('@', $version);
+        return $version;
+    }
 }
 
 PHP;
