@@ -9,6 +9,8 @@ use Composer\EventDispatcher\EventDispatcher;
 use Composer\Installer\InstallationManager;
 use Composer\IO\IOInterface;
 use Composer\Package\Locker;
+use Composer\Package\RootAliasPackage;
+use Composer\Package\RootPackage;
 use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Repository\RepositoryManager;
@@ -42,17 +44,10 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
     private $installer;
 
     /**
-     * @var string
-     */
-    private $oldVersionContents;
-
-    /**
      * {@inheritDoc}
      */
     protected function setUp()
     {
-        $this->oldVersionContents = file_get_contents(__DIR__ . '/../../src/PackageVersions/Versions.php');
-
         parent::setUp();
 
         $this->installer       = new Installer();
@@ -96,6 +91,12 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->getMock(InstalledRepositoryInterface::class);
         $package           = $this->getMock(RootPackageInterface::class);
+
+        $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
+
+        $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
+
+        mkdir($expectedPath, 0777, true);
 
         $locker
             ->expects(self::any())
@@ -142,7 +143,9 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
         $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
         $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
 
-        $this->installer->dumpVersionsClass(new Event(
+        $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
+
+        Installer::dumpVersionsClass(new Event(
             'post-install-cmd',
             $this->composer,
             $this->io
@@ -189,13 +192,138 @@ final class Versions
 
 PHP;
 
-        self::assertSame($expectedSource, file_get_contents(__DIR__ . '/../../src/PackageVersions/Versions.php'));
+        self::assertSame($expectedSource, file_get_contents($expectedPath . '/Versions.php'));
+
+        $this->rmDir($vendorDir);
     }
 
-    protected function tearDown()
+    /**
+     * @dataProvider rootPackageProvider
+     *
+     * @param RootPackageInterface $rootPackage
+     * @param bool                 $inVendor
+     */
+    public function testDumpsVersionsClassToSpecificLocation(RootPackageInterface $rootPackage, bool $inVendor)
     {
-        parent::tearDown();
+        $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
+        $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
+        $autoloadGenerator = $this->getMockBuilder(AutoloadGenerator::class)->disableOriginalConstructor()->getMock();
+        $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
+        $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
+        $repository        = $this->getMock(InstalledRepositoryInterface::class);
 
-        file_put_contents(__DIR__ . '/../../src/PackageVersions/Versions.php', $this->oldVersionContents);
+        $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/vendor';
+
+        mkdir($vendorDir, 0777, true);
+
+        $expectedPath = $inVendor
+            ? $vendorDir . '/ocramius/package-versions/src/PackageVersions'
+            : realpath($vendorDir . '/..') . '/src/PackageVersions';
+
+        mkdir($expectedPath, 0777, true);
+
+        $locker
+            ->expects(self::any())
+            ->method('getLockData')
+            ->willReturn([
+                'packages' => [],
+                'packages-dev' => [],
+            ]);
+
+        $autoloadGenerator->expects(self::once())->method('dump');
+        $repositoryManager->expects(self::any())->method('getLocalRepository')->willReturn($repository);
+
+        $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
+        $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
+        $this->composer->expects(self::any())->method('getAutoloadGenerator')->willReturn($autoloadGenerator);
+        $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
+        $this->composer->expects(self::any())->method('getPackage')->willReturn($rootPackage);
+        $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
+
+        $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
+
+        Installer::dumpVersionsClass(new Event(
+            'post-install-cmd',
+            $this->composer,
+            $this->io
+        ));
+
+        self::assertStringMatchesFormat(
+            '%Aclass Versions%A1.2.3@%A',
+            file_get_contents($expectedPath . '/Versions.php')
+        );
+
+        $this->rmDir($vendorDir);
+    }
+
+    /**
+     * @return bool[][]|RootPackageInterface[][] the root package and whether the versions class is to be generated in
+     *                                           the vendor dir or not
+     */
+    public function rootPackageProvider() : array
+    {
+        $baseRootPackage                         = new RootPackage('root/package', '1.2.3', '1.2.3');
+        $aliasRootPackage                        = new RootAliasPackage($baseRootPackage, '1.2.3', '1.2.3');
+        $indirectAliasRootPackage                = new RootAliasPackage($aliasRootPackage, '1.2.3', '1.2.3');
+        $packageVersionsRootPackage              = new RootPackage('ocramius/package-versions', '1.2.3', '1.2.3');
+        $aliasPackageVersionsRootPackage         = new RootAliasPackage($packageVersionsRootPackage, '1.2.3', '1.2.3');
+        $indirectAliasPackageVersionsRootPackage = new RootAliasPackage(
+            $aliasPackageVersionsRootPackage,
+            '1.2.3',
+            '1.2.3'
+        );
+
+        return [
+            'root package is not ocramius/package-versions' => [
+                $baseRootPackage,
+                true
+            ],
+            'alias root package is not ocramius/package-versions' => [
+                $aliasRootPackage,
+                true
+            ],
+            'indirect alias root package is not ocramius/package-versions' => [
+                $indirectAliasRootPackage,
+                true
+            ],
+            'root package is ocramius/package-versions' => [
+                $packageVersionsRootPackage,
+                false
+            ],
+            'alias root package is ocramius/package-versions' => [
+                $aliasPackageVersionsRootPackage,
+                false
+            ],
+            'indirect alias root package is ocramius/package-versions' => [
+                $indirectAliasPackageVersionsRootPackage,
+                false
+            ],
+        ];
+    }
+
+    /**
+     * @param string $directory
+     *
+     * @return void
+     */
+    private function rmDir(string $directory)
+    {
+        if (! is_dir($directory)) {
+            unlink($directory);
+
+            return;
+        }
+
+        array_map(
+            function ($item) use ($directory) {
+                $this->rmDir($directory . '/' . $item);
+            },
+            array_filter(
+                scandir($directory),
+                function (string $dirItem) {
+                    return ! in_array($dirItem, ['.', '..'], true);
+                }
+            )
+        );
     }
 }

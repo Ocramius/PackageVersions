@@ -3,9 +3,12 @@
 namespace PackageVersions;
 
 use Composer\Composer;
+use Composer\Config;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
+use Composer\Package\AliasPackage;
 use Composer\Package\Locker;
+use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
@@ -72,20 +75,26 @@ PHP;
      * @param Event $composerEvent
      *
      * @return void
+     *
+     * @throws \RuntimeException
      */
     public static function dumpVersionsClass(Event $composerEvent)
     {
         $io = $composerEvent->getIO();
 
-        $io->write('<info>Generating version class...</info>');
+        $io->write('<info>ocramius/package-versions:</info>  Generating version class...');
 
         $composer = $composerEvent->getComposer();
 
-        self::writeVersionClassToFile(self::generateVersionsClass($composer));
+        self::writeVersionClassToFile(
+            self::generateVersionsClass($composer),
+            $composer->getConfig(),
+            $composer->getPackage()
+        );
 
         self::reDumpAutoloader($composer);
 
-        $io->write('<info>...done generating version class</info>');
+        $io->write('<info>ocramius/package-versions:</info> ...done generating version class');
     }
 
     private static function generateVersionsClass(Composer $composer) : string
@@ -97,13 +106,55 @@ PHP;
     }
 
     /**
-     * @param string $versionClassSource
+     * @param string               $versionClassSource
+     * @param Config               $composerConfig
+     * @param RootPackageInterface $rootPackage
      *
      * @return void
+     *
+     * @throws \RuntimeException
      */
-    private static function writeVersionClassToFile(string $versionClassSource)
+    private static function writeVersionClassToFile(
+        string $versionClassSource,
+        Config $composerConfig,
+        RootPackageInterface $rootPackage
+    ) {
+        file_put_contents(
+            self::locateRootPackageInstallPath($composerConfig, $rootPackage)
+            . '/src/PackageVersions/Versions.php',
+            $versionClassSource,
+            0664
+        );
+    }
+
+    /**
+     * @param Config               $composerConfig
+     * @param RootPackageInterface $rootPackage
+     *
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    private static function locateRootPackageInstallPath(
+        Config $composerConfig,
+        RootPackageInterface $rootPackage
+    ) : string {
+        if ('ocramius/package-versions' === self::getRootPackageAlias($rootPackage)->getName()) {
+            return dirname($composerConfig->get('vendor-dir'));
+        }
+
+        return $composerConfig->get('vendor-dir') . '/ocramius/package-versions';
+    }
+
+    private static function getRootPackageAlias(RootPackageInterface $rootPackage) : PackageInterface
     {
-        file_put_contents(__DIR__ . '/Versions.php', $versionClassSource, 0664);
+        $package = $rootPackage;
+
+        while ($package instanceof AliasPackage) {
+            $package = $package->getAliasOf();
+        }
+
+        return $package;
     }
 
     /**
