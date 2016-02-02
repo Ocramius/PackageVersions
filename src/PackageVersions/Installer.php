@@ -77,6 +77,13 @@ PHP;
     {
         $io = $composerEvent->getIO();
 
+        if (substr(__DIR__, 0, 7) === 'phar://') {
+            // You can't write to phar, exit early to prevent errors.
+            // This happens if you require the same package twice!
+            $io->write('<info>Skip generating version class</info>');
+            return;
+        }
+
         $io->write('<info>Generating version class...</info>');
 
         $composer = $composerEvent->getComposer();
