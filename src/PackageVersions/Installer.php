@@ -3,6 +3,7 @@
 namespace PackageVersions;
 
 use Composer\Composer;
+use Composer\Config;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Package\Locker;
@@ -72,6 +73,8 @@ PHP;
      * @param Event $composerEvent
      *
      * @return void
+     *
+     * @throws \RuntimeException
      */
     public static function dumpVersionsClass(Event $composerEvent)
     {
@@ -81,7 +84,7 @@ PHP;
 
         $composer = $composerEvent->getComposer();
 
-        self::writeVersionClassToFile(self::generateVersionsClass($composer));
+        self::writeVersionClassToFile(self::generateVersionsClass($composer), $composer->getConfig());
 
         self::reDumpAutoloader($composer);
 
@@ -100,10 +103,16 @@ PHP;
      * @param string $versionClassSource
      *
      * @return void
+     *
+     * @throws \RuntimeException
      */
-    private static function writeVersionClassToFile(string $versionClassSource)
+    private static function writeVersionClassToFile(string $versionClassSource, Config $composerConfig)
     {
-        file_put_contents(__DIR__ . '/Versions.php', $versionClassSource, 0664);
+        file_put_contents(
+            $composerConfig->get('vendor-dir') . '/ocramius/package-versions/src/PackageVersions/Versions.php',
+            $versionClassSource,
+            0664
+        );
     }
 
     /**
