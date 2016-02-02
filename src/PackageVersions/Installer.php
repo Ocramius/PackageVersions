@@ -77,11 +77,18 @@ PHP;
     {
         $io = $composerEvent->getIO();
 
+        if (substr(__DIR__, 0, 7) === 'phar://') {
+            // You can't write to phar, exit early to prevent errors.
+            // This happens if you require the same package twice!
+            $io->write('<info>Skip generating version class</info>');
+            return;
+        }
+
         $io->write('<info>Generating version class...</info>');
 
         $composer = $composerEvent->getComposer();
 
-        self::writeVersionClassToFile(self::getVendorDir($composer), self::generateVersionsClass($composer));
+        self::writeVersionClassToFile(self::generateVersionsClass($composer));
 
         self::reDumpAutoloader($composer);
 
@@ -97,22 +104,11 @@ PHP;
     }
 
     /**
-     * @param string $path
      * @param string $versionClassSource
      */
-    private static function writeVersionClassToFile(string $path, string $versionClassSource)
+    private static function writeVersionClassToFile(string $versionClassSource)
     {
-        file_put_contents($path . '/src/PackageVersions/Versions.php', $versionClassSource, 0664);
-    }
-
-    private static function getVendorDir(Composer $composer) : string
-    {
-        $vendorDir = $composer->getConfig()->get('vendor-dir');
-        if ($vendorDir == 'unit-test') {
-            return dirname(dirname(__DIR__));
-        }
-
-        return $vendorDir . '/ocramius/package-versions';
+        file_put_contents(__DIR__ . '/Versions.php', $versionClassSource, 0664);
     }
 
     /**
