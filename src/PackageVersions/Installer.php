@@ -52,7 +52,7 @@ final class Versions
     /**
      * @throws \OutOfBoundsException if a version cannot be located
      */
-    public static function getVersionOnly(string $packageName) : string
+    public static function getComposerVersion(string $packageName) : string
     {
         list($version) = explode('@', self::getVersion($packageName));
         return $version;

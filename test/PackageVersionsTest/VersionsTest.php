@@ -26,7 +26,7 @@ final class VersionsTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testValidVersionsWithoutReference()
+    public function testValidComposerVersions()
     {
         $lockData = json_decode(file_get_contents(__DIR__ . '/../../composer.lock'), true);
 
@@ -37,7 +37,7 @@ final class VersionsTest extends PHPUnit_Framework_TestCase
         foreach ($packages as $package) {
             self::assertSame(
                 $package['version'],
-                Versions::getVersionOnly($package['name'])
+                Versions::getComposerVersion($package['name'])
             );
         }
     }
