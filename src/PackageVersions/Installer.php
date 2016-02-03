@@ -54,8 +54,7 @@ final class Versions
      */
     public static function getVersionOnly(string $packageName) : string
     {
-        $version = self::getVersion($packageName);
-        list($version) = explode('@', $version);
+        list($version) = explode('@', self::getVersion($packageName));
         return $version;
     }
 }
