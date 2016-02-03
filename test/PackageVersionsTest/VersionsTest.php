@@ -23,6 +23,18 @@ final class VersionsTest extends PHPUnit_Framework_TestCase
                 $package['version'] . '@' . $package['source']['reference'],
                 Versions::getVersion($package['name'])
             );
+        }
+    }
+
+    public function testValidVersionsWithoutReference()
+    {
+        $lockData = json_decode(file_get_contents(__DIR__ . '/../../composer.lock'), true);
+
+        $packages = array_merge($lockData['packages'], $lockData['packages-dev']);
+
+        self::assertNotEmpty($packages);
+
+        foreach ($packages as $package) {
             self::assertSame(
                 $package['version'],
                 Versions::getVersionOnly($package['name'])
