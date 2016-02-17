@@ -183,6 +183,10 @@ PHP;
     private static function getVersions(Locker $locker, RootPackageInterface $rootPackage) : \Generator
     {
         $lockData = $locker->getLockData();
+        
+        if (false === isset($lockData['packages-dev'])) {
+            $lockData['packages-dev'] = array();
+        }
 
         foreach (array_merge($lockData['packages'], $lockData['packages-dev'])  as $package) {
             yield $package['name']
