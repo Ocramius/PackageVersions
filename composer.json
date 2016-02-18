@@ -14,8 +14,8 @@
         "composer-plugin-api": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit":   "^5.0",
-        "composer/composer": "^1.0.0-ALPHA8@ALPHA"
+        "phpunit/phpunit":   "^5.2",
+        "composer/composer": "^1.0.0-ALPHA11@ALPHA"
     },
     "autoload": {
         "psr-4": {
