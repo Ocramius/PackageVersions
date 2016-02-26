@@ -92,8 +92,6 @@ PHP;
             $composer->getPackage()
         );
 
-        self::reDumpAutoloader($composer);
-
         $io->write('<info>ocramius/package-versions:</info> ...done generating version class');
     }
 
@@ -155,23 +153,6 @@ PHP;
         }
 
         return $package;
-    }
-
-    /**
-     * @param Composer $composer
-     *
-     * @return void
-     */
-    private static function reDumpAutoloader(Composer $composer)
-    {
-        $composer->getAutoloadGenerator()->dump(
-            $composer->getConfig(),
-            $composer->getRepositoryManager()->getLocalRepository(),
-            $composer->getPackage(),
-            $composer->getInstallationManager(),
-            'composer',
-            true // CBA to provide this manually, for now
-        );
     }
 
     /**

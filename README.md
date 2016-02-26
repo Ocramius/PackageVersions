@@ -20,6 +20,13 @@ var_dump($version); // 1.0.0@0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33
 composer require ocramius/package-versions
 ```
 
+It is suggested that you re-dump the autoloader in order to prevent
+autoload I/O when accessing the `PackageVersions\Versions` API:
+
+```sh
+composer dump-autoload --optimize
+```
+
 ### Use-cases
 
 This repository implements `PackageVersions\Versions::getVersion()` in such a way that no IO

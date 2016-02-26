@@ -86,7 +86,6 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
-        $autoloadGenerator = $this->getMockBuilder(AutoloadGenerator::class)->disableOriginalConstructor()->getMock();
         $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->getMock(InstalledRepositoryInterface::class);
@@ -129,12 +128,10 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
                 ],
             ]);
 
-        $autoloadGenerator->expects(self::once())->method('dump');
         $repositoryManager->expects(self::any())->method('getLocalRepository')->willReturn($repository);
 
         $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
         $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
-        $this->composer->expects(self::any())->method('getAutoloadGenerator')->willReturn($autoloadGenerator);
         $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
         $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
@@ -201,7 +198,6 @@ PHP;
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
-        $autoloadGenerator = $this->getMockBuilder(AutoloadGenerator::class)->disableOriginalConstructor()->getMock();
         $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->getMock(InstalledRepositoryInterface::class);
@@ -235,12 +231,10 @@ PHP;
                 ],
             ]);
 
-        $autoloadGenerator->expects(self::once())->method('dump');
         $repositoryManager->expects(self::any())->method('getLocalRepository')->willReturn($repository);
 
         $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
         $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
-        $this->composer->expects(self::any())->method('getAutoloadGenerator')->willReturn($autoloadGenerator);
         $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
         $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
@@ -309,7 +303,6 @@ PHP;
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
-        $autoloadGenerator = $this->getMockBuilder(AutoloadGenerator::class)->disableOriginalConstructor()->getMock();
         $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->getMock(InstalledRepositoryInterface::class);
@@ -340,12 +333,10 @@ PHP;
                 ],
             ]);
 
-        $autoloadGenerator->expects(self::once())->method('dump');
         $repositoryManager->expects(self::any())->method('getLocalRepository')->willReturn($repository);
 
         $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
         $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
-        $this->composer->expects(self::any())->method('getAutoloadGenerator')->willReturn($autoloadGenerator);
         $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
         $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
@@ -417,7 +408,6 @@ PHP;
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
-        $autoloadGenerator = $this->getMockBuilder(AutoloadGenerator::class)->disableOriginalConstructor()->getMock();
         $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->getMock(InstalledRepositoryInterface::class);
@@ -440,12 +430,10 @@ PHP;
                 'packages-dev' => [],
             ]);
 
-        $autoloadGenerator->expects(self::once())->method('dump');
         $repositoryManager->expects(self::any())->method('getLocalRepository')->willReturn($repository);
 
         $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
         $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
-        $this->composer->expects(self::any())->method('getAutoloadGenerator')->willReturn($autoloadGenerator);
         $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
         $this->composer->expects(self::any())->method('getPackage')->willReturn($rootPackage);
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
