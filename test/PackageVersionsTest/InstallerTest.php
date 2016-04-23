@@ -2,7 +2,6 @@
 
 namespace PackageVersionsTest;
 
-use Composer\Autoload\AutoloadGenerator;
 use Composer\Composer;
 use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
