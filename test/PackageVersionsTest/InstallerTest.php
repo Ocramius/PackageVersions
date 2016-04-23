@@ -2,7 +2,6 @@
 
 namespace PackageVersionsTest;
 
-use Composer\Autoload\AutoloadGenerator;
 use Composer\Composer;
 use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
@@ -45,6 +44,8 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
 
     /**
      * {@inheritDoc}
+     * 
+     * @throws \PHPUnit_Framework_Exception
      */
     protected function setUp()
     {
@@ -298,6 +299,8 @@ PHP;
 
     /**
      * @group #12
+     * 
+     * @throws \RuntimeException
      */
     public function testDumpVersionsWithoutPackageSourceDetails()
     {
@@ -403,6 +406,8 @@ PHP;
      *
      * @param RootPackageInterface $rootPackage
      * @param bool                 $inVendor
+     *
+     * @throws \RuntimeException
      */
     public function testDumpsVersionsClassToSpecificLocation(RootPackageInterface $rootPackage, bool $inVendor)
     {
@@ -521,6 +526,20 @@ PHP;
                 function (string $dirItem) {
                     return ! in_array($dirItem, ['.', '..'], true);
                 }
+            )
+        );
+    }
+
+    /**
+     * @group composer/composer#5237
+     */
+    public function testWillEscapeRegexParsingOfClassDefinitions()
+    {
+        self::assertSame(
+            1,
+            preg_match_all(
+                '{^((?:final\s+)?(?:\s*))class\s+(\S+)}mi',
+                file_get_contents((new \ReflectionClass(Installer::class))->getFileName())
             )
         );
     }

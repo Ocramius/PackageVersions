@@ -27,7 +27,7 @@ namespace PackageVersions;
  *
  * This file is overwritten at every run of `composer install` or `composer update`.
  */
-final class Versions
+%s
 {
     const VERSIONS = %s;
 
@@ -99,6 +99,7 @@ PHP;
     {
         return sprintf(
             self::$generatedClassTemplate,
+            'fin' . 'al ' . 'cla' . 'ss ' . 'Versions', // note: workaround for regex-based code parsers :-(
             var_export(iterator_to_array(self::getVersions($composer->getLocker(), $composer->getPackage())), true)
         );
     }
