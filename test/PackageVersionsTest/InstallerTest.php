@@ -44,6 +44,8 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
 
     /**
      * {@inheritDoc}
+     * 
+     * @throws \PHPUnit_Framework_Exception
      */
     protected function setUp()
     {
@@ -297,6 +299,8 @@ PHP;
 
     /**
      * @group #12
+     * 
+     * @throws \RuntimeException
      */
     public function testDumpVersionsWithoutPackageSourceDetails()
     {
@@ -402,6 +406,8 @@ PHP;
      *
      * @param RootPackageInterface $rootPackage
      * @param bool                 $inVendor
+     *
+     * @throws \RuntimeException
      */
     public function testDumpsVersionsClassToSpecificLocation(RootPackageInterface $rootPackage, bool $inVendor)
     {
