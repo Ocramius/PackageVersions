@@ -28,7 +28,7 @@ final class VersionsTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidVersionsAreRejected()
     {
-        $this->setExpectedException(\OutOfBoundsException::class);
+        $this->expectException(\OutOfBoundsException::class);
 
         Versions::getVersion(uniqid('', true) . '/' . uniqid('', true));
     }
