@@ -524,4 +524,18 @@ PHP;
             )
         );
     }
+
+    /**
+     * @group composer/composer#5237
+     */
+    public function testWillEscapeRegexParsingOfClassDefinitions()
+    {
+        self::assertSame(
+            1,
+            preg_match_all(
+                '{^((?:final\s+)?(?:\s*))class\s+(\S+)}mi',
+                file_get_contents((new \ReflectionClass(Installer::class))->getFileName())
+            )
+        );
+    }
 }
