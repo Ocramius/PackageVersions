@@ -1,6 +1,8 @@
 # Package Versions
 
-This utility provides very quick and easy access to installed composer dependency versions.
+This utility provides quick and easy access to version information of composer dependencies.
+
+This information is derived from the ```composer.lock``` file which is (re)generated during ```composer install``` or ```composer update```.
 
 ```php
 $version = \PackageVersions\Versions::getVersion('ocramius/package-versions');
