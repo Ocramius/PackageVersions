@@ -14,6 +14,7 @@ use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use Composer\Script\Event;
+use PackageVersions\CommandProvider;
 use PackageVersions\Installer;
 use PHPUnit_Framework_TestCase;
 
@@ -542,5 +543,12 @@ PHP;
                 file_get_contents((new \ReflectionClass(Installer::class))->getFileName())
             )
         );
+    }
+
+    public function testHasCommandProviderCapability()
+    {
+        $installer = new Installer();
+
+        static::assertContains(CommandProvider::class, $installer->getCapabilities());
     }
 }
