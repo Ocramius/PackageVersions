@@ -35,7 +35,7 @@ Therefore you should use `optimize-autoloader: true` in your composer.json:
 ```
 see https://getcomposer.org/doc/06-config.md#optimize-autoloader
 
-In case you manually generated your autoloader via the CLI use the `--optimize` flag:
+In case you manually generate your autoloader via the CLI use the `--optimize` flag:
 
 ```sh
 composer dump-autoload --optimize
