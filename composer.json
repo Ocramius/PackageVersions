@@ -1,5 +1,5 @@
 {
-    "name": "ocramius/package-versions",
+    "name": "samsonasik/package-versions",
     "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
     "type": "composer-plugin",
     "license": "MIT",
@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php":                 "~7.0",
+        "php":                 "^5.6 | ^7.0",
         "composer-plugin-api": "^1.0"
     },
     "require-dev": {

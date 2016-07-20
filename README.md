@@ -1,11 +1,13 @@
 # Package Versions
 
+> This is a backport of `ocramius/package-versions` that support php 5.6, while `ocramius/package-versions` only support php 7+.
+
 This utility provides quick and easy access to version information of composer dependencies.
 
 This information is derived from the ```composer.lock``` file which is (re)generated during ```composer install``` or ```composer update```.
 
 ```php
-$version = \PackageVersions\Versions::getVersion('ocramius/package-versions');
+$version = \PackageVersions\Versions::getVersion('samsonasik/package-versions');
 
 var_dump($version); // 1.0.0@0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33
 ```
@@ -19,7 +21,7 @@ var_dump($version); // 1.0.0@0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33
 ### Installation
 
 ```sh
-composer require ocramius/package-versions
+composer require samsonasik/package-versions
 ```
 
 It is suggested that you re-dump the autoloader in order to prevent

@@ -176,7 +176,7 @@ final class Versions
     /**
      * @throws \OutOfBoundsException if a version cannot be located
      */
-    public static function getVersion(string $packageName) : string
+    public static function getVersion($packageName)
     {
         if (! isset(self::VERSIONS[$packageName])) {
             throw new \OutOfBoundsException(
@@ -278,7 +278,7 @@ final class Versions
     /**
      * @throws \OutOfBoundsException if a version cannot be located
      */
-    public static function getVersion(string $packageName) : string
+    public static function getVersion($packageName)
     {
         if (! isset(self::VERSIONS[$packageName])) {
             throw new \OutOfBoundsException(
@@ -382,7 +382,7 @@ final class Versions
     /**
      * @throws \OutOfBoundsException if a version cannot be located
      */
-    public static function getVersion(string $packageName) : string
+    public static function getVersion($packageName)
     {
         if (! isset(self::VERSIONS[$packageName])) {
             throw new \OutOfBoundsException(
@@ -409,7 +409,7 @@ PHP;
      *
      * @throws \RuntimeException
      */
-    public function testDumpsVersionsClassToSpecificLocation(RootPackageInterface $rootPackage, bool $inVendor)
+    public function testDumpsVersionsClassToSpecificLocation(RootPackageInterface $rootPackage, $inVendor)
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -463,7 +463,7 @@ PHP;
      * @return bool[][]|RootPackageInterface[][] the root package and whether the versions class is to be generated in
      *                                           the vendor dir or not
      */
-    public function rootPackageProvider() : array
+    public function rootPackageProvider()
     {
         $baseRootPackage                         = new RootPackage('root/package', '1.2.3', '1.2.3');
         $aliasRootPackage                        = new RootAliasPackage($baseRootPackage, '1.2.3', '1.2.3');
@@ -509,7 +509,7 @@ PHP;
      *
      * @return void
      */
-    private function rmDir(string $directory)
+    private function rmDir($directory)
     {
         if (! is_dir($directory)) {
             unlink($directory);
