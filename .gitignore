@@ -1,3 +1,4 @@
 /vendor/
+src/PackageVersions/Versions.php
 composer.lock
 clover.xml
