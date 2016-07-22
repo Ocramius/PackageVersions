@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 1.0.3 - 2016-02-26
+
+This release fixes an issue related to concurrent autoloader re-generation caused by multiple composer plugins being installed. The issue was solved by removing autoloader re-generation from this package, but it may still affect other packages.
+
+It is now recommended that you run `composer dump-autoload --optimize` after installation when using this particular package.
+Please note that `composer (install|update) -o` is not sufficient to avoid autoload overhead when using this particular package.
+
+Total issues resolved: **1**
+
+- [15: Remove autoload re-dump optimization](https://github.com/Ocramius/PackageVersions/pull/15)
+
 ## 1.0.2 - 2016-02-24
 
 This release fixes issues related to installing the component without
