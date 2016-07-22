@@ -9,6 +9,7 @@ env:
   - DEPENDENCIES=""
   - DEPENDENCIES="--prefer-lowest --prefer-stable"
   - DEPENDENCIES="--classmap-authoritative"
+  - DEPENDENCIES="--no-scripts"
 
 before_script:
   - sh .travis.install.sh
