@@ -1,5 +1,28 @@
 # CHANGELOG
 
+## 1.1.0 - 2016-07-22
+
+This release introduces support for running `composer install --classmap-authoritative`
+and `composer install --no-scripts`. Please note that performance
+while using these modes may be degraded, but the package will
+still work.
+
+Additionally, the package was tuned to prevent the plugin from
+running twice at installation.
+
+Total issues resolved: **10**
+
+- [18: Fails when using composer install --no-scripts](https://github.com/Ocramius/PackageVersions/issues/18)
+- [20: CS (spacing)](https://github.com/Ocramius/PackageVersions/pull/20)
+- [22: Document the way the require-dev section is treated](https://github.com/Ocramius/PackageVersions/issues/22)
+- [23: Underline that composer.lock is used as source of information](https://github.com/Ocramius/PackageVersions/pull/23)
+- [27: Fix incompatibility with --classmap-authoritative](https://github.com/Ocramius/PackageVersions/pull/27)
+- [29: mention optimize-autoloader composer.json config option in README](https://github.com/Ocramius/PackageVersions/pull/29)
+- [30: The version class is generated twice during composer update](https://github.com/Ocramius/PackageVersions/issues/30)
+- [31: Remove double registration of the event listeners](https://github.com/Ocramius/PackageVersions/pull/31)
+- [32: Update the usage of mock APIs to use the new API](https://github.com/Ocramius/PackageVersions/pull/32)
+- [33: Fix for #18 -  support running with --no-scripts flag](https://github.com/Ocramius/PackageVersions/pull/33)
+
 ## 1.0.4 - 2016-04-23
 
 This release includes a fix/workaround for composer/composer#5237,
