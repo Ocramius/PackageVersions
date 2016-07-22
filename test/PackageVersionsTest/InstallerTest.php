@@ -44,7 +44,7 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @throws \PHPUnit_Framework_Exception
      */
     protected function setUp()
@@ -57,13 +57,6 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
         $this->eventDispatcher = $this->getMockBuilder(EventDispatcher::class)->disableOriginalConstructor()->getMock();
 
         $this->composer->expects(self::any())->method('getEventDispatcher')->willReturn($this->eventDispatcher);
-    }
-
-    public function testActivate()
-    {
-        $this->eventDispatcher->expects(self::once())->method('addSubscriber')->with($this->installer);
-
-        $this->installer->activate($this->composer, $this->io);
     }
 
     public function testGetSubscribedEvents()
@@ -299,7 +292,7 @@ PHP;
 
     /**
      * @group #12
-     * 
+     *
      * @throws \RuntimeException
      */
     public function testDumpVersionsWithoutPackageSourceDetails()
