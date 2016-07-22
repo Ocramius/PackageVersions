@@ -8,6 +8,7 @@ php:
 env:
   - DEPENDENCIES=""
   - DEPENDENCIES="--prefer-lowest --prefer-stable"
+  - DEPENDENCIES="--classmap-authoritative"
 
 before_script:
   - sh .travis.install.sh
