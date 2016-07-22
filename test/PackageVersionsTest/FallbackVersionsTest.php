@@ -31,9 +31,9 @@ final class FallbackVersionsTest extends PHPUnit_Framework_TestCase
                 . 'Fix your shit and cut the tooling some slack.',
                 $lockFileNotFound->getMessage()
             );
+        } finally {
+            rename(__DIR__ . '/../../composer.lock.backup', __DIR__ . '/../../composer.lock');
         }
-
-        rename(__DIR__ . '/../../composer.lock.backup', __DIR__ . '/../../composer.lock');
     }
 
     public function testValidVersions()
