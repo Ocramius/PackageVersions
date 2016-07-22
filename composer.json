@@ -20,10 +20,7 @@
     "autoload": {
         "psr-4": {
             "PackageVersions\\": "src/PackageVersions"
-        },
-        "files": [
-            "src/PackageVersions/Versions.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
