@@ -57,7 +57,7 @@ PHP;
      */
     public function activate(Composer $composer, IOInterface $io)
     {
-        $composer->getEventDispatcher()->addSubscriber($this);
+        // Nothing to do here, as all features are provided through event listeners
     }
 
     /**
