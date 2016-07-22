@@ -1,11 +1,28 @@
 # CHANGELOG
 
+## 1.0.4 - 2016-04-23
+
+This release includes a fix/workaround for composer/composer#5237,
+which causes `ocramius/package-versions` to sometimes generate a
+`Versions` class with malformed name (something like
+`Versions_composer_tmp0`) when running `composer require <package-name>`.
+
+Total issues resolved: **2**
+
+- [16: Workaround for composer/composer#5237 - class parsing](https://github.com/Ocramius/PackageVersions/pull/16)
+- [17: Weird Class name being generated](https://github.com/Ocramius/PackageVersions/issues/17)
+
 ## 1.0.3 - 2016-02-26
 
-This release fixes an issue related to concurrent autoloader re-generation caused by multiple composer plugins being installed. The issue was solved by removing autoloader re-generation from this package, but it may still affect other packages.
+This release fixes an issue related to concurrent autoloader
+re-generation caused by multiple composer plugins being installed.
+The issue was solved by removing autoloader re-generation from this
+package, but it may still affect other packages.
 
-It is now recommended that you run `composer dump-autoload --optimize` after installation when using this particular package.
-Please note that `composer (install|update) -o` is not sufficient to avoid autoload overhead when using this particular package.
+It is now recommended that you run `composer dump-autoload --optimize`
+after installation when using this particular package.
+Please note that `composer (install|update) -o` is not sufficient
+to avoid autoload overhead when using this particular package.
 
 Total issues resolved: **1**
 
