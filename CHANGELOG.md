@@ -8,6 +8,10 @@ as it is no longer needed for `composer install --classmap-authoritative`.
 Also, that directive was causing issues with HHVM installations, since
 PackageVersions is not compatible with it.
 
+Total issues resolved: **1**
+
+- [34: Fatal error during travis build after update to 1.1.0](https://github.com/Ocramius/PackageVersions/issues/34)
+
 ## 1.1.0 - 2016-07-22
 
 This release introduces support for running `composer install --classmap-authoritative`
