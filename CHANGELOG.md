@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.1.1 - 2016-07-25
+
+This release removes the [`"files"`](https://getcomposer.org/doc/04-schema.md#files) directive from
+[`composer.json`](https://github.com/Ocramius/PackageVersions/commit/86f2636f7c5e7b56fa035fa3826d5fcf80b6dc72),
+as it is no longer needed for `composer install --classmap-authoritative`.
+Also, that directive was causing issues with HHVM installations, since
+PackageVersions is not compatible with it.
+
 ## 1.1.0 - 2016-07-22
 
 This release introduces support for running `composer install --classmap-authoritative`
