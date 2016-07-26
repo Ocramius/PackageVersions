@@ -521,6 +521,8 @@ PHP;
                 }
             )
         );
+        
+        rmdir($directory);
     }
 
     /**
