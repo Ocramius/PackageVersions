@@ -410,9 +410,9 @@ PHP;
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->createMock(InstalledRepositoryInterface::class);
 
-        $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/vendor';
-
-        mkdir($vendorDir, 0777, true);
+        $tmpDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
+        
+        $vendorDir = $tmpDir . '/vendor';
 
         $expectedPath = $inVendor
             ? $vendorDir . '/ocramius/package-versions/src/PackageVersions'
@@ -449,7 +449,7 @@ PHP;
             file_get_contents($expectedPath . '/Versions.php')
         );
 
-        $this->rmDir($vendorDir);
+        $this->rmDir($tmpDir);
     }
 
     /**
