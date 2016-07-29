@@ -38,7 +38,7 @@ namespace PackageVersions;
     /**
      * @throws \OutOfBoundsException if a version cannot be located
      */
-    public static function getVersion(string $packageName) : string
+    public static function getVersion($packageName)
     {
         if (! isset(self::VERSIONS[$packageName])) {
             throw new \OutOfBoundsException(
@@ -95,7 +95,7 @@ PHP;
         $io->write('<info>ocramius/package-versions:</info> ...done generating version class');
     }
 
-    private static function generateVersionsClass(Composer $composer) : string
+    private static function generateVersionsClass(Composer $composer)
     {
         return sprintf(
             self::$generatedClassTemplate,
@@ -137,7 +137,7 @@ PHP;
     private static function locateRootPackageInstallPath(
         Config $composerConfig,
         RootPackageInterface $rootPackage
-    ) : string {
+    ) {
         if ('ocramius/package-versions' === self::getRootPackageAlias($rootPackage)->getName()) {
             return dirname($composerConfig->get('vendor-dir'));
         }
@@ -145,7 +145,7 @@ PHP;
         return $composerConfig->get('vendor-dir') . '/ocramius/package-versions';
     }
 
-    private static function getRootPackageAlias(RootPackageInterface $rootPackage) : PackageInterface
+    private static function getRootPackageAlias(RootPackageInterface $rootPackage)
     {
         $package = $rootPackage;
 
@@ -162,7 +162,7 @@ PHP;
      *
      * @return \Generator|\string[]
      */
-    private static function getVersions(Locker $locker, RootPackageInterface $rootPackage) : \Generator
+    private static function getVersions(Locker $locker, RootPackageInterface $rootPackage)
     {
         $lockData = $locker->getLockData();
 
