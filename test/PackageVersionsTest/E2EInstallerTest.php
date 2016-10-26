@@ -55,7 +55,7 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
                     'url' => $this->tempArtifact,
                 ]
             ]
-        ], JSON_PRETTY_PRINT));
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
         $this->exec(__DIR__ . '/../../vendor/bin/composer global update');
 
@@ -74,11 +74,45 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
                     'url' => $this->tempArtifact,
                 ]
             ]
-        ], JSON_PRETTY_PRINT));
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        $this->execInDir('composer update', $this->tempLocalComposerHome);
+        $this->assertFileNotExists(
+            $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
+        );
+    }
+
+    public function testRemovingPluginDoesNotAttemptToGenerateVersions()
+    {
+        $this->createPackageVersionsArtifact();
+        $this->createArtifact();
+
+        file_put_contents($this->tempLocalComposerHome . '/composer.json', json_encode([
+           'name'         => 'package-versions/e2e-local',
+           'require'      => [
+               'test/package' => '2.0.0',
+               'ocramius/package-versions' => '1.0.0'
+           ],
+           'repositories' => [
+               [
+                   'packagist' => false,
+               ],
+               [
+                   'type' => 'artifact',
+                   'url' => $this->tempArtifact,
+               ]
+           ]
+       ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
         $this->execInDir('composer update -vvv', $this->tempLocalComposerHome);
+        $this->assertFileExists(
+            $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
+        );
 
-        $this->assertFileNotExists($this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php');
+        $this->execInDir('composer remove ocramius/package-versions -vvv', $this->tempLocalComposerHome);
+        $this->assertFileNotExists(
+            $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
+        );
     }
 
     private function createPackageVersionsArtifact()
