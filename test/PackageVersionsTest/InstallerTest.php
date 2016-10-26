@@ -97,6 +97,10 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
             ->willReturn([
                 'packages' => [
                     [
+                        'name'    => 'ocramius/package-versions',
+                        'version' => '1.0.0',
+                    ],
+                    [
                         'name'    => 'foo/bar',
                         'version' => '1.2.3',
                         'source'  => [
@@ -156,6 +160,7 @@ namespace PackageVersions;
 final class Versions
 {
     const VERSIONS = array (
+  'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
   'tar/taz' => '7.8.9@ghi789',
@@ -209,6 +214,10 @@ PHP;
             ->willReturn([
                 'packages' => [
                     [
+                        'name'    => 'ocramius/package-versions',
+                        'version' => '1.0.0',
+                    ],
+                    [
                         'name'    => 'foo/bar',
                         'version' => '1.2.3',
                         'source'  => [
@@ -259,6 +268,7 @@ namespace PackageVersions;
 final class Versions
 {
     const VERSIONS = array (
+  'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
   'root/package' => '1.3.5@aaabbbcccddd',
@@ -316,6 +326,10 @@ PHP;
             ->willReturn([
                 'packages' => [
                     [
+                        'name'    => 'ocramius/package-versions',
+                        'version' => '1.0.0',
+                    ],
+                    [
                         'name'    => 'foo/bar',
                         'version' => '1.2.3',
                         'dist'  => [
@@ -363,6 +377,7 @@ namespace PackageVersions;
 final class Versions
 {
     const VERSIONS = array (
+  'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@',
   'root/package' => '1.3.5@aaabbbcccddd',
@@ -424,7 +439,12 @@ PHP;
             ->expects(self::any())
             ->method('getLockData')
             ->willReturn([
-                'packages' => [],
+                'packages' => [
+                    [
+                        'name'    => 'ocramius/package-versions',
+                        'version' => '1.0.0',
+                    ]
+                ],
                 'packages-dev' => [],
             ]);
 
@@ -495,6 +515,65 @@ PHP;
                 false
             ],
         ];
+    }
+
+    public function testVersionsAreNotDumpedIfPackageVersionsNotExplicitlyRequired()
+    {
+        $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
+        $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
+        $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
+        $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
+        $repository        = $this->createMock(InstalledRepositoryInterface::class);
+        $package           = $this->createMock(RootPackageInterface::class);
+
+        $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
+
+        $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
+
+        mkdir($expectedPath, 0777, true);
+
+        $locker
+            ->expects(self::any())
+            ->method('getLockData')
+            ->willReturn([
+                 'packages' => [
+                     [
+                         'name'    => 'foo/bar',
+                         'version' => '1.2.3',
+                         'dist'  => [
+                             'reference' => 'abc123', // version defined in the dist, this time
+                         ],
+                     ],
+                     [
+                         'name'    => 'baz/tab',
+                         'version' => '4.5.6', // source missing
+                     ],
+                 ],
+             ]);
+
+        $repositoryManager->expects(self::any())->method('getLocalRepository')->willReturn($repository);
+
+        $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
+        $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
+        $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
+        $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
+        $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
+
+        $package->expects(self::any())->method('getName')->willReturn('root/package');
+        $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
+        $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
+
+        $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
+
+        Installer::dumpVersionsClass(new Event(
+            'post-install-cmd',
+            $this->composer,
+            $this->io
+        ));
+
+        self::assertFileNotExists($expectedPath . '/Versions.php');
+
+        $this->rmDir($vendorDir);
     }
 
     /**
