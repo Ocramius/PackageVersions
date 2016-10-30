@@ -87,7 +87,7 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
             ]
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-        $this->execInDir('composer update', $this->tempLocalComposerHome);
+        $this->execInDir(__DIR__ . '/../../vendor/bin/composer update', $this->tempLocalComposerHome);
         $this->assertFileNotExists(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
         );
@@ -115,12 +115,16 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
            ]
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-        $this->execInDir('composer update -vvv', $this->tempLocalComposerHome);
+        $this->execInDir(__DIR__ . '/../../vendor/bin/composer update', $this->tempLocalComposerHome);
         $this->assertFileExists(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
         );
 
-        $this->execInDir('composer remove ocramius/package-versions -vvv', $this->tempLocalComposerHome);
+        $this->execInDir(
+            __DIR__ . '/../../vendor/bin/composer remove ocramius/package-versions',
+            $this->tempLocalComposerHome
+        );
+
         $this->assertFileNotExists(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
         );
