@@ -14,8 +14,19 @@ use ZipArchive;
  */
 class E2EInstaller extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var string
+     */
     private $tempGlobalComposerHome;
+
+    /**
+     * @var string
+     */
     private $tempLocalComposerHome;
+
+    /**
+     * @var string
+     */
     private $tempArtifact;
 
     public function setUp()
