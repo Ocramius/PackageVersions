@@ -194,7 +194,8 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
 
     private function exec(string $command) : array
     {
-        exec($command . ' 2> /dev/null', $output);
+        exec($command . ' 2> /dev/null', $output, $exitCode);
+        $this->assertEquals(0, $exitCode);
         return $output;
     }
 
