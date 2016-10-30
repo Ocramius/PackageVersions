@@ -10,7 +10,7 @@ use SplFileInfo;
 use ZipArchive;
 
 /**
- * @author Aydin Hassan <aydin@hotmail.co.uk>
+ * @coversNothing
  */
 class E2EInstaller extends PHPUnit_Framework_TestCase
 {
