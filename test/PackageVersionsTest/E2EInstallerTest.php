@@ -140,17 +140,8 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
             iterator_to_array(new RecursiveIteratorIterator(
                 new RecursiveCallbackFilterIterator(
                     new RecursiveDirectoryIterator(realpath(__DIR__ . '/../../'), RecursiveDirectoryIterator::SKIP_DOTS),
-                    function (SplFileInfo $file) {
-                        $filePath = substr($file->getRealPath(), strlen(realpath(__DIR__ . '/../../')) + 1);
-
-                        if (substr($filePath, 0, 4) === '.git'
-                            || substr($filePath, 0, 5) === '.idea'
-                            || substr($filePath, 0, 6) === 'vendor'
-                        ) {
-                            return false;
-                        }
-
-                        return true;
+                    function (SplFileInfo $file, $key, RecursiveDirectoryIterator $iterator) {
+                        return $iterator->getSubPathname()[0]  !== '.' && $iterator->getSubPathname() !== 'vendor';
                     }
                 ),
                 RecursiveIteratorIterator::LEAVES_ONLY
