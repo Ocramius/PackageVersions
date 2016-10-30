@@ -52,40 +52,46 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
     {
         $this->createPackageVersionsArtifact();
 
-        file_put_contents($this->tempGlobalComposerHome . '/composer.json', json_encode([
-            'name'         => 'package-versions/e2e-global',
-            'require'      => [
-                'ocramius/package-versions' => '1.0.0'
-            ],
-            'repositories' => [
-                [
-                    'packagist' => false,
+        $this->writeComposerJsonFile(
+            [
+                'name'         => 'package-versions/e2e-global',
+                'require'      => [
+                    'ocramius/package-versions' => '1.0.0'
                 ],
-                [
-                    'type' => 'artifact',
-                    'url' => $this->tempArtifact,
+                'repositories' => [
+                    [
+                        'packagist' => false,
+                    ],
+                    [
+                        'type' => 'artifact',
+                        'url' => $this->tempArtifact,
+                    ]
                 ]
-            ]
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            ],
+            $this->tempGlobalComposerHome
+        );
 
         $this->exec(__DIR__ . '/../../vendor/bin/composer global update');
 
         $this->createArtifact();
-        file_put_contents($this->tempLocalComposerHome . '/composer.json', json_encode([
-            'name'         => 'package-versions/e2e-local',
-            'require'      => [
-                'test/package' => '2.0.0'
-            ],
-            'repositories' => [
-                [
-                    'packagist' => false,
+        $this->writeComposerJsonFile(
+            [
+                'name'         => 'package-versions/e2e-local',
+                'require'      => [
+                    'test/package' => '2.0.0'
                 ],
-                [
-                    'type' => 'artifact',
-                    'url' => $this->tempArtifact,
+                'repositories' => [
+                    [
+                        'packagist' => false,
+                    ],
+                    [
+                        'type' => 'artifact',
+                        'url' => $this->tempArtifact,
+                    ]
                 ]
-            ]
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            ],
+            $this->tempLocalComposerHome
+        );
 
         $this->execInDir(__DIR__ . '/../../vendor/bin/composer update', $this->tempLocalComposerHome);
         $this->assertFileNotExists(
@@ -98,22 +104,25 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
         $this->createPackageVersionsArtifact();
         $this->createArtifact();
 
-        file_put_contents($this->tempLocalComposerHome . '/composer.json', json_encode([
-           'name'         => 'package-versions/e2e-local',
-           'require'      => [
-               'test/package' => '2.0.0',
-               'ocramius/package-versions' => '1.0.0'
-           ],
-           'repositories' => [
-               [
-                   'packagist' => false,
-               ],
-               [
-                   'type' => 'artifact',
-                   'url' => $this->tempArtifact,
-               ]
-           ]
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $this->writeComposerJsonFile(
+            [
+                'name'         => 'package-versions/e2e-local',
+                'require'      => [
+                    'test/package' => '2.0.0',
+                    'ocramius/package-versions' => '1.0.0'
+                ],
+                'repositories' => [
+                    [
+                        'packagist' => false,
+                    ],
+                    [
+                        'type' => 'artifact',
+                        'url' => $this->tempArtifact,
+                    ]
+                ]
+            ],
+            $this->tempLocalComposerHome
+        );
 
         $this->execInDir(__DIR__ . '/../../vendor/bin/composer update', $this->tempLocalComposerHome);
         $this->assertFileExists(
@@ -176,11 +185,25 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
         $zip = new ZipArchive();
 
         $zip->open($this->tempArtifact . '/test-package-2.0.0.zip', ZipArchive::CREATE);
-        $zip->addFromString('composer.json', json_encode([
-             'name'    => 'test/package',
-             'version' => '2.0.0',
-         ], JSON_PRETTY_PRINT)).
+        $zip->addFromString(
+            'composer.json',
+            json_encode(
+                [
+                    'name'    => 'test/package',
+                    'version' => '2.0.0'
+                ],
+                JSON_PRETTY_PRINT
+            )
+        );
         $zip->close();
+    }
+
+    private function writeComposerJsonFile(array $config, string $directory)
+    {
+        file_put_contents(
+            $directory . '/composer.json',
+            json_encode($config, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+        );
     }
 
     private function execInDir(string $command, string $dir) : array
