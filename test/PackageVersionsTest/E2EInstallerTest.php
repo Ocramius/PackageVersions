@@ -113,7 +113,7 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
                    'url' => $this->tempArtifact,
                ]
            ]
-       ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
         $this->execInDir('composer update -vvv', $this->tempLocalComposerHome);
         $this->assertFileExists(
