@@ -71,7 +71,7 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
             $this->tempGlobalComposerHome
         );
 
-        $this->exec(__DIR__ . '/../../vendor/bin/composer global update');
+        $this->execComposerInDir('global update', $this->tempGlobalComposerHome);
 
         $this->createArtifact();
         $this->writeComposerJsonFile(
@@ -93,7 +93,7 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
             $this->tempLocalComposerHome
         );
 
-        $this->execInDir(__DIR__ . '/../../vendor/bin/composer update', $this->tempLocalComposerHome);
+        $this->execComposerInDir('update', $this->tempLocalComposerHome);
         $this->assertFileNotExists(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
         );
@@ -124,15 +124,12 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
             $this->tempLocalComposerHome
         );
 
-        $this->execInDir(__DIR__ . '/../../vendor/bin/composer update', $this->tempLocalComposerHome);
+        $this->execComposerInDir('update', $this->tempLocalComposerHome);
         $this->assertFileExists(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
         );
 
-        $this->execInDir(
-            __DIR__ . '/../../vendor/bin/composer remove ocramius/package-versions',
-            $this->tempLocalComposerHome
-        );
+        $this->execComposerInDir('remove ocramius/package-versions', $this->tempLocalComposerHome);
 
         $this->assertFileNotExists(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
@@ -206,19 +203,13 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
         );
     }
 
-    private function execInDir(string $command, string $dir) : array
+    private function execComposerInDir(string $command, string $dir) : array
     {
         $currentDir = getcwd();
         chdir($dir);
-        $output = $this->exec($command);
-        chdir($currentDir);
-        return $output;
-    }
-
-    private function exec(string $command) : array
-    {
-        exec($command . ' 2> /dev/null', $output, $exitCode);
+        exec(__DIR__ . '/../../vendor/bin/composer ' . $command . ' 2> /dev/null', $output, $exitCode);
         $this->assertEquals(0, $exitCode);
+        chdir($currentDir);
         return $output;
     }
 
