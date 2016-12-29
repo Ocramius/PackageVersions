@@ -83,7 +83,7 @@ PHP;
         $composer = $composerEvent->getComposer();
         $versions = iterator_to_array(self::getVersions($composer->getLocker(), $composer->getPackage()));
 
-        if (!isset($versions['ocramius/package-versions'])) {
+        if (!array_key_exists('ocramius/package-versions', $versions)) {
             //plugin must be globally installed - we only want to generate versions for projects which specifically
             //require ocramius/package-versions
             return;
