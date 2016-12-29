@@ -46,6 +46,8 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
         $this->rmDir($this->tempGlobalComposerHome);
         $this->rmDir($this->tempLocalComposerHome);
         $this->rmDir($this->tempArtifact);
+
+        putenv('COMPOSER_HOME');
     }
 
     public function testGloballyInstalledPluginDoesNotGenerateVersionsForLocalProject()
