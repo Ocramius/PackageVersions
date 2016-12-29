@@ -34,9 +34,9 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
         $this->tempGlobalComposerHome = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/global';
         $this->tempLocalComposerHome = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/local';
         $this->tempArtifact = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/artifacts';
-        mkdir($this->tempGlobalComposerHome, 0777, true);
-        mkdir($this->tempLocalComposerHome, 0777, true);
-        mkdir($this->tempArtifact, 0777, true);
+        mkdir($this->tempGlobalComposerHome, 0700, true);
+        mkdir($this->tempLocalComposerHome, 0700, true);
+        mkdir($this->tempArtifact, 0700, true);
 
         putenv('COMPOSER_HOME=' . $this->tempGlobalComposerHome);
     }
