@@ -127,7 +127,7 @@ PHP;
         $installPath = self::locateRootPackageInstallPath($composerConfig, $rootPackage)
             . '/src/PackageVersions/Versions.php';
 
-        file_put_contents($installPath, $versionClassSource, 0664);
+        file_put_contents($installPath, $versionClassSource);
         chmod($installPath, 0664);
     }
 
