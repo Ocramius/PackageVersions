@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 1.1.2 - 2016-12-30
+
+This release fixes a bug that caused PackageVersions to be enabled
+even when it was part of a globally installed package.
+
+Total issues resolved: **3**
+
+- [35: remove all temp directories](https://github.com/Ocramius/PackageVersions/pull/35)
+- [38: Interferes with other projects when installed globally](https://github.com/Ocramius/PackageVersions/issues/38)
+- [39: Ignore the global plugin when updating local projects](https://github.com/Ocramius/PackageVersions/pull/39)
+
 ## 1.1.1 - 2016-07-25
 
 This release removes the [`"files"`](https://getcomposer.org/doc/04-schema.md#files) directive from
