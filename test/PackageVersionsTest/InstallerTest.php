@@ -89,6 +89,7 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
 
         $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($expectedPath, 0777, true);
 
         $locker
@@ -206,6 +207,7 @@ PHP;
 
         $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($expectedPath, 0777, true);
 
         $locker
@@ -318,6 +320,7 @@ PHP;
 
         $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($expectedPath, 0777, true);
 
         $locker
@@ -427,12 +430,15 @@ PHP;
 
         $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/vendor';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($vendorDir, 0777, true);
 
-        $expectedPath = $inVendor
+        /** @noinspection RealpathInSteamContextInspection */
+        $expectedPath      = $inVendor
             ? $vendorDir . '/ocramius/package-versions/src/PackageVersions'
             : realpath($vendorDir . '/..') . '/src/PackageVersions';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($expectedPath, 0777, true);
 
         $locker
@@ -530,6 +536,7 @@ PHP;
 
         $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($expectedPath, 0777, true);
 
         $locker
