@@ -80,14 +80,20 @@ PHP;
      */
     public static function dumpVersionsClass(Event $composerEvent)
     {
-        $io = $composerEvent->getIO();
+        $composer = $composerEvent->getComposer();
+        $versions = iterator_to_array(self::getVersions($composer->getLocker(), $composer->getPackage()));
 
+        if (!array_key_exists('ocramius/package-versions', $versions)) {
+            //plugin must be globally installed - we only want to generate versions for projects which specifically
+            //require ocramius/package-versions
+            return;
+        }
+
+        $io = $composerEvent->getIO();
         $io->write('<info>ocramius/package-versions:</info>  Generating version class...');
 
-        $composer = $composerEvent->getComposer();
-
         self::writeVersionClassToFile(
-            self::generateVersionsClass($composer),
+            self::generateVersionsClass($versions),
             $composer->getConfig(),
             $composer->getPackage()
         );
@@ -95,12 +101,12 @@ PHP;
         $io->write('<info>ocramius/package-versions:</info> ...done generating version class');
     }
 
-    private static function generateVersionsClass(Composer $composer) : string
+    private static function generateVersionsClass(array $versions) : string
     {
         return sprintf(
             self::$generatedClassTemplate,
             'fin' . 'al ' . 'cla' . 'ss ' . 'Versions', // note: workaround for regex-based code parsers :-(
-            var_export(iterator_to_array(self::getVersions($composer->getLocker(), $composer->getPackage())), true)
+            var_export($versions, true)
         );
     }
 
