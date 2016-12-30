@@ -124,12 +124,11 @@ PHP;
         Config $composerConfig,
         RootPackageInterface $rootPackage
     ) {
-        file_put_contents(
-            self::locateRootPackageInstallPath($composerConfig, $rootPackage)
-            . '/src/PackageVersions/Versions.php',
-            $versionClassSource,
-            0664
-        );
+        $installPath = self::locateRootPackageInstallPath($composerConfig, $rootPackage)
+            . '/src/PackageVersions/Versions.php';
+
+        file_put_contents($installPath, $versionClassSource, 0664);
+        chmod($installPath, 0664);
     }
 
     /**
