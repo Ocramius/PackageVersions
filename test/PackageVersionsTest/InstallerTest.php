@@ -89,6 +89,7 @@ final class InstallerTest extends PHPUnit_Framework_TestCase
 
         $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($expectedPath, 0777, true);
 
         $locker
@@ -206,6 +207,7 @@ PHP;
 
         $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($expectedPath, 0777, true);
 
         $locker
@@ -318,6 +320,7 @@ PHP;
 
         $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($expectedPath, 0777, true);
 
         $locker
@@ -427,12 +430,15 @@ PHP;
 
         $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/vendor';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($vendorDir, 0777, true);
 
-        $expectedPath = $inVendor
+        /** @noinspection RealpathInSteamContextInspection */
+        $expectedPath      = $inVendor
             ? $vendorDir . '/ocramius/package-versions/src/PackageVersions'
             : realpath($vendorDir . '/..') . '/src/PackageVersions';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($expectedPath, 0777, true);
 
         $locker
@@ -530,6 +536,7 @@ PHP;
 
         $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
 
+        /** @noinspection MkdirRaceConditionInspection */
         mkdir($expectedPath, 0777, true);
 
         $locker
@@ -572,6 +579,66 @@ PHP;
         ));
 
         self::assertFileNotExists($expectedPath . '/Versions.php');
+
+        $this->rmDir($vendorDir);
+    }
+
+    public function testGeneratedVersionFileAccessRights()
+    {
+        if (0 === strpos(\PHP_OS, 'WIN')) {
+            $this->markTestSkipped('Windows is kinda "meh" at file access levels');
+        }
+
+        $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
+        $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
+        $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
+        $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
+        $repository        = $this->createMock(InstalledRepositoryInterface::class);
+        $package           = $this->createMock(RootPackageInterface::class);
+
+        $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
+
+        $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
+
+        /** @noinspection MkdirRaceConditionInspection */
+        mkdir($expectedPath, 0777, true);
+
+        $locker
+            ->expects(self::any())
+            ->method('getLockData')
+            ->willReturn([
+                'packages' => [
+                    [
+                        'name'    => 'ocramius/package-versions',
+                        'version' => '1.0.0',
+                    ],
+                ],
+            ]);
+
+        $repositoryManager->expects(self::any())->method('getLocalRepository')->willReturn($repository);
+
+        $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
+        $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
+        $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
+        $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
+        $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
+
+        $package->expects(self::any())->method('getName')->willReturn('root/package');
+        $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
+        $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
+
+        $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
+
+        Installer::dumpVersionsClass(new Event(
+            'post-install-cmd',
+            $this->composer,
+            $this->io
+        ));
+
+        $filePath = $expectedPath . '/Versions.php';
+
+        self::assertFileExists($filePath);
+        self::assertSame('0664', substr(sprintf('%o', fileperms($filePath)), -4));
 
         $this->rmDir($vendorDir);
     }
