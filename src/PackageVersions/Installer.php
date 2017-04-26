@@ -10,11 +10,13 @@ use Composer\Package\AliasPackage;
 use Composer\Package\Locker;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
+use Composer\Plugin\Capability\CommandProvider as CommandProviderInterface;
+use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 
-final class Installer implements PluginInterface, EventSubscriberInterface
+final class Installer implements PluginInterface, EventSubscriberInterface, Capable
 {
     private static $generatedClassTemplate = <<<'PHP'
 <?php
@@ -180,5 +182,15 @@ PHP;
         }
 
         yield $rootPackage->getName() => $rootPackage->getVersion() . '@' . $rootPackage->getSourceReference();
+    }
+
+    /**
+     * @return array
+     */
+    public function getCapabilities() : array
+    {
+        return [
+            CommandProviderInterface::class => CommandProvider::class,
+        ];
     }
 }
