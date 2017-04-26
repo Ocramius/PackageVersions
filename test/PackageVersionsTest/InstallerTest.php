@@ -185,6 +185,15 @@ final class Versions
 
         return self::VERSIONS[$packageName];
     }
+
+    /**
+     * @throws \OutOfBoundsException if a version cannot be located
+     */
+    public static function getComposerVersion(string $packageName) : string
+    {
+        list($version) = explode('@', self::getVersion($packageName));
+        return $version;
+    }
 }
 
 PHP;
