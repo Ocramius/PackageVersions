@@ -92,11 +92,17 @@ PHP;
         $io = $composerEvent->getIO();
         $io->write('<info>ocramius/package-versions:</info>  Generating version class...');
 
-        self::writeVersionClassToFile(
-            self::generateVersionsClass($versions),
-            $composer->getConfig(),
-            $composer->getPackage()
-        );
+        try {
+            self::writeVersionClassToFile(
+                self::generateVersionsClass($versions),
+                $composer->getConfig(),
+                $composer->getPackage()
+            );
+        } catch (NotInstalledException $exception) {
+            $io->write('<info>ocramius/package-versions:</info> Package not found (probably scheduled for removal); generation of version class skipped.');
+
+            return;
+        }
 
         $io->write('<info>ocramius/package-versions:</info> ...done generating version class');
     }
@@ -126,6 +132,10 @@ PHP;
     ) {
         $installPath = self::locateRootPackageInstallPath($composerConfig, $rootPackage)
             . '/src/PackageVersions/Versions.php';
+
+        if (! file_exists(dirname($installPath))) {
+            throw new NotInstalledException();
+        }
 
         file_put_contents($installPath, $versionClassSource);
         chmod($installPath, 0664);
