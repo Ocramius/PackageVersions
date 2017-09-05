@@ -1,0 +1,15 @@
+{
+    "name": "integration-test",
+    "description": "Integration test for ocramius/package-versions",
+    "type": "library",
+    "license": "MIT",
+    "require-dev": {
+        "ocramius/package-versions": "*"
+    },
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "packagist.org": false
+        }
+    ]
+}
