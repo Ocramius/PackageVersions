@@ -138,6 +138,42 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testRemovingPluginWithNoDevDoesNotAttemptToGenerateVersions()
+    {
+        $this->createPackageVersionsArtifact();
+        $this->createArtifact();
+
+        $this->writeComposerJsonFile(
+            [
+                'name'         => 'package-versions/e2e-local',
+                'require-dev'      => [
+                    'ocramius/package-versions' => '1.0.0'
+                ],
+                'repositories' => [
+                    [
+                        'packagist' => false,
+                    ],
+                    [
+                        'type' => 'artifact',
+                        'url' => $this->tempArtifact,
+                    ]
+                ]
+            ],
+            $this->tempLocalComposerHome
+        );
+
+        $this->execComposerInDir('update', $this->tempLocalComposerHome);
+        $this->assertFileExists(
+            $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
+        );
+
+        $this->execComposerInDir('install --no-dev', $this->tempLocalComposerHome);
+
+        $this->assertFileNotExists(
+            $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
+        );
+    }
+
     private function createPackageVersionsArtifact()
     {
         $zip = new ZipArchive();

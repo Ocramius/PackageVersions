@@ -18,7 +18,6 @@ before_script:
 script:
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml
   - ./vendor/bin/humbug
-  - ./.travis.test.integration.sh
 
 after_script:
   - sh .travis.coverage.sh
