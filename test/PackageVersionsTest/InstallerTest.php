@@ -583,14 +583,17 @@ PHP;
         $this->rmDir($vendorDir);
     }
 
+    /**
+     * @group #41
+     * @group #46
+     */
     public function testVersionsAreNotDumpedIfPackageIsScheduledForRemoval()
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
         $package           = $this->createMock(RootPackageInterface::class);
-
-        $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
-        $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
+        $vendorDir         = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
+        $expectedPath      = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
 
         $locker
             ->expects(self::any())

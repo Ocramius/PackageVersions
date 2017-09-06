@@ -138,6 +138,10 @@ class E2EInstaller extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @group #41
+     * @group #46
+     */
     public function testRemovingPluginWithNoDevDoesNotAttemptToGenerateVersions()
     {
         $this->createPackageVersionsArtifact();
