@@ -583,6 +583,46 @@ PHP;
         $this->rmDir($vendorDir);
     }
 
+    /**
+     * @group #41
+     * @group #46
+     */
+    public function testVersionsAreNotDumpedIfPackageIsScheduledForRemoval()
+    {
+        $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
+        $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
+        $package           = $this->createMock(RootPackageInterface::class);
+        $vendorDir         = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
+        $expectedPath      = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
+
+        $locker
+            ->expects(self::any())
+            ->method('getLockData')
+            ->willReturn([
+                 'packages' => [
+                     [
+                         'name'    => 'ocramius/package-versions',
+                         'version' => '1.0.0',
+                     ]
+                 ],
+             ]);
+
+        $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
+        $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
+        $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
+
+        $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
+
+        Installer::dumpVersionsClass(new Event(
+            'post-install-cmd',
+            $this->composer,
+            $this->io
+        ));
+
+        self::assertFileNotExists($expectedPath . '/Versions.php');
+        self::assertFileNotExists($expectedPath . '/Versions.php');
+    }
+
     public function testGeneratedVersionFileAccessRights()
     {
         if (0 === strpos(\PHP_OS, 'WIN')) {

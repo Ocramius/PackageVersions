@@ -89,16 +89,7 @@ PHP;
             return;
         }
 
-        $io = $composerEvent->getIO();
-        $io->write('<info>ocramius/package-versions:</info>  Generating version class...');
-
-        self::writeVersionClassToFile(
-            self::generateVersionsClass($versions),
-            $composer->getConfig(),
-            $composer->getPackage()
-        );
-
-        $io->write('<info>ocramius/package-versions:</info> ...done generating version class');
+        self::writeVersionClassToFile(self::generateVersionsClass($versions), $composer, $composerEvent->getIO());
     }
 
     private static function generateVersionsClass(array $versions) : string
@@ -111,24 +102,31 @@ PHP;
     }
 
     /**
-     * @param string               $versionClassSource
-     * @param Config               $composerConfig
-     * @param RootPackageInterface $rootPackage
+     * @param string $versionClassSource
+     * @param Composer $composer
+     * @param IOInterface $io
      *
      * @return void
      *
      * @throws \RuntimeException
      */
-    private static function writeVersionClassToFile(
-        string $versionClassSource,
-        Config $composerConfig,
-        RootPackageInterface $rootPackage
-    ) {
-        $installPath = self::locateRootPackageInstallPath($composerConfig, $rootPackage)
+    private static function writeVersionClassToFile(string $versionClassSource, Composer $composer, IOInterface $io)
+    {
+        $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
             . '/src/PackageVersions/Versions.php';
+
+        if (! file_exists(dirname($installPath))) {
+            $io->write('<info>ocramius/package-versions:</info> Package not found (probably scheduled for removal); generation of version class skipped.');
+
+            return;
+        }
+
+        $io->write('<info>ocramius/package-versions:</info>  Generating version class...');
 
         file_put_contents($installPath, $versionClassSource);
         chmod($installPath, 0664);
+
+        $io->write('<info>ocramius/package-versions:</info> ...done generating version class');
     }
 
     /**
