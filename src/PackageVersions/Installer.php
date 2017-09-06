@@ -117,7 +117,7 @@ PHP;
 
         if (! file_exists(dirname($installPath))) {
             $io->write('<info>ocramius/package-versions:</info> Package not found (probably scheduled for removal); generation of version class skipped.');
-            
+
             return;
         }
 
