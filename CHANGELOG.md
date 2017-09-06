@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 1.1.3 - 2017-09-06
+
+This release fixes a bug that caused PackageVersions to prevent
+the `composer remove` and `composer update` commands to fail when
+this package is removed.
+
+In addition to that, mutation testing has been added to the suite,
+ensuring that the package is accurately and extensively tested.
+
+Total issues resolved: **3**
+
+- [40: Mutation testing, PHP 7.1 testing](https://github.com/Ocramius/PackageVersions/pull/40) thanks to @Ocramius
+- [41: Removing this package on install results in file access error](https://github.com/Ocramius/PackageVersions/issues/41) thanks to @Xerkus
+- [46: #41 Avoid issues when the package is scheduled for removal](https://github.com/Ocramius/PackageVersions/pull/46) thanks to @Jean85
+
 ## 1.1.2 - 2016-12-30
 
 This release fixes a bug that caused PackageVersions to be enabled
