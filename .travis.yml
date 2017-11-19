@@ -16,7 +16,7 @@ before_script:
   - sh .travis.install.sh
 
 script:
-  - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml
+  - ./vendor/bin/phpunit --disallow-test-output --coverage-clover ./clover.xml
   - ./vendor/bin/humbug
 
 after_script:

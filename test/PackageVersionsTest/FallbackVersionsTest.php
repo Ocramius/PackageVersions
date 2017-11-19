@@ -4,12 +4,12 @@ namespace PackageVersionsTest;
 
 use PackageVersions\FallbackVersions;
 use PackageVersions\Versions;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PackageVersions\FallbackVersions
  */
-final class FallbackVersionsTest extends PHPUnit_Framework_TestCase
+final class FallbackVersionsTest extends TestCase
 {
     public function testWillFailWithoutValidComposerLockLocation()
     {

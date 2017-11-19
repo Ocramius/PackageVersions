@@ -2,7 +2,7 @@
 
 namespace PackageVersionsTest;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -12,7 +12,7 @@ use ZipArchive;
 /**
  * @coversNothing
  */
-class E2EInstaller extends PHPUnit_Framework_TestCase
+class E2EInstaller extends TestCase
 {
     /**
      * @var string

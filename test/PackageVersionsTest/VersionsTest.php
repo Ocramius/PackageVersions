@@ -3,12 +3,12 @@
 namespace PackageVersionsTest;
 
 use PackageVersions\Versions;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PackageVersions\Versions
  */
-final class VersionsTest extends PHPUnit_Framework_TestCase
+final class VersionsTest extends TestCase
 {
     public function testValidVersions()
     {
