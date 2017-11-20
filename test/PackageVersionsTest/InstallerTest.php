@@ -15,12 +15,12 @@ use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use Composer\Script\Event;
 use PackageVersions\Installer;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PackageVersions\Installer
  */
-final class InstallerTest extends PHPUnit_Framework_TestCase
+final class InstallerTest extends TestCase
 {
     /**
      * @var Composer|\PHPUnit_Framework_MockObject_MockObject
@@ -707,7 +707,7 @@ PHP;
                 }
             )
         );
-        
+
         rmdir($directory);
     }
 
