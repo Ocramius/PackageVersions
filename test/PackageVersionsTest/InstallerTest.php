@@ -136,7 +136,7 @@ final class InstallerTest extends TestCase
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
 
         $package->expects(self::any())->method('getName')->willReturn('root/package');
-        $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
+        $package->expects(self::any())->method('getPrettyVersion')->willReturn('1.3.5');
         $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
 
         $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
@@ -245,7 +245,7 @@ PHP;
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
 
         $package->expects(self::any())->method('getName')->willReturn('root/package');
-        $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
+        $package->expects(self::any())->method('getPrettyVersion')->willReturn('1.3.5');
         $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
 
         $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
@@ -355,7 +355,7 @@ PHP;
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
 
         $package->expects(self::any())->method('getName')->willReturn('root/package');
-        $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
+        $package->expects(self::any())->method('getPrettyVersion')->willReturn('1.3.5');
         $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
 
         $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
