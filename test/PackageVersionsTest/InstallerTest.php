@@ -8,6 +8,7 @@ use Composer\EventDispatcher\EventDispatcher;
 use Composer\Installer\InstallationManager;
 use Composer\IO\IOInterface;
 use Composer\Package\Locker;
+use Composer\Package\Package;
 use Composer\Package\RootAliasPackage;
 use Composer\Package\RootPackage;
 use Composer\Package\RootPackageInterface;
@@ -45,7 +46,7 @@ final class InstallerTest extends TestCase
     /**
      * {@inheritDoc}
      *
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      */
     protected function setUp()
     {
@@ -83,7 +84,6 @@ final class InstallerTest extends TestCase
         $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->createMock(InstalledRepositoryInterface::class);
-        $package           = $this->createMock(RootPackageInterface::class);
 
         $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
 
@@ -132,12 +132,9 @@ final class InstallerTest extends TestCase
         $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
         $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
         $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
-        $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
+        $this->composer->expects(self::any())->method('getPackage')->willReturn($this->getRootPackageMock());
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
 
-        $package->expects(self::any())->method('getName')->willReturn('root/package');
-        $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
-        $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
 
         $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
 
@@ -201,7 +198,6 @@ PHP;
         $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->createMock(InstalledRepositoryInterface::class);
-        $package           = $this->createMock(RootPackageInterface::class);
 
         $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
 
@@ -241,12 +237,8 @@ PHP;
         $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
         $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
         $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
-        $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
+        $this->composer->expects(self::any())->method('getPackage')->willReturn($this->getRootPackageMock());
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
-
-        $package->expects(self::any())->method('getName')->willReturn('root/package');
-        $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
-        $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
 
         $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
 
@@ -314,7 +306,6 @@ PHP;
         $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->createMock(InstalledRepositoryInterface::class);
-        $package           = $this->createMock(RootPackageInterface::class);
 
         $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
 
@@ -351,12 +342,8 @@ PHP;
         $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
         $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
         $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
-        $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
+        $this->composer->expects(self::any())->method('getPackage')->willReturn($this->getRootPackageMock());
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
-
-        $package->expects(self::any())->method('getName')->willReturn('root/package');
-        $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
-        $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
 
         $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
 
@@ -723,5 +710,102 @@ PHP;
                 file_get_contents((new \ReflectionClass(Installer::class))->getFileName())
             )
         );
+    }
+
+    public function testGetVersionsIsNotNormalizedForRootPackage()
+    {
+        $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
+        $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
+        $repositoryManager = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
+        $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
+        $repository        = $this->createMock(InstalledRepositoryInterface::class);
+
+        $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
+
+        $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
+
+        /** @noinspection MkdirRaceConditionInspection */
+        mkdir($expectedPath, 0777, true);
+
+        $locker
+            ->expects(self::any())
+            ->method('getLockData')
+            ->willReturn([
+                'packages' => [
+                    [
+                        'name'    => 'ocramius/package-versions',
+                        'version' => '1.0.0',
+                    ],
+                ],
+            ]);
+
+        $repositoryManager->expects(self::any())->method('getLocalRepository')->willReturn($repository);
+
+        $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
+        $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
+        $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
+        $this->composer->expects(self::any())->method('getPackage')->willReturn($this->getRootPackageMock());
+        $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
+
+        $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
+
+        Installer::dumpVersionsClass(new Event(
+            'post-install-cmd',
+            $this->composer,
+            $this->io
+        ));
+
+        $expectedSource = <<<'PHP'
+<?php
+
+namespace PackageVersions;
+
+/**
+ * This class is generated by ocramius/package-versions, specifically by
+ * @see \PackageVersions\Installer
+ *
+ * This file is overwritten at every run of `composer install` or `composer update`.
+ */
+final class Versions
+{
+    const VERSIONS = array (
+  'ocramius/package-versions' => '1.0.0@',
+  'root/package' => '1.3.5@aaabbbcccddd',
+);
+
+    private function __construct()
+    {
+    }
+
+    /**
+     * @throws \OutOfBoundsException if a version cannot be located
+     */
+    public static function getVersion(string $packageName) : string
+    {
+        if (! isset(self::VERSIONS[$packageName])) {
+            throw new \OutOfBoundsException(
+                'Required package "' . $packageName . '" is not installed: cannot detect its version'
+            );
+        }
+
+        return self::VERSIONS[$packageName];
+    }
+}
+
+PHP;
+
+        self::assertSame($expectedSource, file_get_contents($expectedPath . '/Versions.php'));
+
+        $this->rmDir($vendorDir);
+    }
+
+    private function getRootPackageMock(): RootPackageInterface
+    {
+        $package = $this->createMock(RootPackageInterface::class);
+        $package->expects(self::any())->method('getName')->willReturn('root/package');
+        $package->expects(self::any())->method('getPrettyVersion')->willReturn('1.3.5');
+        $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
+
+        return $package;
     }
 }

@@ -177,6 +177,6 @@ PHP;
             );
         }
 
-        yield $rootPackage->getName() => $rootPackage->getVersion() . '@' . $rootPackage->getSourceReference();
+        yield $rootPackage->getName() => $rootPackage->getPrettyVersion() . '@' . $rootPackage->getSourceReference();
     }
 }
