@@ -8,7 +8,6 @@ use Composer\EventDispatcher\EventDispatcher;
 use Composer\Installer\InstallationManager;
 use Composer\IO\IOInterface;
 use Composer\Package\Locker;
-use Composer\Package\Package;
 use Composer\Package\RootAliasPackage;
 use Composer\Package\RootPackage;
 use Composer\Package\RootPackageInterface;
@@ -157,6 +156,7 @@ namespace PackageVersions;
  */
 final class Versions
 {
+    const ROOT_PACKAGE_NAME = 'root/package';
     const VERSIONS = array (
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
@@ -174,13 +174,13 @@ final class Versions
      */
     public static function getVersion(string $packageName) : string
     {
-        if (! isset(self::VERSIONS[$packageName])) {
-            throw new \OutOfBoundsException(
-                'Required package "' . $packageName . '" is not installed: cannot detect its version'
-            );
+        if (isset(self::VERSIONS[$packageName])) {
+            return self::VERSIONS[$packageName];
         }
 
-        return self::VERSIONS[$packageName];
+        throw new \OutOfBoundsException(
+            'Required package "' . $packageName . '" is not installed: cannot detect its version'
+        );
     }
 }
 
@@ -261,6 +261,7 @@ namespace PackageVersions;
  */
 final class Versions
 {
+    const ROOT_PACKAGE_NAME = 'root/package';
     const VERSIONS = array (
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
@@ -277,13 +278,13 @@ final class Versions
      */
     public static function getVersion(string $packageName) : string
     {
-        if (! isset(self::VERSIONS[$packageName])) {
-            throw new \OutOfBoundsException(
-                'Required package "' . $packageName . '" is not installed: cannot detect its version'
-            );
+        if (isset(self::VERSIONS[$packageName])) {
+            return self::VERSIONS[$packageName];
         }
 
-        return self::VERSIONS[$packageName];
+        throw new \OutOfBoundsException(
+            'Required package "' . $packageName . '" is not installed: cannot detect its version'
+        );
     }
 }
 
@@ -366,6 +367,7 @@ namespace PackageVersions;
  */
 final class Versions
 {
+    const ROOT_PACKAGE_NAME = 'root/package';
     const VERSIONS = array (
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
@@ -382,13 +384,13 @@ final class Versions
      */
     public static function getVersion(string $packageName) : string
     {
-        if (! isset(self::VERSIONS[$packageName])) {
-            throw new \OutOfBoundsException(
-                'Required package "' . $packageName . '" is not installed: cannot detect its version'
-            );
+        if (isset(self::VERSIONS[$packageName])) {
+            return self::VERSIONS[$packageName];
         }
 
-        return self::VERSIONS[$packageName];
+        throw new \OutOfBoundsException(
+            'Required package "' . $packageName . '" is not installed: cannot detect its version'
+        );
     }
 }
 
@@ -594,6 +596,8 @@ PHP;
                  ],
              ]);
 
+        $package->expects(self::any())->method('getName')->willReturn('root/package');
+
         $this->composer->expects(self::any())->method('getConfig')->willReturn($config);
         $this->composer->expects(self::any())->method('getLocker')->willReturn($locker);
         $this->composer->expects(self::any())->method('getPackage')->willReturn($package);
@@ -768,6 +772,7 @@ namespace PackageVersions;
  */
 final class Versions
 {
+    const ROOT_PACKAGE_NAME = 'root/package';
     const VERSIONS = array (
   'ocramius/package-versions' => '1.0.0@',
   'root/package' => '1.3.5@aaabbbcccddd',
@@ -782,13 +787,13 @@ final class Versions
      */
     public static function getVersion(string $packageName) : string
     {
-        if (! isset(self::VERSIONS[$packageName])) {
-            throw new \OutOfBoundsException(
-                'Required package "' . $packageName . '" is not installed: cannot detect its version'
-            );
+        if (isset(self::VERSIONS[$packageName])) {
+            return self::VERSIONS[$packageName];
         }
 
-        return self::VERSIONS[$packageName];
+        throw new \OutOfBoundsException(
+            'Required package "' . $packageName . '" is not installed: cannot detect its version'
+        );
     }
 }
 
