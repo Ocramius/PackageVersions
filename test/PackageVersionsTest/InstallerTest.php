@@ -162,7 +162,7 @@ final class Versions
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
   'tar/taz' => '7.8.9@ghi789',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
+  'some-replaced/package' => 'self.version@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
@@ -266,7 +266,7 @@ final class Versions
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
+  'some-replaced/package' => 'self.version@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
@@ -372,7 +372,7 @@ final class Versions
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
+  'some-replaced/package' => 'self.version@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
@@ -776,7 +776,7 @@ final class Versions
 {
     const VERSIONS = array (
   'ocramius/package-versions' => '1.0.0@',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
+  'some-replaced/package' => 'self.version@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
@@ -815,6 +815,7 @@ PHP;
 
         $link = $this->createMock(Link::class);
         $link->expects(self::any())->method('getTarget')->willReturn('some-replaced/package');
+        $link->expects(self::any())->method('getPrettyConstraint')->willReturn('self.version');
 
         $package->expects(self::any())->method('getReplaces')->willReturn([$link]);
 
