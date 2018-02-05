@@ -7,6 +7,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PackageVersions\Versions
+ *
+ * @uses \PackageVersions\FallbackVersions
  */
 final class VersionsTest extends TestCase
 {
