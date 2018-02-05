@@ -56,7 +56,7 @@ PHP;
     /**
      * {@inheritDoc}
      */
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io) : void
     {
         // Nothing to do here, as all features are provided through event listeners
     }
@@ -64,7 +64,7 @@ PHP;
     /**
      * {@inheritDoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents() : array
     {
         return [
             ScriptEvents::POST_INSTALL_CMD => 'dumpVersionsClass',
@@ -73,13 +73,9 @@ PHP;
     }
 
     /**
-     * @param Event $composerEvent
-     *
-     * @return void
-     *
      * @throws \RuntimeException
      */
-    public static function dumpVersionsClass(Event $composerEvent)
+    public static function dumpVersionsClass(Event $composerEvent) : void
     {
         $composer = $composerEvent->getComposer();
         $rootPackage = $composer->getPackage();
@@ -107,15 +103,9 @@ PHP;
     }
 
     /**
-     * @param string $versionClassSource
-     * @param Composer $composer
-     * @param IOInterface $io
-     *
-     * @return void
-     *
      * @throws \RuntimeException
      */
-    private static function writeVersionClassToFile(string $versionClassSource, Composer $composer, IOInterface $io)
+    private static function writeVersionClassToFile(string $versionClassSource, Composer $composer, IOInterface $io) : void
     {
         $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
             . '/src/PackageVersions/Versions.php';
@@ -135,11 +125,6 @@ PHP;
     }
 
     /**
-     * @param Config               $composerConfig
-     * @param RootPackageInterface $rootPackage
-     *
-     * @return string
-     *
      * @throws \RuntimeException
      */
     private static function locateRootPackageInstallPath(
@@ -165,9 +150,6 @@ PHP;
     }
 
     /**
-     * @param Locker               $locker
-     * @param RootPackageInterface $rootPackage
-     *
      * @return \Generator|\string[]
      */
     private static function getVersions(Locker $locker, RootPackageInterface $rootPackage) : \Generator

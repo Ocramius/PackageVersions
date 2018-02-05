@@ -3,7 +3,6 @@
 namespace PackageVersionsTest;
 
 use PackageVersions\FallbackVersions;
-use PackageVersions\Versions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -11,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class FallbackVersionsTest extends TestCase
 {
-    public function testWillFailWithoutValidComposerLockLocation()
+    public function testWillFailWithoutValidComposerLockLocation() : void
     {
         rename(__DIR__ . '/../../composer.lock', __DIR__ . '/../../composer.lock.backup');
 
@@ -36,7 +35,7 @@ final class FallbackVersionsTest extends TestCase
         }
     }
 
-    public function testValidVersions()
+    public function testValidVersions() : void
     {
         $lockData = json_decode(file_get_contents(__DIR__ . '/../../composer.lock'), true);
 
@@ -47,15 +46,15 @@ final class FallbackVersionsTest extends TestCase
         foreach ($packages as $package) {
             self::assertSame(
                 $package['version'] . '@' . $package['source']['reference'],
-                Versions::getVersion($package['name'])
+                FallbackVersions::getVersion($package['name'])
             );
         }
     }
 
-    public function testInvalidVersionsAreRejected()
+    public function testInvalidVersionsAreRejected() : void
     {
         $this->expectException(\OutOfBoundsException::class);
 
-        Versions::getVersion(uniqid('', true) . '/' . uniqid('', true));
+        FallbackVersions::getVersion(uniqid('', true) . '/' . uniqid('', true));
     }
 }

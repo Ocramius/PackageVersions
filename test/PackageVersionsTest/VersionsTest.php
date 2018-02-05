@@ -7,10 +7,12 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PackageVersions\Versions
+ *
+ * @uses \PackageVersions\FallbackVersions
  */
 final class VersionsTest extends TestCase
 {
-    public function testValidVersions()
+    public function testValidVersions() : void
     {
         $lockData = json_decode(file_get_contents(__DIR__ . '/../../composer.lock'), true);
 
@@ -26,7 +28,7 @@ final class VersionsTest extends TestCase
         }
     }
 
-    public function testInvalidVersionsAreRejected()
+    public function testInvalidVersionsAreRejected() : void
     {
         $this->expectException(\OutOfBoundsException::class);
 
