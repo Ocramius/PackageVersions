@@ -2,5 +2,4 @@
 src/PackageVersions/Versions.php
 composer.lock
 clover.xml
-humbuglog.txt
-humbuglog.json
+infection-log.txt
