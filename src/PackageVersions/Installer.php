@@ -165,7 +165,12 @@ PHP;
         }
 
         foreach ($rootPackage->getReplaces() as $replace) {
-            yield $replace->getTarget() => $replace->getPrettyConstraint() . '@' . $rootPackage->getSourceReference();
+            $version = $replace->getPrettyConstraint();
+            if ($version === 'self.version') {
+                $version = $rootPackage->getPrettyVersion();
+            }
+
+            yield $replace->getTarget() => $version . '@' . $rootPackage->getSourceReference();
         }
 
         yield $rootPackage->getName() => $rootPackage->getPrettyVersion() . '@' . $rootPackage->getSourceReference();
