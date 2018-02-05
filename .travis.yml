@@ -18,7 +18,7 @@ before_script:
 
 script:
   - ./vendor/bin/phpunit --disallow-test-output --coverage-clover ./clover.xml
-  - ./vendor/bin/humbug
+  - ./vendor/bin/infection
 
 after_script:
   - sh .travis.coverage.sh
