@@ -163,7 +163,7 @@ final class Versions
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
   'tar/taz' => '7.8.9@ghi789',
-  'some-replaced/package' => 'self.version@aaabbbcccddd',
+  'some-replaced/package' => '1.3.5@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
@@ -268,7 +268,7 @@ final class Versions
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
-  'some-replaced/package' => 'self.version@aaabbbcccddd',
+  'some-replaced/package' => '1.3.5@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
@@ -375,7 +375,7 @@ final class Versions
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@',
-  'some-replaced/package' => 'self.version@aaabbbcccddd',
+  'some-replaced/package' => '1.3.5@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
@@ -774,7 +774,7 @@ final class Versions
     const ROOT_PACKAGE_NAME = 'root/package';
     const VERSIONS = array (
   'ocramius/package-versions' => '1.0.0@',
-  'some-replaced/package' => 'self.version@aaabbbcccddd',
+  'some-replaced/package' => '1.3.5@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
