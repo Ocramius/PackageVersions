@@ -3,7 +3,6 @@
 namespace PackageVersionsTest;
 
 use PackageVersions\FallbackVersions;
-use PackageVersions\Versions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -47,7 +46,7 @@ final class FallbackVersionsTest extends TestCase
         foreach ($packages as $package) {
             self::assertSame(
                 $package['version'] . '@' . $package['source']['reference'],
-                Versions::getVersion($package['name'])
+                FallbackVersions::getVersion($package['name'])
             );
         }
     }
@@ -56,6 +55,6 @@ final class FallbackVersionsTest extends TestCase
     {
         $this->expectException(\OutOfBoundsException::class);
 
-        Versions::getVersion(uniqid('', true) . '/' . uniqid('', true));
+        FallbackVersions::getVersion(uniqid('', true) . '/' . uniqid('', true));
     }
 }
