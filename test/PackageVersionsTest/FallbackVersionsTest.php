@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class FallbackVersionsTest extends TestCase
 {
-    public function testWillFailWithoutValidComposerLockLocation()
+    public function testWillFailWithoutValidComposerLockLocation() : void
     {
         rename(__DIR__ . '/../../composer.lock', __DIR__ . '/../../composer.lock.backup');
 
@@ -35,7 +35,7 @@ final class FallbackVersionsTest extends TestCase
         }
     }
 
-    public function testValidVersions()
+    public function testValidVersions() : void
     {
         $lockData = json_decode(file_get_contents(__DIR__ . '/../../composer.lock'), true);
 
@@ -51,7 +51,7 @@ final class FallbackVersionsTest extends TestCase
         }
     }
 
-    public function testInvalidVersionsAreRejected()
+    public function testInvalidVersionsAreRejected() : void
     {
         $this->expectException(\OutOfBoundsException::class);
 
