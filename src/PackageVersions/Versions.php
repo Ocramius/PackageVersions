@@ -12,6 +12,7 @@ namespace PackageVersions;
  */
 final class Versions
 {
+    const ROOT_PACKAGE_NAME = FallbackVersions::ROOT_PACKAGE_NAME;
     const VERSIONS = [];
 
     private function __construct()

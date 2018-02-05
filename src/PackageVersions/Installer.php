@@ -29,6 +29,7 @@ namespace PackageVersions;
  */
 %s
 {
+    const ROOT_PACKAGE_NAME = '%s';
     const VERSIONS = %s;
 
     private function __construct()
@@ -40,13 +41,13 @@ namespace PackageVersions;
      */
     public static function getVersion(string $packageName) : string
     {
-        if (! isset(self::VERSIONS[$packageName])) {
-            throw new \OutOfBoundsException(
-                'Required package "' . $packageName . '" is not installed: cannot detect its version'
-            );
+        if (isset(self::VERSIONS[$packageName])) {
+            return self::VERSIONS[$packageName];
         }
 
-        return self::VERSIONS[$packageName];
+        throw new \OutOfBoundsException(
+            'Required package "' . $packageName . '" is not installed: cannot detect its version'
+        );
     }
 }
 
@@ -81,7 +82,8 @@ PHP;
     public static function dumpVersionsClass(Event $composerEvent)
     {
         $composer = $composerEvent->getComposer();
-        $versions = iterator_to_array(self::getVersions($composer->getLocker(), $composer->getPackage()));
+        $rootPackage = $composer->getPackage();
+        $versions = iterator_to_array(self::getVersions($composer->getLocker(), $rootPackage));
 
         if (!array_key_exists('ocramius/package-versions', $versions)) {
             //plugin must be globally installed - we only want to generate versions for projects which specifically
@@ -89,14 +91,17 @@ PHP;
             return;
         }
 
-        self::writeVersionClassToFile(self::generateVersionsClass($versions), $composer, $composerEvent->getIO());
+        $versionClass = self::generateVersionsClass($rootPackage->getName(), $versions);
+
+        self::writeVersionClassToFile($versionClass, $composer, $composerEvent->getIO());
     }
 
-    private static function generateVersionsClass(array $versions) : string
+    private static function generateVersionsClass(string $rootPackageName, array $versions) : string
     {
         return sprintf(
             self::$generatedClassTemplate,
             'fin' . 'al ' . 'cla' . 'ss ' . 'Versions', // note: workaround for regex-based code parsers :-(
+            $rootPackageName,
             var_export($versions, true)
         );
     }
