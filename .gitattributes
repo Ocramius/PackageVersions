@@ -3,7 +3,6 @@
 .gitignore export-ignore
 .scrutinizer.yml export-ignore
 .travis.coverage.sh export-ignore
-.travis.install.sh export-ignore
 .travis.yml export-ignore
 phpunit.xml.dist export-ignore
-humbug.json.dist
+infection.json.dist
