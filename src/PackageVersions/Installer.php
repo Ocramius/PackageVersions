@@ -177,6 +177,10 @@ PHP;
             );
         }
 
+        foreach ($rootPackage->getReplaces() as $replace) {
+            yield $replace->getTarget() => $replace->getPrettyConstraint() . '@' . $rootPackage->getSourceReference();
+        }
+
         yield $rootPackage->getName() => $rootPackage->getPrettyVersion() . '@' . $rootPackage->getSourceReference();
     }
 }

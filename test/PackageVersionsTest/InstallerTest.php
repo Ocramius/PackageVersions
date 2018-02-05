@@ -7,8 +7,8 @@ use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\Installer\InstallationManager;
 use Composer\IO\IOInterface;
+use Composer\Package\Link;
 use Composer\Package\Locker;
-use Composer\Package\Package;
 use Composer\Package\RootAliasPackage;
 use Composer\Package\RootPackage;
 use Composer\Package\RootPackageInterface;
@@ -162,6 +162,7 @@ final class Versions
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
   'tar/taz' => '7.8.9@ghi789',
+  'some-replaced/package' => 'self.version@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
@@ -265,6 +266,7 @@ final class Versions
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
+  'some-replaced/package' => 'self.version@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
@@ -370,6 +372,7 @@ final class Versions
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@',
+  'some-replaced/package' => 'self.version@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
@@ -556,6 +559,7 @@ PHP;
         $package->expects(self::any())->method('getName')->willReturn('root/package');
         $package->expects(self::any())->method('getVersion')->willReturn('1.3.5');
         $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
+        $package->expects(self::any())->method('getReplaces')->willReturn([]);
 
         $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
 
@@ -579,6 +583,7 @@ PHP;
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
         $package           = $this->createMock(RootPackageInterface::class);
+        $package->expects(self::any())->method('getReplaces')->willReturn([]);
         $vendorDir         = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
         $expectedPath      = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
 
@@ -622,6 +627,7 @@ PHP;
         $installManager    = $this->getMockBuilder(InstallationManager::class)->disableOriginalConstructor()->getMock();
         $repository        = $this->createMock(InstalledRepositoryInterface::class);
         $package           = $this->createMock(RootPackageInterface::class);
+        $package->expects(self::any())->method('getReplaces')->willReturn([]);
 
         $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
 
@@ -770,6 +776,7 @@ final class Versions
 {
     const VERSIONS = array (
   'ocramius/package-versions' => '1.0.0@',
+  'some-replaced/package' => 'self.version@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
 );
 
@@ -805,6 +812,12 @@ PHP;
         $package->expects(self::any())->method('getName')->willReturn('root/package');
         $package->expects(self::any())->method('getPrettyVersion')->willReturn('1.3.5');
         $package->expects(self::any())->method('getSourceReference')->willReturn('aaabbbcccddd');
+
+        $link = $this->createMock(Link::class);
+        $link->expects(self::any())->method('getTarget')->willReturn('some-replaced/package');
+        $link->expects(self::any())->method('getPrettyConstraint')->willReturn('self.version');
+
+        $package->expects(self::any())->method('getReplaces')->willReturn([$link]);
 
         return $package;
     }
