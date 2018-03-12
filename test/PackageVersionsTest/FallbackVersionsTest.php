@@ -26,8 +26,7 @@ final class FallbackVersionsTest extends TestCase
                 . 'This is assumed to be in '
                 . json_encode([$srcDir . '/../../../../../composer.lock', $srcDir . '/../../composer.lock'])
                 . '. If you customized your composer vendor directory and ran composer installation with --no-scripts, '
-                . 'then you are on your own, and we can\'t really help you. '
-                . 'Fix your shit and cut the tooling some slack.',
+                . 'then you are on your own, and we can\'t really help you.',
                 $lockFileNotFound->getMessage()
             );
         } finally {
