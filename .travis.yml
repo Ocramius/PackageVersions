@@ -20,6 +20,7 @@ before_script:
 script:
   - ./vendor/bin/phpunit --disallow-test-output --coverage-clover ./clover.xml
   - if [[ $TRAVIS_PHP_VERSION = '7.1' && $DEPENDENCIES = '' ]]; then ./vendor/bin/infection; fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.1' && $DEPENDENCIES = '' ]]; then ./vendor/bin/phpcs; fi
 
 after_script:
   - sh .travis.coverage.sh

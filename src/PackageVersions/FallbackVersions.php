@@ -1,6 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PackageVersions;
+
+use Generator;
+use OutOfBoundsException;
+use UnexpectedValueException;
+use function array_key_exists;
+use function array_merge;
+use function file_exists;
+use function file_get_contents;
+use function iterator_to_array;
+use function json_decode;
+use function json_encode;
+use function sprintf;
 
 /**
  * @internal
@@ -12,26 +26,22 @@ namespace PackageVersions;
  */
 final class FallbackVersions
 {
-    const ROOT_PACKAGE_NAME = 'unknown/root-package@UNKNOWN';
+    public const ROOT_PACKAGE_NAME = 'unknown/root-package@UNKNOWN';
 
     private function __construct()
     {
     }
 
     /**
-     * @param string $packageName
-     *
-     * @return string
-     *
-     * @throws \OutOfBoundsException if a version cannot be located
-     * @throws \UnexpectedValueException if the composer.lock file could not be located
+     * @throws OutOfBoundsException If a version cannot be located.
+     * @throws UnexpectedValueException If the composer.lock file could not be located.
      */
     public static function getVersion(string $packageName) : string
     {
         $versions = iterator_to_array(self::getVersions(self::getComposerLockPath()));
 
         if (! array_key_exists($packageName, $versions)) {
-            throw new \OutOfBoundsException(
+            throw new OutOfBoundsException(
                 'Required package "' . $packageName . '" is not installed: cannot detect its version'
             );
         }
@@ -40,9 +50,7 @@ final class FallbackVersions
     }
 
     /**
-     * @return string
-     *
-     * @throws \UnexpectedValueException
+     * @throws UnexpectedValueException
      */
     private static function getComposerLockPath() : string
     {
@@ -55,7 +63,7 @@ final class FallbackVersions
             }
         }
 
-        throw new \UnexpectedValueException(sprintf(
+        throw new UnexpectedValueException(sprintf(
             'PackageVersions could not locate your `composer.lock` location. This is assumed to be in %s. '
             . 'If you customized your composer vendor directory and ran composer installation with --no-scripts, '
             . 'then you are on your own, and we can\'t really help you. Fix your shit and cut the tooling some slack.',
@@ -63,7 +71,7 @@ final class FallbackVersions
         ));
     }
 
-    private static function getVersions(string $composerLockFile) : \Generator
+    private static function getVersions(string $composerLockFile) : Generator
     {
         $lockData = json_decode(file_get_contents($composerLockFile), true);
 
