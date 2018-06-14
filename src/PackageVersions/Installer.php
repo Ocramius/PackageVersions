@@ -118,6 +118,11 @@ PHP;
 
         $io->write('<info>ocramius/package-versions:</info>  Generating version class...');
 
+        // Delete the file prior writing the new file to ensure proper user/group setting of the file
+        if(file_exists($installPath)) {
+            unlink($installPath);
+        }
+        
         file_put_contents($installPath, $versionClassSource);
         chmod($installPath, 0664);
 
