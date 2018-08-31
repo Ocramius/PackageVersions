@@ -118,8 +118,9 @@ PHP;
 
         $io->write('<info>ocramius/package-versions:</info>  Generating version class...');
 
-        file_put_contents($installPath, $versionClassSource);
-        chmod($installPath, 0664);
+        file_put_contents($installPath.'_', $versionClassSource);
+        chmod($installPath.'_', 0664);
+        rename($installPath.'_', $installPath);
 
         $io->write('<info>ocramius/package-versions:</info> ...done generating version class');
     }
