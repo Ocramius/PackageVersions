@@ -58,7 +58,7 @@ final class FallbackVersions
         throw new \UnexpectedValueException(sprintf(
             'PackageVersions could not locate your `composer.lock` location. This is assumed to be in %s. '
             . 'If you customized your composer vendor directory and ran composer installation with --no-scripts, '
-            . 'then you are on your own, and we can\'t really help you. Fix your shit and cut the tooling some slack.',
+            . 'then you are on your own, and we can\'t really help you.',
             json_encode($checkedPaths)
         ));
     }
