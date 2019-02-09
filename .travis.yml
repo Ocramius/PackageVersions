@@ -5,7 +5,8 @@ sudo: false
 php:
   - 7.1
   - 7.2
-  - nightly
+  - 7.3
+  - 7.4snapshot
 
 env:
   - DEPENDENCIES=""
