@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PackageVersionsTest;
 
 use Composer\Composer;
@@ -16,37 +18,51 @@ use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use Composer\Script\Event;
 use PackageVersions\Installer;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
+use ReflectionClass;
+use RuntimeException;
+use const PHP_OS;
+use function array_filter;
+use function array_map;
+use function file_get_contents;
+use function fileperms;
+use function in_array;
+use function is_dir;
+use function mkdir;
+use function preg_match_all;
+use function realpath;
+use function rmdir;
+use function scandir;
+use function sprintf;
+use function strpos;
+use function substr;
+use function sys_get_temp_dir;
+use function uniqid;
+use function unlink;
 
 /**
  * @covers \PackageVersions\Installer
  */
 final class InstallerTest extends TestCase
 {
-    /**
-     * @var Composer|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var Composer|PHPUnit_Framework_MockObject_MockObject */
     private $composer;
 
-    /**
-     * @var EventDispatcher|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var EventDispatcher|PHPUnit_Framework_MockObject_MockObject */
     private $eventDispatcher;
 
-    /**
-     * @var IOInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var IOInterface|PHPUnit_Framework_MockObject_MockObject */
     private $io;
 
-    /**
-     * @var Installer
-     */
+    /** @var Installer */
     private $installer;
 
     /**
      * {@inheritDoc}
      *
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     protected function setUp() : void
     {
@@ -104,26 +120,20 @@ final class InstallerTest extends TestCase
                     [
                         'name'    => 'foo/bar',
                         'version' => '1.2.3',
-                        'source'  => [
-                            'reference' => 'abc123',
-                        ],
+                        'source'  => ['reference' => 'abc123'],
                     ],
                     [
                         'name'    => 'baz/tab',
                         'version' => '4.5.6',
-                        'source'  => [
-                            'reference' => 'def456',
-                        ],
+                        'source'  => ['reference' => 'def456'],
                     ],
                 ],
                 'packages-dev' => [
                     [
                         'name'    => 'tar/taz',
                         'version' => '7.8.9',
-                        'source'  => [
-                            'reference' => 'ghi789',
-                        ],
-                    ]
+                        'source'  => ['reference' => 'ghi789'],
+                    ],
                 ],
             ]);
 
@@ -134,7 +144,6 @@ final class InstallerTest extends TestCase
         $this->composer->expects(self::any())->method('getRepositoryManager')->willReturn($repositoryManager);
         $this->composer->expects(self::any())->method('getPackage')->willReturn($this->getRootPackageMock());
         $this->composer->expects(self::any())->method('getInstallationManager')->willReturn($installManager);
-
 
         $config->expects(self::any())->method('get')->with('vendor-dir')->willReturn($vendorDir);
 
@@ -147,6 +156,8 @@ final class InstallerTest extends TestCase
         $expectedSource = <<<'PHP'
 <?php
 
+declare(strict_types=1);
+
 namespace PackageVersions;
 
 /**
@@ -157,8 +168,8 @@ namespace PackageVersions;
  */
 final class Versions
 {
-    const ROOT_PACKAGE_NAME = 'root/package';
-    const VERSIONS = array (
+    public const ROOT_PACKAGE_NAME = 'root/package';
+    public const VERSIONS          = array (
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
@@ -172,7 +183,7 @@ final class Versions
     }
 
     /**
-     * @throws \OutOfBoundsException if a version cannot be located
+     * @throws \OutOfBoundsException If a version cannot be located.
      */
     public static function getVersion(string $packageName) : string
     {
@@ -220,16 +231,12 @@ PHP;
                     [
                         'name'    => 'foo/bar',
                         'version' => '1.2.3',
-                        'source'  => [
-                            'reference' => 'abc123',
-                        ],
+                        'source'  => ['reference' => 'abc123'],
                     ],
                     [
                         'name'    => 'baz/tab',
                         'version' => '4.5.6',
-                        'source'  => [
-                            'reference' => 'def456',
-                        ],
+                        'source'  => ['reference' => 'def456'],
                     ],
                 ],
             ]);
@@ -253,6 +260,8 @@ PHP;
         $expectedSource = <<<'PHP'
 <?php
 
+declare(strict_types=1);
+
 namespace PackageVersions;
 
 /**
@@ -263,8 +272,8 @@ namespace PackageVersions;
  */
 final class Versions
 {
-    const ROOT_PACKAGE_NAME = 'root/package';
-    const VERSIONS = array (
+    public const ROOT_PACKAGE_NAME = 'root/package';
+    public const VERSIONS          = array (
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@def456',
@@ -277,7 +286,7 @@ final class Versions
     }
 
     /**
-     * @throws \OutOfBoundsException if a version cannot be located
+     * @throws \OutOfBoundsException If a version cannot be located.
      */
     public static function getVersion(string $packageName) : string
     {
@@ -299,9 +308,9 @@ PHP;
     }
 
     /**
-     * @group #12
+     * @throws RuntimeException
      *
-     * @throws \RuntimeException
+     * @group #12
      */
     public function testDumpVersionsWithoutPackageSourceDetails() : void
     {
@@ -330,9 +339,7 @@ PHP;
                     [
                         'name'    => 'foo/bar',
                         'version' => '1.2.3',
-                        'dist'  => [
-                            'reference' => 'abc123', // version defined in the dist, this time
-                        ],
+                        'dist'  => ['reference' => 'abc123'], // version defined in the dist, this time
                     ],
                     [
                         'name'    => 'baz/tab',
@@ -360,6 +367,8 @@ PHP;
         $expectedSource = <<<'PHP'
 <?php
 
+declare(strict_types=1);
+
 namespace PackageVersions;
 
 /**
@@ -370,8 +379,8 @@ namespace PackageVersions;
  */
 final class Versions
 {
-    const ROOT_PACKAGE_NAME = 'root/package';
-    const VERSIONS = array (
+    public const ROOT_PACKAGE_NAME = 'root/package';
+    public const VERSIONS          = array (
   'ocramius/package-versions' => '1.0.0@',
   'foo/bar' => '1.2.3@abc123',
   'baz/tab' => '4.5.6@',
@@ -384,7 +393,7 @@ final class Versions
     }
 
     /**
-     * @throws \OutOfBoundsException if a version cannot be located
+     * @throws \OutOfBoundsException If a version cannot be located.
      */
     public static function getVersion(string $packageName) : string
     {
@@ -406,9 +415,9 @@ PHP;
     }
 
     /**
-     * @dataProvider rootPackageProvider
+     * @throws RuntimeException
      *
-     * @throws \RuntimeException
+     * @dataProvider rootPackageProvider
      */
     public function testDumpsVersionsClassToSpecificLocation(RootPackageInterface $rootPackage, bool $inVendor) : void
     {
@@ -424,7 +433,7 @@ PHP;
         mkdir($vendorDir, 0777, true);
 
         /** @noinspection RealpathInSteamContextInspection */
-        $expectedPath      = $inVendor
+        $expectedPath = $inVendor
             ? $vendorDir . '/ocramius/package-versions/src/PackageVersions'
             : realpath($vendorDir . '/..') . '/src/PackageVersions';
 
@@ -439,7 +448,7 @@ PHP;
                     [
                         'name'    => 'ocramius/package-versions',
                         'version' => '1.0.0',
-                    ]
+                    ],
                 ],
                 'packages-dev' => [],
             ]);
@@ -488,27 +497,27 @@ PHP;
         return [
             'root package is not ocramius/package-versions' => [
                 $baseRootPackage,
-                true
+                true,
             ],
             'alias root package is not ocramius/package-versions' => [
                 $aliasRootPackage,
-                true
+                true,
             ],
             'indirect alias root package is not ocramius/package-versions' => [
                 $indirectAliasRootPackage,
-                true
+                true,
             ],
             'root package is ocramius/package-versions' => [
                 $packageVersionsRootPackage,
-                false
+                false,
             ],
             'alias root package is ocramius/package-versions' => [
                 $aliasPackageVersionsRootPackage,
-                false
+                false,
             ],
             'indirect alias root package is ocramius/package-versions' => [
                 $indirectAliasPackageVersionsRootPackage,
-                false
+                false,
             ],
         ];
     }
@@ -533,20 +542,18 @@ PHP;
             ->expects(self::any())
             ->method('getLockData')
             ->willReturn([
-                 'packages' => [
-                     [
-                         'name'    => 'foo/bar',
-                         'version' => '1.2.3',
-                         'dist'  => [
-                             'reference' => 'abc123', // version defined in the dist, this time
-                         ],
-                     ],
-                     [
-                         'name'    => 'baz/tab',
-                         'version' => '4.5.6', // source missing
-                     ],
-                 ],
-             ]);
+                'packages' => [
+                    [
+                        'name'    => 'foo/bar',
+                        'version' => '1.2.3',
+                        'dist'  => ['reference' => 'abc123'], // version defined in the dist, this time
+                    ],
+                    [
+                        'name'    => 'baz/tab',
+                        'version' => '4.5.6', // source missing
+                    ],
+                ],
+            ]);
 
         $repositoryManager->expects(self::any())->method('getLocalRepository')->willReturn($repository);
 
@@ -580,24 +587,24 @@ PHP;
      */
     public function testVersionsAreNotDumpedIfPackageIsScheduledForRemoval() : void
     {
-        $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
-        $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
-        $package           = $this->createMock(RootPackageInterface::class);
+        $config  = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
+        $locker  = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
+        $package = $this->createMock(RootPackageInterface::class);
         $package->expects(self::any())->method('getReplaces')->willReturn([]);
-        $vendorDir         = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
-        $expectedPath      = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
+        $vendorDir    = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
+        $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
 
         $locker
             ->expects(self::any())
             ->method('getLockData')
             ->willReturn([
-                 'packages' => [
-                     [
-                         'name'    => 'ocramius/package-versions',
-                         'version' => '1.0.0',
-                     ]
-                 ],
-             ]);
+                'packages' => [
+                    [
+                        'name'    => 'ocramius/package-versions',
+                        'version' => '1.0.0',
+                    ],
+                ],
+            ]);
 
         $package->expects(self::any())->method('getName')->willReturn('root/package');
 
@@ -619,7 +626,7 @@ PHP;
 
     public function testGeneratedVersionFileAccessRights() : void
     {
-        if (0 === strpos(\PHP_OS, 'WIN')) {
+        if (strpos(PHP_OS, 'WIN') === 0) {
             $this->markTestSkipped('Windows is kinda "meh" at file access levels');
         }
 
@@ -687,12 +694,12 @@ PHP;
         }
 
         array_map(
-            function ($item) use ($directory) {
+            function ($item) use ($directory) : void {
                 $this->rmDir($directory . '/' . $item);
             },
             array_filter(
                 scandir($directory),
-                function (string $dirItem) {
+                static function (string $dirItem) {
                     return ! in_array($dirItem, ['.', '..'], true);
                 }
             )
@@ -710,7 +717,7 @@ PHP;
             1,
             preg_match_all(
                 '{^((?:final\s+)?(?:\s*))class\s+(\S+)}mi',
-                file_get_contents((new \ReflectionClass(Installer::class))->getFileName())
+                file_get_contents((new ReflectionClass(Installer::class))->getFileName())
             )
         );
     }
@@ -761,6 +768,8 @@ PHP;
         $expectedSource = <<<'PHP'
 <?php
 
+declare(strict_types=1);
+
 namespace PackageVersions;
 
 /**
@@ -771,8 +780,8 @@ namespace PackageVersions;
  */
 final class Versions
 {
-    const ROOT_PACKAGE_NAME = 'root/package';
-    const VERSIONS = array (
+    public const ROOT_PACKAGE_NAME = 'root/package';
+    public const VERSIONS          = array (
   'ocramius/package-versions' => '1.0.0@',
   'some-replaced/package' => '1.3.5@aaabbbcccddd',
   'root/package' => '1.3.5@aaabbbcccddd',
@@ -783,7 +792,7 @@ final class Versions
     }
 
     /**
-     * @throws \OutOfBoundsException if a version cannot be located
+     * @throws \OutOfBoundsException If a version cannot be located.
      */
     public static function getVersion(string $packageName) : string
     {

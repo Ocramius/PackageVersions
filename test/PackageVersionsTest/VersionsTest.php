@@ -1,14 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PackageVersionsTest;
 
+use OutOfBoundsException;
 use PackageVersions\Versions;
 use PHPUnit\Framework\TestCase;
+use function array_merge;
+use function file_get_contents;
+use function json_decode;
+use function uniqid;
 
 /**
- * @covers \PackageVersions\Versions
- *
  * @uses \PackageVersions\FallbackVersions
+ *
+ * @covers \PackageVersions\Versions
  */
 final class VersionsTest extends TestCase
 {
@@ -30,7 +37,7 @@ final class VersionsTest extends TestCase
 
     public function testInvalidVersionsAreRejected() : void
     {
-        $this->expectException(\OutOfBoundsException::class);
+        $this->expectException(OutOfBoundsException::class);
 
         Versions::getVersion(uniqid('', true) . '/' . uniqid('', true));
     }

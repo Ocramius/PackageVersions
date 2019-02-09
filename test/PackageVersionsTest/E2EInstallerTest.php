@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PackageVersionsTest;
 
 use PHPUnit\Framework\TestCase;
@@ -8,32 +10,51 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 use ZipArchive;
+use const JSON_PRETTY_PRINT;
+use const JSON_UNESCAPED_SLASHES;
+use function array_filter;
+use function array_map;
+use function array_walk;
+use function chdir;
+use function exec;
+use function file_get_contents;
+use function file_put_contents;
+use function getcwd;
+use function in_array;
+use function is_dir;
+use function iterator_to_array;
+use function json_decode;
+use function json_encode;
+use function mkdir;
+use function putenv;
+use function realpath;
+use function rmdir;
+use function scandir;
+use function strlen;
+use function substr;
+use function sys_get_temp_dir;
+use function uniqid;
+use function unlink;
 
 /**
  * @coversNothing
  */
-class E2EInstaller extends TestCase
+class E2EInstallerTest extends TestCase
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $tempGlobalComposerHome;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $tempLocalComposerHome;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $tempArtifact;
 
     public function setUp() : void
     {
         $this->tempGlobalComposerHome = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/global';
-        $this->tempLocalComposerHome = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/local';
-        $this->tempArtifact = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/artifacts';
+        $this->tempLocalComposerHome  = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/local';
+        $this->tempArtifact           = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/artifacts';
         mkdir($this->tempGlobalComposerHome, 0700, true);
         mkdir($this->tempLocalComposerHome, 0700, true);
         mkdir($this->tempArtifact, 0700, true);
@@ -57,18 +78,14 @@ class E2EInstaller extends TestCase
         $this->writeComposerJsonFile(
             [
                 'name'         => 'package-versions/e2e-global',
-                'require'      => [
-                    'ocramius/package-versions' => '1.0.0'
-                ],
+                'require'      => ['ocramius/package-versions' => '1.0.0'],
                 'repositories' => [
-                    [
-                        'packagist' => false,
-                    ],
+                    ['packagist' => false],
                     [
                         'type' => 'artifact',
                         'url' => $this->tempArtifact,
-                    ]
-                ]
+                    ],
+                ],
             ],
             $this->tempGlobalComposerHome
         );
@@ -79,18 +96,14 @@ class E2EInstaller extends TestCase
         $this->writeComposerJsonFile(
             [
                 'name'         => 'package-versions/e2e-local',
-                'require'      => [
-                    'test/package' => '2.0.0'
-                ],
+                'require'      => ['test/package' => '2.0.0'],
                 'repositories' => [
-                    [
-                        'packagist' => false,
-                    ],
+                    ['packagist' => false],
                     [
                         'type' => 'artifact',
                         'url' => $this->tempArtifact,
-                    ]
-                ]
+                    ],
+                ],
             ],
             $this->tempLocalComposerHome
         );
@@ -111,17 +124,15 @@ class E2EInstaller extends TestCase
                 'name'         => 'package-versions/e2e-local',
                 'require'      => [
                     'test/package' => '2.0.0',
-                    'ocramius/package-versions' => '1.0.0'
+                    'ocramius/package-versions' => '1.0.0',
                 ],
                 'repositories' => [
-                    [
-                        'packagist' => false,
-                    ],
+                    ['packagist' => false],
                     [
                         'type' => 'artifact',
                         'url' => $this->tempArtifact,
-                    ]
-                ]
+                    ],
+                ],
             ],
             $this->tempLocalComposerHome
         );
@@ -150,18 +161,14 @@ class E2EInstaller extends TestCase
         $this->writeComposerJsonFile(
             [
                 'name'         => 'package-versions/e2e-local',
-                'require-dev'      => [
-                    'ocramius/package-versions' => '1.0.0'
-                ],
+                'require-dev'      => ['ocramius/package-versions' => '1.0.0'],
                 'repositories' => [
-                    [
-                        'packagist' => false,
-                    ],
+                    ['packagist' => false],
                     [
                         'type' => 'artifact',
                         'url' => $this->tempArtifact,
-                    ]
-                ]
+                    ],
+                ],
             ],
             $this->tempLocalComposerHome
         );
@@ -188,22 +195,22 @@ class E2EInstaller extends TestCase
             iterator_to_array(new RecursiveIteratorIterator(
                 new RecursiveCallbackFilterIterator(
                     new RecursiveDirectoryIterator(realpath(__DIR__ . '/../../'), RecursiveDirectoryIterator::SKIP_DOTS),
-                    function (SplFileInfo $file, $key, RecursiveDirectoryIterator $iterator) {
+                    static function (SplFileInfo $file, $key, RecursiveDirectoryIterator $iterator) {
                         return $iterator->getSubPathname()[0]  !== '.' && $iterator->getSubPathname() !== 'vendor';
                     }
                 ),
                 RecursiveIteratorIterator::LEAVES_ONLY
             )),
-            function (SplFileInfo $file) {
-                return !$file->isDir();
+            static function (SplFileInfo $file) {
+                return ! $file->isDir();
             }
         );
 
         array_walk(
             $files,
-            function (SplFileInfo $file) use ($zip) {
+            static function (SplFileInfo $file) use ($zip) {
                 if ($file->getFilename() === 'composer.json') {
-                    $contents = json_decode(file_get_contents($file->getRealPath()), true);
+                    $contents            = json_decode(file_get_contents($file->getRealPath()), true);
                     $contents['version'] = '1.0.0';
 
                     return $zip->addFromString('composer.json', json_encode($contents));
@@ -229,7 +236,7 @@ class E2EInstaller extends TestCase
             json_encode(
                 [
                     'name'    => 'test/package',
-                    'version' => '2.0.0'
+                    'version' => '2.0.0',
                 ],
                 JSON_PRETTY_PRINT
             )
@@ -237,6 +244,9 @@ class E2EInstaller extends TestCase
         $zip->close();
     }
 
+    /**
+     * @param mixed[] $config
+     */
     private function writeComposerJsonFile(array $config, string $directory) : void
     {
         file_put_contents(
@@ -245,6 +255,9 @@ class E2EInstaller extends TestCase
         );
     }
 
+    /**
+     * @return mixed[]
+     */
     private function execComposerInDir(string $command, string $dir) : array
     {
         $currentDir = getcwd();
@@ -264,12 +277,12 @@ class E2EInstaller extends TestCase
         }
 
         array_map(
-            function ($item) use ($directory) {
+            function ($item) use ($directory) : void {
                 $this->rmDir($directory . '/' . $item);
             },
             array_filter(
                 scandir($directory),
-                function (string $dirItem) {
+                static function (string $dirItem) {
                     return ! in_array($dirItem, ['.', '..'], true);
                 }
             )

@@ -1,9 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PackageVersionsTest;
 
+use OutOfBoundsException;
 use PackageVersions\FallbackVersions;
 use PHPUnit\Framework\TestCase;
+use UnexpectedValueException;
+use function array_merge;
+use function file_get_contents;
+use function json_decode;
+use function json_encode;
+use function realpath;
+use function rename;
+use function uniqid;
 
 /**
  * @covers \PackageVersions\FallbackVersions
@@ -18,7 +29,7 @@ final class FallbackVersionsTest extends TestCase
             FallbackVersions::getVersion('phpunit/phpunit');
 
             self::fail('An exception was supposed to be thrown');
-        } catch (\UnexpectedValueException $lockFileNotFound) {
+        } catch (UnexpectedValueException $lockFileNotFound) {
             $srcDir = realpath(__DIR__ . '/../../src/PackageVersions');
 
             self::assertSame(
@@ -53,7 +64,7 @@ final class FallbackVersionsTest extends TestCase
 
     public function testInvalidVersionsAreRejected() : void
     {
-        $this->expectException(\OutOfBoundsException::class);
+        $this->expectException(OutOfBoundsException::class);
 
         FallbackVersions::getVersion(uniqid('', true) . '/' . uniqid('', true));
     }

@@ -1,5 +1,6 @@
 /vendor/
-src/PackageVersions/Versions.php
-composer.lock
-clover.xml
-infection-log.txt
+/src/PackageVersions/Versions.php
+/clover.xml
+/infection-log.txt
+/phpcs.xml
+/.phpcs-cache
