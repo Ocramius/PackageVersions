@@ -137,8 +137,10 @@ PHP;
 
         $io->write('<info>ocramius/package-versions:</info>  Generating version class...');
 
-        file_put_contents($installPath, $versionClassSource);
-        chmod($installPath, 0664);
+        $installPathTmp = $installPath . '_' . microtime();
+        file_put_contents($installPathTmp, $versionClassSource);
+        chmod($installPathTmp, 0664);
+        rename($installPathTmp, $installPath);
 
         $io->write('<info>ocramius/package-versions:</info> ...done generating version class');
     }
