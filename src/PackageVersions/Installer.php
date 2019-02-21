@@ -24,7 +24,9 @@ use function dirname;
 use function file_exists;
 use function file_put_contents;
 use function iterator_to_array;
+use function rename;
 use function sprintf;
+use function uniqid;
 use function var_export;
 
 final class Installer implements PluginInterface, EventSubscriberInterface
@@ -137,7 +139,7 @@ PHP;
 
         $io->write('<info>ocramius/package-versions:</info>  Generating version class...');
 
-        $installPathTmp = $installPath . '_' . microtime();
+        $installPathTmp = $installPath . '_' . uniqid('tmp', true);
         file_put_contents($installPathTmp, $versionClassSource);
         chmod($installPathTmp, 0664);
         rename($installPathTmp, $installPath);
