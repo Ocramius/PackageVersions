@@ -26,7 +26,9 @@ use RuntimeException;
 use const PHP_OS;
 use function array_filter;
 use function array_map;
+use function chmod;
 use function file_get_contents;
+use function file_put_contents;
 use function fileperms;
 use function in_array;
 use function is_dir;
@@ -91,6 +93,57 @@ final class InstallerTest extends TestCase
         foreach ($events as $callback) {
             self::assertInternalType('callable', [$this->installer, $callback]);
         }
+    }
+
+    public function testDumpVersionsClassIfExistingFileIsNotWritable() : void
+    {
+        $config            = $this->createMock(Config::class);
+        $locker            = $this->createMock(Locker::class);
+        $repositoryManager = $this->createMock(RepositoryManager::class);
+        $installManager    = $this->createMock(InstallationManager::class);
+        $repository        = $this->createMock(InstalledRepositoryInterface::class);
+
+        $vendorDir = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true);
+
+        $expectedPath = $vendorDir . '/ocramius/package-versions/src/PackageVersions';
+
+        /** @noinspection MkdirRaceConditionInspection */
+        mkdir($expectedPath, 0777, true);
+
+        $expectedFileName = $expectedPath . '/Versions.php';
+        file_put_contents($expectedFileName, 'NOT PHP!');
+        chmod($expectedFileName, 0444);
+
+        $locker
+            ->method('getLockData')
+            ->willReturn([
+                'packages' => [
+                    [
+                        'name'    => 'ocramius/package-versions',
+                        'version' => '1.0.0',
+                    ],
+                ],
+            ]);
+
+        $repositoryManager->method('getLocalRepository')->willReturn($repository);
+
+        $this->composer->method('getConfig')->willReturn($config);
+        $this->composer->method('getLocker')->willReturn($locker);
+        $this->composer->method('getRepositoryManager')->willReturn($repositoryManager);
+        $this->composer->method('getPackage')->willReturn($this->getRootPackageMock());
+        $this->composer->method('getInstallationManager')->willReturn($installManager);
+
+        $config->method('get')->with('vendor-dir')->willReturn($vendorDir);
+
+        Installer::dumpVersionsClass(new Event(
+            'post-install-cmd',
+            $this->composer,
+            $this->io
+        ));
+
+        self::assertStringStartsWith('<?php', file_get_contents($expectedFileName));
+
+        $this->rmDir($vendorDir);
     }
 
     public function testDumpVersionsClass() : void
