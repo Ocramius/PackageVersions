@@ -137,7 +137,7 @@ PHP;
             return;
         }
 
-        $io->write('<info>ocramius/package-versions:</info>  Generating version class...');
+        $io->write('<info>ocramius/package-versions:</info> Generating version class...');
 
         $installPathTmp = $installPath . '_' . uniqid('tmp', true);
         file_put_contents($installPathTmp, $versionClassSource);
