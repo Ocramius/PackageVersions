@@ -48,6 +48,12 @@ namespace PackageVersions;
 %s
 {
     public const ROOT_PACKAGE_NAME = '%s';
+    /**
+     * Array of all available composer packages.
+     * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
+     *
+     * @internal
+     */
     public const VERSIONS          = %s;
 
     private function __construct()
