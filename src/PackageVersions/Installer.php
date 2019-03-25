@@ -52,6 +52,7 @@ namespace PackageVersions;
      * Array of all available composer packages.
      * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
      *
+     * @var array<string, string>
      * @internal
      */
     public const VERSIONS          = %s;
