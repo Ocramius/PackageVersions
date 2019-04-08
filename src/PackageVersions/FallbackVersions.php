@@ -82,11 +82,14 @@ final class FallbackVersions
     {
         $lockData = json_decode(file_get_contents($composerLockFile), true);
 
-        $lockData['packages-dev'] = $lockData['packages-dev'] ?? [];
+        if (array_key_exists('content-hash', $lockData)) {
+            // assume a composer.lock file and merge the packages and packages-dev into an array
+            $lockData = array_merge($lockData['packages'], $lockData['packages-dev'] ?? []);
+        }
 
-        foreach (array_merge($lockData['packages'], $lockData['packages-dev']) as $package) {
+        foreach ($lockData as $package) {
             yield $package['name'] => $package['version'] . '@' . (
-                $package['source']['reference']?? $package['dist']['reference'] ?? ''
+                $package['source']['reference'] ?? $package['dist']['reference'] ?? ''
             );
         }
 
