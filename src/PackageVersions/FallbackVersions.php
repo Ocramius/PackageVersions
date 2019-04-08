@@ -54,8 +54,14 @@ final class FallbackVersions
      */
     private static function getComposerLockPath() : string
     {
-        // bold assumption, but there's not here to fix everyone's problems.
-        $checkedPaths = [__DIR__ . '/../../../../../composer.lock', __DIR__ . '/../../composer.lock'];
+        $checkedPaths = [
+            // The top-level project's ./vendor/composer/installed.json
+            getcwd() . '/vendor/composer/installed.json',
+            // The top-level project's ./composer.lock
+            getcwd() . '/composer.lock',
+            // This package's composer.lock
+            __DIR__ . '/../../composer.lock',
+        ];
 
         foreach ($checkedPaths as $path) {
             if (file_exists($path)) {
