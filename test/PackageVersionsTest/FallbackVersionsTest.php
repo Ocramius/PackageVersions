@@ -22,8 +22,8 @@ final class FallbackVersionsTest extends TestCase
 {
     public function testWillFailWithoutValidComposerLockLocation() : void
     {
-        rename(__DIR__ . '/../../vendor/composer/installed.json', __DIR__ . '/../../vendor/composer/installed.json.backup');
-        rename(__DIR__ . '/../../composer.lock', __DIR__ . '/../../composer.lock.backup');
+        $this->backupFile(__DIR__ . '/../../vendor/composer/installed.json');
+        $this->backupFile(__DIR__ . '/../../composer.lock');
 
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessageRegExp(
@@ -61,11 +61,21 @@ final class FallbackVersionsTest extends TestCase
 
     protected function tearDown() : void
     {
-        if (! file_exists(__DIR__ . '/../../vendor/composer/installed.json.backup') && ! file_exists(__DIR__ . '/../../composer.lock.backup')) {
+        $this->revertFile(__DIR__ . '/../../composer.lock');
+        $this->revertFile(__DIR__ . '/../../vendor/composer/installed.json');
+    }
+
+    private function backupFile(string $filename) : void
+    {
+        rename($filename, $filename . '.backup');
+    }
+
+    private function revertFile(string $filename) : void
+    {
+        if (! file_exists($filename . '.backup')) {
             return;
         }
 
-        rename(__DIR__ . '/../../vendor/composer/installed.json.backup', __DIR__ . '/../../vendor/composer/installed.json');
-        rename(__DIR__ . '/../../composer.lock.backup', __DIR__ . '/../../composer.lock');
+        rename($filename . '.backup', $filename);
     }
 }
