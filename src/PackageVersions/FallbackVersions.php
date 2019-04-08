@@ -33,6 +33,8 @@ final class FallbackVersions
     }
 
     /**
+     * @param string $packageName
+     * @return string
      * @throws OutOfBoundsException If a version cannot be located.
      * @throws UnexpectedValueException If the composer.lock file could not be located.
      */
