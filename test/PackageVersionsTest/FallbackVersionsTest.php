@@ -52,6 +52,23 @@ final class FallbackVersionsTest extends TestCase
         }
     }
 
+    public function testValidVersionsWithoutComposerLock() : void
+    {
+        $lockData = json_decode(file_get_contents(__DIR__ . '/../../composer.lock'), true);
+
+        $packages = array_merge($lockData['packages'], $lockData['packages-dev']);
+
+        self::assertNotEmpty($packages);
+
+        $this->backupFile(__DIR__ . '/../../composer.lock');
+        foreach ($packages as $package) {
+            self::assertSame(
+                $package['version'] . '@' . $package['source']['reference'],
+                FallbackVersions::getVersion($package['name'])
+            );
+        }
+    }
+
     public function testInvalidVersionsAreRejected() : void
     {
         $this->expectException(OutOfBoundsException::class);
