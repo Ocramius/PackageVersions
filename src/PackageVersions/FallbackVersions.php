@@ -42,7 +42,7 @@ final class FallbackVersions
 
         if (! array_key_exists($packageName, $versions)) {
             throw new OutOfBoundsException(
-                'Required package "' . $packageName . '" is not installed: cannot detect its version'
+                'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
             );
         }
 
