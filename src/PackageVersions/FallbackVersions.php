@@ -11,6 +11,7 @@ use function array_key_exists;
 use function array_merge;
 use function file_exists;
 use function file_get_contents;
+use function getcwd;
 use function iterator_to_array;
 use function json_decode;
 use function json_encode;
@@ -33,8 +34,6 @@ final class FallbackVersions
     }
 
     /**
-     * @param string $packageName
-     * @return string
      * @throws OutOfBoundsException If a version cannot be located.
      * @throws UnexpectedValueException If the composer.lock file could not be located.
      */

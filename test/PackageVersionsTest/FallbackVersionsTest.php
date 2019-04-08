@@ -9,10 +9,9 @@ use PackageVersions\FallbackVersions;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 use function array_merge;
+use function file_exists;
 use function file_get_contents;
 use function json_decode;
-use function json_encode;
-use function realpath;
 use function rename;
 use function uniqid;
 
@@ -26,7 +25,7 @@ final class FallbackVersionsTest extends TestCase
         rename(__DIR__ . '/../../vendor/composer/installed.json', __DIR__ . '/../../vendor/composer/installed.json.backup');
         rename(__DIR__ . '/../../composer.lock', __DIR__ . '/../../composer.lock.backup');
 
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessageRegExp(
             '@PackageVersions could not locate the `vendor/composer/installed\.json` or your `composer\.lock` '
             . 'location\. This is assumed to be in \[[^]]+?\]\. If you customized your composer vendor directory and ran composer '
@@ -60,14 +59,13 @@ final class FallbackVersionsTest extends TestCase
         FallbackVersions::getVersion(uniqid('', true) . '/' . uniqid('', true));
     }
 
-    protected function tearDown()
+    protected function tearDown() : void
     {
-        if (file_exists(__DIR__ . '/../../vendor/composer/installed.json.backup')) {
-            rename(__DIR__ . '/../../vendor/composer/installed.json.backup', __DIR__ . '/../../vendor/composer/installed.json');
+        if (! file_exists(__DIR__ . '/../../vendor/composer/installed.json.backup') && ! file_exists(__DIR__ . '/../../composer.lock.backup')) {
+            return;
         }
 
-        if (file_exists(__DIR__ . '/../../composer.lock.backup')) {
-            rename(__DIR__ . '/../../composer.lock.backup', __DIR__ . '/../../composer.lock');
-        }
+        rename(__DIR__ . '/../../vendor/composer/installed.json.backup', __DIR__ . '/../../vendor/composer/installed.json');
+        rename(__DIR__ . '/../../composer.lock.backup', __DIR__ . '/../../composer.lock');
     }
 }
