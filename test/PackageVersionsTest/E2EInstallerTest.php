@@ -265,6 +265,7 @@ class E2EInstallerTest extends TestCase
         exec(__DIR__ . '/../../vendor/bin/composer ' . $command . ' 2> /dev/null', $output, $exitCode);
         $this->assertEquals(0, $exitCode);
         chdir($currentDir);
+
         return $output;
     }
 
