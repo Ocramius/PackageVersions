@@ -10,13 +10,13 @@
         }
     ],
     "require": {
-        "php":                 "^7.1.0",
+        "php":                 "^7.2.0",
         "composer-plugin-api": "^1.0.0"
     },
     "require-dev": {
-        "phpunit/phpunit":          "^7.0.0",
+        "phpunit/phpunit":          "^8.2.2",
         "infection/infection":      "^0.7.1",
-        "composer/composer":        "^1.6.3",
+        "composer/composer":        "^1.8.6",
         "ext-zip":                  "*",
         "doctrine/coding-standard": "^6.0.0"
     },
