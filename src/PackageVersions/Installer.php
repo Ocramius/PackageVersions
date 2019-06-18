@@ -96,6 +96,7 @@ PHP;
         return [
             ScriptEvents::POST_INSTALL_CMD => 'dumpVersionsClass',
             ScriptEvents::POST_UPDATE_CMD  => 'dumpVersionsClass',
+            ScriptEvents::POST_AUTOLOAD_DUMP  => 'dumpVersionsClass',
         ];
     }
 
