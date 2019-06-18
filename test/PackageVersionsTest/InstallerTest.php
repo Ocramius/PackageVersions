@@ -86,6 +86,7 @@ final class InstallerTest extends TestCase
             [
                 'post-install-cmd' => 'dumpVersionsClass',
                 'post-update-cmd'  => 'dumpVersionsClass',
+                'post-autoload-dump' => 'dumpVersionsClass'
             ],
             $events
         );
