@@ -84,8 +84,6 @@ final class InstallerTest extends TestCase
 
         self::assertSame(
             [
-                'post-install-cmd' => 'dumpVersionsClass',
-                'post-update-cmd'  => 'dumpVersionsClass',
                 'post-autoload-dump' => 'dumpVersionsClass',
             ],
             $events
