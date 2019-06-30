@@ -39,7 +39,7 @@ final class FallbackVersions
      */
     public static function getVersion(string $packageName) : string
     {
-        $versions = iterator_to_array(self::getVersions(self::getComposerLockPath()));
+        $versions = iterator_to_array(self::getVersions(self::getPackageData()));
 
         if (! array_key_exists($packageName, $versions)) {
             throw new OutOfBoundsException(
@@ -53,7 +53,7 @@ final class FallbackVersions
     /**
      * @throws UnexpectedValueException
      */
-    private static function getComposerLockPath() : string
+    private static function getPackageData() : array
     {
         $checkedPaths = [
             // The top-level project's ./vendor/composer/installed.json
@@ -66,7 +66,15 @@ final class FallbackVersions
 
         foreach ($checkedPaths as $path) {
             if (file_exists($path)) {
-                return $path;
+                switch (basename($path)) {
+                    case 'installed.json':
+                        return json_decode(file_get_contents($path), true);
+                    case 'composer.lock':
+                        $data = json_decode(file_get_contents($path), true);
+                        return array_merge($data['packages'], $data['packages-dev'] ?? []);
+                    default:
+                        // intentionally left blank
+                }
             }
         }
 
@@ -79,16 +87,9 @@ final class FallbackVersions
         ));
     }
 
-    private static function getVersions(string $composerLockFile) : Generator
+    private static function getVersions(array $packageData) : Generator
     {
-        $lockData = json_decode(file_get_contents($composerLockFile), true);
-
-        if (array_key_exists('content-hash', $lockData)) {
-            // assume a composer.lock file and merge the packages and packages-dev into an array
-            $lockData = array_merge($lockData['packages'], $lockData['packages-dev'] ?? []);
-        }
-
-        foreach ($lockData as $package) {
+        foreach ($packageData as $package) {
             yield $package['name'] => $package['version'] . '@' . (
                 $package['source']['reference'] ?? $package['dist']['reference'] ?? ''
             );
