@@ -51,6 +51,8 @@ final class FallbackVersions
     }
 
     /**
+     * @return mixed[]
+     *
      * @throws UnexpectedValueException
      */
     private static function getPackageData() : array
@@ -94,6 +96,13 @@ final class FallbackVersions
         ));
     }
 
+    /**
+     * @param mixed[] $packageData
+     *
+     * @return Generator&string[]
+     *
+     * @psalm-return Generator<string, string>
+     */
     private static function getVersions(array $packageData) : Generator
     {
         foreach ($packageData as $package) {
@@ -102,6 +111,6 @@ final class FallbackVersions
             );
         }
 
-        yield self::ROOT_PACKAGE_NAME;
+        yield self::ROOT_PACKAGE_NAME => self::ROOT_PACKAGE_NAME;
     }
 }

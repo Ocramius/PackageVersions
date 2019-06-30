@@ -71,10 +71,12 @@ final class FallbackVersionsTest extends TestCase
 
     public function testValidVersionsWithoutInstalledJson() : void
     {
-        if (($packages = json_decode(file_get_contents(__DIR__ . '/../../vendor/composer/installed.json'), true)) === []) {
+        $packages = json_decode(file_get_contents(__DIR__ . '/../../vendor/composer/installed.json'), true);
+
+        if ($packages === []) {
             // In case of --no-dev flag
-            $packages = json_decode(file_get_contents(getcwd() . '/composer.lock'), true);
-            $packages = array_merge($packages['packages'], $packages['packages-dev'] ?? []);
+            $lockData = json_decode(file_get_contents(getcwd() . '/composer.lock'), true);
+            $packages = array_merge($lockData['packages'], $lockData['packages-dev'] ?? []);
         }
 
         self::assertNotEmpty($packages);
