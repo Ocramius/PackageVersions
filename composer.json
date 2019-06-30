@@ -18,7 +18,8 @@
         "infection/infection":      "^0.13.3",
         "composer/composer":        "^1.8.6",
         "ext-zip":                  "*",
-        "doctrine/coding-standard": "^6.0.0"
+        "doctrine/coding-standard": "^6.0.0",
+        "vimeo/psalm":              "^3.4.7"
     },
     "autoload": {
         "psr-4": {
