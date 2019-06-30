@@ -20,7 +20,7 @@ use function uniqid;
  */
 final class FallbackVersionsTest extends TestCase
 {
-    public function testWillFailWithoutValidComposerLockLocation() : void
+    public function testWillFailWithoutValidPackageData() : void
     {
         $this->backupFile(__DIR__ . '/../../vendor/composer/installed.json');
         $this->backupFile(__DIR__ . '/../../composer.lock');
@@ -61,6 +61,21 @@ final class FallbackVersionsTest extends TestCase
         self::assertNotEmpty($packages);
 
         $this->backupFile(__DIR__ . '/../../composer.lock');
+        foreach ($packages as $package) {
+            self::assertSame(
+                $package['version'] . '@' . $package['source']['reference'],
+                FallbackVersions::getVersion($package['name'])
+            );
+        }
+    }
+
+    public function testValidVersionsWithoutInstalledJson() : void
+    {
+        $packages = json_decode(file_get_contents(__DIR__ . '/../../vendor/composer/installed.json'), true);
+
+        self::assertNotEmpty($packages);
+
+        $this->backupFile(__DIR__ . '/../../vendor/composer/installed.json');
         foreach ($packages as $package) {
             self::assertSame(
                 $package['version'] . '@' . $package['source']['reference'],
