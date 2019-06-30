@@ -81,7 +81,7 @@ final class FallbackVersions
             }
         }
 
-        if (!empty($packageData)) {
+        if ($packageData !== []) {
             return array_merge(...$packageData);
         }
 
