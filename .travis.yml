@@ -18,9 +18,12 @@ before_script:
   - composer update --prefer-dist $DEPENDENCIES
 
 script:
+  - ./vendor/bin/psalm
+  # TODO see https://github.com/vimeo/psalm/issues/1881
+  - ! ./vendor/bin/psalm test/static-analysis/unhappy-path/unexpected-package-name.php
   - ./vendor/bin/phpunit --disallow-test-output --coverage-clover ./clover.xml
-  - if [[ $TRAVIS_PHP_VERSION = '7.1' && $DEPENDENCIES = '' ]]; then ./vendor/bin/infection; fi
-  - if [[ $TRAVIS_PHP_VERSION = '7.1' && $DEPENDENCIES = '' ]]; then ./vendor/bin/phpcs; fi
+  - ./vendor/bin/phpcs;
+  - if [[ $TRAVIS_PHP_VERSION = '7.3' && $DEPENDENCIES = '' ]]; then ./vendor/bin/infection; fi
 
 after_script:
   - sh .travis.coverage.sh
