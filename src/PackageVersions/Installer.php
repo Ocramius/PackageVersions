@@ -181,7 +181,9 @@ PHP;
     }
 
     /**
-     * @return Generator|string[]
+     * @return Generator&string[]
+     *
+     * @psalm-return Generator<string, string>
      */
     private static function getVersions(Locker $locker, RootPackageInterface $rootPackage) : Generator
     {

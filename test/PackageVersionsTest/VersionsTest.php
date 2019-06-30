@@ -39,6 +39,9 @@ final class VersionsTest extends TestCase
     {
         $this->expectException(OutOfBoundsException::class);
 
+        /**
+         * @psalm-suppress ArgumentTypeCoercion we are explicitly testing for something not allowed by the type system
+         */
         Versions::getVersion(uniqid('', true) . '/' . uniqid('', true));
     }
 }
