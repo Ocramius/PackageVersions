@@ -11,6 +11,7 @@ use function array_key_exists;
 use function array_merge;
 use function file_exists;
 use function file_get_contents;
+use function getcwd;
 use function iterator_to_array;
 use function json_decode;
 use function json_encode;
@@ -38,11 +39,11 @@ final class FallbackVersions
      */
     public static function getVersion(string $packageName) : string
     {
-        $versions = iterator_to_array(self::getVersions(self::getComposerLockPath()));
+        $versions = iterator_to_array(self::getVersions(self::getPackageData()));
 
         if (! array_key_exists($packageName, $versions)) {
             throw new OutOfBoundsException(
-                'Required package "' . $packageName . '" is not installed: cannot detect its version'
+                'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
             );
         }
 
@@ -52,34 +53,52 @@ final class FallbackVersions
     /**
      * @throws UnexpectedValueException
      */
-    private static function getComposerLockPath() : string
+    private static function getPackageData() : array
     {
-        // bold assumption, but there's not here to fix everyone's problems.
-        $checkedPaths = [__DIR__ . '/../../../../../composer.lock', __DIR__ . '/../../composer.lock'];
+        $checkedPaths = [
+            // The top-level project's ./vendor/composer/installed.json
+            getcwd() . '/vendor/composer/installed.json',
+            // The top-level project's ./composer.lock
+            getcwd() . '/composer.lock',
+            // This package's composer.lock
+            __DIR__ . '/../../composer.lock',
+        ];
 
+        $packageData = [];
         foreach ($checkedPaths as $path) {
             if (file_exists($path)) {
-                return $path;
+                $data = json_decode(file_get_contents($path), true);
+                switch (basename($path)) {
+                    case 'installed.json':
+                        $packageData[] = $data;
+                        break;
+                    case 'composer.lock':
+                        $packageData[] = $data['packages'] + ($data['packages-dev'] ?? []);
+                        break;
+                    default:
+                        // intentionally left blank
+                }
             }
         }
 
+        if ($packageData !== []) {
+            return array_merge(...$packageData);
+        }
+
         throw new UnexpectedValueException(sprintf(
-            'PackageVersions could not locate your `composer.lock` location. This is assumed to be in %s. '
-            . 'If you customized your composer vendor directory and ran composer installation with --no-scripts, '
-            . 'then you are on your own, and we can\'t really help you. Fix your shit and cut the tooling some slack.',
+            'PackageVersions could not locate the `vendor/composer/installed.json` or your `composer.lock` '
+            . 'location. This is assumed to be in %s. If you customized your composer vendor directory and ran composer '
+            . 'installation with --no-scripts or if you deployed without the required composer files, then you are on '
+            . 'your own, and we can\'t really help you. Fix your shit and cut the tooling some slack.',
             json_encode($checkedPaths)
         ));
     }
 
-    private static function getVersions(string $composerLockFile) : Generator
+    private static function getVersions(array $packageData) : Generator
     {
-        $lockData = json_decode(file_get_contents($composerLockFile), true);
-
-        $lockData['packages-dev'] = $lockData['packages-dev'] ?? [];
-
-        foreach (array_merge($lockData['packages'], $lockData['packages-dev']) as $package) {
+        foreach ($packageData as $package) {
             yield $package['name'] => $package['version'] . '@' . (
-                $package['source']['reference']?? $package['dist']['reference'] ?? ''
+                $package['source']['reference'] ?? $package['dist']['reference'] ?? ''
             );
         }
 
