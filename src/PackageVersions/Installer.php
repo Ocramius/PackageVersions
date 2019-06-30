@@ -93,9 +93,7 @@ PHP;
      */
     public static function getSubscribedEvents() : array
     {
-        return [
-            ScriptEvents::POST_AUTOLOAD_DUMP  => 'dumpVersionsClass',
-        ];
+        return [ScriptEvents::POST_AUTOLOAD_DUMP => 'dumpVersionsClass'];
     }
 
     /**

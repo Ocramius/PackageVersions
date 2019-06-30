@@ -11,6 +11,7 @@ use UnexpectedValueException;
 use function array_merge;
 use function file_exists;
 use function file_get_contents;
+use function getcwd;
 use function json_decode;
 use function rename;
 use function uniqid;

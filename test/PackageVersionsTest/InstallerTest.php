@@ -83,9 +83,7 @@ final class InstallerTest extends TestCase
         $events = Installer::getSubscribedEvents();
 
         self::assertSame(
-            [
-                'post-autoload-dump' => 'dumpVersionsClass',
-            ],
+            ['post-autoload-dump' => 'dumpVersionsClass'],
             $events
         );
 
