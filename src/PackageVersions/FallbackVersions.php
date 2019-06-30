@@ -64,18 +64,25 @@ final class FallbackVersions
             __DIR__ . '/../../composer.lock',
         ];
 
+        $packageData = [];
         foreach ($checkedPaths as $path) {
             if (file_exists($path)) {
+                $data = json_decode(file_get_contents($path), true);
                 switch (basename($path)) {
                     case 'installed.json':
-                        return json_decode(file_get_contents($path), true);
+                        $packageData[] = $data;
+                        break;
                     case 'composer.lock':
-                        $data = json_decode(file_get_contents($path), true);
-                        return array_merge($data['packages'], $data['packages-dev'] ?? []);
+                        $packageData[] = $data['packages'] + ($data['packages-dev'] ?? []);
+                        break;
                     default:
                         // intentionally left blank
                 }
             }
+        }
+
+        if (!empty($packageData)) {
+            return array_merge(...$packageData);
         }
 
         throw new UnexpectedValueException(sprintf(
