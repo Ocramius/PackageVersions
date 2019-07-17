@@ -195,7 +195,7 @@ class E2EInstallerTest extends TestCase
             iterator_to_array(new RecursiveIteratorIterator(
                 new RecursiveCallbackFilterIterator(
                     new RecursiveDirectoryIterator(realpath(__DIR__ . '/../../'), RecursiveDirectoryIterator::SKIP_DOTS),
-                    static function (SplFileInfo $file, $key, RecursiveDirectoryIterator $iterator) {
+                    static function (SplFileInfo $file, string $key, RecursiveDirectoryIterator $iterator) {
                         return $iterator->getSubPathname()[0]  !== '.' && $iterator->getSubPathname() !== 'vendor';
                     }
                 ),

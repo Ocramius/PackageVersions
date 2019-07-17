@@ -19,8 +19,8 @@ use Composer\Repository\RepositoryManager;
 use Composer\Script\Event;
 use PackageVersions\Installer;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ReflectionClass;
 use RuntimeException;
 use const PHP_OS;
@@ -49,13 +49,13 @@ use function unlink;
  */
 final class InstallerTest extends TestCase
 {
-    /** @var Composer|PHPUnit_Framework_MockObject_MockObject */
+    /** @var Composer&MockObject */
     private $composer;
 
-    /** @var EventDispatcher|PHPUnit_Framework_MockObject_MockObject */
+    /** @var EventDispatcher&MockObject */
     private $eventDispatcher;
 
-    /** @var IOInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var IOInterface&MockObject */
     private $io;
 
     /** @var Installer */
@@ -73,7 +73,7 @@ final class InstallerTest extends TestCase
         $this->installer       = new Installer();
         $this->io              = $this->createMock(IOInterface::class);
         $this->composer        = $this->createMock(Composer::class);
-        $this->eventDispatcher = $this->getMockBuilder(EventDispatcher::class)->disableOriginalConstructor()->getMock();
+        $this->eventDispatcher = $this->createMock(EventDispatcher::class);
 
         $this->composer->expects(self::any())->method('getEventDispatcher')->willReturn($this->eventDispatcher);
     }
@@ -83,14 +83,12 @@ final class InstallerTest extends TestCase
         $events = Installer::getSubscribedEvents();
 
         self::assertSame(
-            [
-                'post-autoload-dump' => 'dumpVersionsClass',
-            ],
+            ['post-autoload-dump' => 'dumpVersionsClass'],
             $events
         );
 
         foreach ($events as $callback) {
-            self::assertInternalType('callable', [$this->installer, $callback]);
+            self::assertIsCallable([$this->installer, $callback]);
         }
     }
 

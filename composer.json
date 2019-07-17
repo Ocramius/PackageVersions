@@ -15,10 +15,11 @@
     },
     "require-dev": {
         "phpunit/phpunit":          "^8.2.2",
-        "infection/infection":      "^0.7.1",
+        "infection/infection":      "^0.13.3",
         "composer/composer":        "^1.8.6",
         "ext-zip":                  "*",
-        "doctrine/coding-standard": "^6.0.0"
+        "doctrine/coding-standard": "^6.0.0",
+        "vimeo/psalm":              "^3.4.7"
     },
     "autoload": {
         "psr-4": {
@@ -33,7 +34,7 @@
     "extra": {
         "class": "PackageVersions\\Installer",
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "1.6.x-dev"
         }
     },
     "scripts": {
