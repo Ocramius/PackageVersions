@@ -12,10 +12,12 @@ use SplFileInfo;
 use ZipArchive;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
+use const PHP_BINARY;
 use function array_filter;
 use function array_map;
 use function array_walk;
 use function chdir;
+use function escapeshellarg;
 use function exec;
 use function file_get_contents;
 use function file_put_contents;
@@ -298,7 +300,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 echo \PackageVersions\Versions::getVersion('ocramius/package-versions');
 PHP
-
         );
     }
 
