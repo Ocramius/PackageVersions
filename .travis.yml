@@ -13,6 +13,9 @@ env:
   - DEPENDENCIES="--no-scripts"
 
 before_script:
+  # aliasing current branch as `master`, since otherwise composer cannot determine the current branch-alias
+  - git branch -D master || true
+  - git checkout -b master
   - composer self-update
   - composer update --prefer-dist $DEPENDENCIES
 
