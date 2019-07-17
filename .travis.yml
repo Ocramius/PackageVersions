@@ -22,7 +22,7 @@ script:
   # TODO see https://github.com/vimeo/psalm/issues/1881 https://github.com/Ocramius/PackageVersions/issues/90 :
   # - ! ./vendor/bin/psalm test/static-analysis/unhappy-path/unexpected-package-name.php
   - ./vendor/bin/phpunit --disallow-test-output --coverage-clover ./clover.xml
-  - ./vendor/bin/phpcs;
+  - if [[ $TRAVIS_PHP_VERSION = '7.3' && $DEPENDENCIES = '' ]]; then ./vendor/bin/phpcs; fi
   - if [[ $TRAVIS_PHP_VERSION = '7.3' && $DEPENDENCIES = '' ]]; then ./vendor/bin/infection; fi
 
 after_script:
