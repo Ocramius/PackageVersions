@@ -9,6 +9,7 @@ use OutOfBoundsException;
 use UnexpectedValueException;
 use function array_key_exists;
 use function array_merge;
+use function basename;
 use function file_exists;
 use function file_get_contents;
 use function getcwd;
@@ -68,18 +69,20 @@ final class FallbackVersions
 
         $packageData = [];
         foreach ($checkedPaths as $path) {
-            if (file_exists($path)) {
-                $data = json_decode(file_get_contents($path), true);
-                switch (basename($path)) {
-                    case 'installed.json':
-                        $packageData[] = $data;
-                        break;
-                    case 'composer.lock':
-                        $packageData[] = $data['packages'] + ($data['packages-dev'] ?? []);
-                        break;
-                    default:
-                        // intentionally left blank
-                }
+            if (! file_exists($path)) {
+                continue;
+            }
+
+            $data = json_decode(file_get_contents($path), true);
+            switch (basename($path)) {
+                case 'installed.json':
+                    $packageData[] = $data;
+                    break;
+                case 'composer.lock':
+                    $packageData[] = $data['packages'] + ($data['packages-dev'] ?? []);
+                    break;
+                default:
+                    // intentionally left blank
             }
         }
 
