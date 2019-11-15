@@ -61,8 +61,10 @@ final class FallbackVersions
         $checkedPaths = [
             // The top-level project's ./vendor/composer/installed.json
             getcwd() . '/vendor/composer/installed.json',
+            __DIR__ . '/../../../../composer/installed.json',
             // The top-level project's ./composer.lock
             getcwd() . '/composer.lock',
+            __DIR__ . '/../../../../../composer.lock',
             // This package's composer.lock
             __DIR__ . '/../../composer.lock',
         ];

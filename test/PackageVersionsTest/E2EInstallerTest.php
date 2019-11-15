@@ -12,10 +12,12 @@ use SplFileInfo;
 use ZipArchive;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
+use const PHP_BINARY;
 use function array_filter;
 use function array_map;
 use function array_walk;
 use function chdir;
+use function escapeshellarg;
 use function exec;
 use function file_get_contents;
 use function file_put_contents;
@@ -185,6 +187,38 @@ class E2EInstallerTest extends TestCase
         );
     }
 
+    /**
+     * @group 101
+     */
+    public function testInstallingPluginWithNoScriptsLeadsToUsableVersionsClass() : void
+    {
+        $this->createPackageVersionsArtifact();
+        $this->createArtifact();
+
+        $this->writeComposerJsonFile(
+            [
+                'name'         => 'package-versions/e2e-local',
+                'require'      => ['ocramius/package-versions' => '1.0.0'],
+                'repositories' => [
+                    ['packagist' => false],
+                    [
+                        'type' => 'artifact',
+                        'url' => $this->tempArtifact,
+                    ],
+                ],
+            ],
+            $this->tempLocalComposerHome
+        );
+
+        $this->execComposerInDir('install --no-scripts', $this->tempLocalComposerHome);
+        $this->assertFileExists(
+            $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
+        );
+
+        $this->writePackageVersionUsingFile($this->tempLocalComposerHome);
+        $this->assertPackageVersionsIsUsable($this->tempLocalComposerHome);
+    }
+
     private function createPackageVersionsArtifact() : void
     {
         $zip = new ZipArchive();
@@ -253,6 +287,29 @@ class E2EInstallerTest extends TestCase
             $directory . '/composer.json',
             json_encode($config, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
         );
+    }
+
+    private function writePackageVersionUsingFile(string $directory) : void
+    {
+        file_put_contents(
+            $directory . '/use-package-versions.php',
+            <<<'PHP'
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+echo \PackageVersions\Versions::getVersion('ocramius/package-versions');
+PHP
+        );
+    }
+
+    private function assertPackageVersionsIsUsable(string $directory) : void
+    {
+        exec(PHP_BINARY . ' ' . escapeshellarg($directory . '/use-package-versions.php'), $output, $exitCode);
+
+        self::assertSame(0, $exitCode);
+        self::assertCount(1, $output);
+        self::assertRegExp('/^\d+\\..*\\@[a-f0-9]*$/', $output[0]);
     }
 
     /**
