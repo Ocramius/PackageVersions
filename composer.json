@@ -33,7 +33,7 @@
     "extra": {
         "class": "PackageVersions\\Installer",
         "branch-alias": {
-            "dev-master": "1.5.x-dev"
+            "dev-master": "2.0.x-dev"
         }
     },
     "scripts": {

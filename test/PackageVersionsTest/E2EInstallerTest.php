@@ -309,7 +309,7 @@ PHP
 
         self::assertSame(0, $exitCode);
         self::assertCount(1, $output);
-        self::assertRegExp('/^1\\..*\\@[a-f0-9]*$/', $output[0]);
+        self::assertRegExp('/^\d+\\..*\\@[a-f0-9]*$/', $output[0]);
     }
 
     /**
