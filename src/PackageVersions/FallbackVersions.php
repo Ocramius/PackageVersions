@@ -68,7 +68,7 @@ final class FallbackVersions
             // This package's composer.lock
             __DIR__ . '/../../composer.lock',
         ];
-        
+
         $packageData = [];
         foreach ($checkedPaths as $path) {
             if (! file_exists($path)) {
