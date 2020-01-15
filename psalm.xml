@@ -16,8 +16,25 @@
     </projectFiles>
 
     <issueHandlers>
-        <InternalClass errorLevel="suppress"/>
-        <InternalMethod errorLevel="suppress"/>
-        <PropertyNotSetInConstructor errorLevel="suppress"/>
+        <InternalClass>
+            <errorLevel type="suppress">
+                <directory name="test/PackageVersionsTest"/>
+            </errorLevel>
+        </InternalClass>
+        <InternalMethod>
+            <errorLevel type="suppress">
+                <directory name="test/PackageVersionsTest"/>
+            </errorLevel>
+        </InternalMethod>
+        <PropertyNotSetInConstructor>
+            <errorLevel type="suppress">
+                <directory name="test/PackageVersionsTest"/>
+            </errorLevel>
+        </PropertyNotSetInConstructor>
+        <DeprecatedMethod>
+            <errorLevel type="suppress">
+                <directory name="test/PackageVersionsTest"/>
+            </errorLevel>
+        </DeprecatedMethod>
     </issueHandlers>
 </psalm>
