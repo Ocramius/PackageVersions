@@ -19,6 +19,7 @@ use function exec;
 use function file_get_contents;
 use function file_put_contents;
 use function getcwd;
+use function implode;
 use function in_array;
 use function is_dir;
 use function iterator_to_array;
@@ -29,6 +30,7 @@ use function putenv;
 use function realpath;
 use function rmdir;
 use function scandir;
+use function sprintf;
 use function strlen;
 use function substr;
 use function sys_get_temp_dir;
@@ -37,6 +39,7 @@ use function unlink;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const PHP_BINARY;
+use const PHP_EOL;
 
 /**
  * @coversNothing
@@ -184,6 +187,54 @@ class E2EInstallerTest extends TestCase
         );
     }
 
+    public function testInstallingPluginWithNoScriptsOverridesOriginalRequirements() : void
+    {
+        $this->createPackageVersionsArtifact();
+        $this->createGenericArtifact(
+            'infection-infection',
+            '0.15.0',
+            [
+                'name' => 'infection/infection',
+                'require' => ['symfony/process' => '^5.0'],
+            ]
+        );
+        $this->createGenericArtifact(
+            'symfony-process',
+            '4.0.0',
+            ['name' => 'symfony/process']
+        );
+        $this->createGenericArtifact(
+            'symfony-process',
+            '5.0.0',
+            ['name' => 'symfony/process']
+        );
+        $this->writeComposerJsonFile(
+            [
+                'name'         => 'package-versions/e2e-transitive',
+                'require'      => [
+                    'ocramius/package-versions' => '1.0.0',
+                    'infection/infection' => '^0.15.0',
+                ],
+                'repositories' => [
+                    ['packagist' => false],
+                    [
+                        'type' => 'artifact',
+                        'url' => $this->tempArtifact,
+                    ],
+                ],
+            ],
+            $this->tempLocalComposerHome
+        );
+
+        $this->execComposerInDir('install --no-scripts', $this->tempLocalComposerHome);
+        $this->assertFileExists(
+            $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
+        );
+
+        $this->writeSymfonyPackageVersionUsingFile($this->tempLocalComposerHome);
+        $this->assertSymfonyPackageVersionsIsUsable($this->tempLocalComposerHome);
+    }
+
     /**
      * @group 101
      */
@@ -259,19 +310,23 @@ class E2EInstallerTest extends TestCase
 
     private function createArtifact() : void
     {
-        $zip = new ZipArchive();
-
-        $zip->open($this->tempArtifact . '/test-package-2.0.0.zip', ZipArchive::CREATE);
-        $zip->addFromString(
-            'composer.json',
-            json_encode(
-                [
-                    'name'    => 'test/package',
-                    'version' => '2.0.0',
-                ],
-                JSON_PRETTY_PRINT
-            )
+        $this->createGenericArtifact(
+            'test-package',
+            '2.0.0',
+            ['name' => 'test/package']
         );
+    }
+
+    /**
+     * @param mixed[] $composerJsonContent
+     */
+    private function createGenericArtifact(string $name, string $version, array $composerJsonContent) : void
+    {
+        $composerJsonContent['version'] = $version;
+        $zip                            = new ZipArchive();
+
+        $zip->open(sprintf('%s/%s-%s.zip', $this->tempArtifact, $name, $version), ZipArchive::CREATE);
+        $zip->addFromString('composer.json', json_encode($composerJsonContent, JSON_PRETTY_PRINT));
         $zip->close();
     }
 
@@ -284,6 +339,29 @@ class E2EInstallerTest extends TestCase
             $directory . '/composer.json',
             json_encode($config, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
         );
+    }
+
+    private function writeSymfonyPackageVersionUsingFile(string $directory) : void
+    {
+        file_put_contents(
+            $directory . '/use-package-versions.php',
+            <<<'PHP'
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+echo \PackageVersions\Versions::getVersion('symfony/process');
+PHP
+        );
+    }
+
+    private function assertSymfonyPackageVersionsIsUsable(string $directory) : void
+    {
+        exec(PHP_BINARY . ' ' . escapeshellarg($directory . '/use-package-versions.php'), $output, $exitCode);
+
+        self::assertSame(0, $exitCode);
+        self::assertCount(1, $output);
+        self::assertRegExp('/^v?5\\..*\\@[a-f0-9]*$/', $output[0]);
     }
 
     private function writePackageVersionUsingFile(string $directory) : void
@@ -316,8 +394,8 @@ PHP
     {
         $currentDir = getcwd();
         chdir($dir);
-        exec(__DIR__ . '/../../vendor/bin/composer ' . $command . ' 2> /dev/null', $output, $exitCode);
-        $this->assertEquals(0, $exitCode);
+        exec(__DIR__ . '/../../vendor/bin/composer ' . $command . ' 2>&1', $output, $exitCode);
+        $this->assertEquals(0, $exitCode, implode(PHP_EOL, $output));
         chdir($currentDir);
 
         return $output;
