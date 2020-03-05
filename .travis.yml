@@ -21,7 +21,7 @@ before_script:
   - if [[ $LOCKED_DEPENDENCIES = '' ]]; then composer update $DEPENDENCIES; fi
 
 script:
-  - ./vendor/bin/psalm
+  - if [[ $DEPENDENCIES != '--no-scripts' ]]; ./vendor/bin/psalm; fi
   # TODO see https://github.com/vimeo/psalm/issues/1881 https://github.com/Ocramius/PackageVersions/issues/90 :
   # - ! ./vendor/bin/psalm test/static-analysis/unhappy-path/unexpected-package-name.php
   - ./vendor/bin/phpunit --disallow-test-output --coverage-clover=clover.xml
