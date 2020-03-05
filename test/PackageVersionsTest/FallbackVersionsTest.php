@@ -27,7 +27,7 @@ final class FallbackVersionsTest extends TestCase
         $this->backupFile(__DIR__ . '/../../composer.lock');
 
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '@PackageVersions could not locate the `vendor/composer/installed\.json` or your `composer\.lock` '
             . 'location\. This is assumed to be in \[[^]]+?\]\. If you customized your composer vendor directory and ran composer '
             . 'installation with --no-scripts or if you deployed without the required composer files, then you are on '

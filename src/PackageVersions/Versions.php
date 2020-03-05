@@ -1,6 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PackageVersions;
+
+use OutOfBoundsException;
+use UnexpectedValueException;
 
 /**
  * This is a stub class: it is in place only for scenarios where PackageVersions
@@ -12,16 +17,16 @@ namespace PackageVersions;
  */
 final class Versions
 {
-    const ROOT_PACKAGE_NAME = FallbackVersions::ROOT_PACKAGE_NAME;
-    const VERSIONS = [];
+    public const ROOT_PACKAGE_NAME = FallbackVersions::ROOT_PACKAGE_NAME;
+    public const VERSIONS          = [];
 
     private function __construct()
     {
     }
 
     /**
-     * @throws \OutOfBoundsException if a version cannot be located
-     * @throws \UnexpectedValueException if the composer.lock file could not be located
+     * @throws OutOfBoundsException if a version cannot be located.
+     * @throws UnexpectedValueException if the composer.lock file could not be located.
      */
     public static function getVersion(string $packageName) : string
     {
