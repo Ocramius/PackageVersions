@@ -6,6 +6,6 @@
         ]
     },
     "logs": {
-        "text": "infection-log.txt"
+        "text": "php://stderr"
     }
 }

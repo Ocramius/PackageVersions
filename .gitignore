@@ -1,6 +1,5 @@
 /vendor/
 /src/PackageVersions/Versions.php
 /clover.xml
-/infection-log.txt
 /phpcs.xml
 /.phpcs-cache
