@@ -1,3 +1,8 @@
+before_commands:
+    - "git branch -D master || true"
+    - "git checkout -b master"
+    - "composer install"
+
 build:
     nodes:
         analysis:
