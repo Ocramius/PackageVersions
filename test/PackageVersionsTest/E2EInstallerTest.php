@@ -10,9 +10,6 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 use ZipArchive;
-use const JSON_PRETTY_PRINT;
-use const JSON_UNESCAPED_SLASHES;
-use const PHP_BINARY;
 use function array_filter;
 use function array_map;
 use function array_walk;
@@ -37,20 +34,20 @@ use function substr;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
+use const JSON_PRETTY_PRINT;
+use const JSON_UNESCAPED_SLASHES;
+use const PHP_BINARY;
 
 /**
  * @coversNothing
  */
 class E2EInstallerTest extends TestCase
 {
-    /** @var string */
-    private $tempGlobalComposerHome;
+    private string $tempGlobalComposerHome;
 
-    /** @var string */
-    private $tempLocalComposerHome;
+    private string $tempLocalComposerHome;
 
-    /** @var string */
-    private $tempArtifact;
+    private string $tempArtifact;
 
     public function setUp() : void
     {
