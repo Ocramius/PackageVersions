@@ -3,10 +3,10 @@ language: php
 sudo: false
 
 php:
-  - 7.3
   - 7.4
 
 env:
+  - LOCKED_DEPENDENCIES=1
   - DEPENDENCIES=""
   - DEPENDENCIES="--prefer-lowest --prefer-stable"
   - DEPENDENCIES="--classmap-authoritative"
@@ -17,15 +17,16 @@ before_script:
   - git branch -D master || true
   - git checkout -b master
   - composer self-update
-  - composer update --prefer-dist $DEPENDENCIES
+  - if [[ $LOCKED_DEPENDENCIES = '1' ]]; then composer install; fi
+  - if [[ $LOCKED_DEPENDENCIES = '' ]]; then composer update $DEPENDENCIES; fi
 
 script:
   - ./vendor/bin/psalm
   # TODO see https://github.com/vimeo/psalm/issues/1881 https://github.com/Ocramius/PackageVersions/issues/90 :
   # - ! ./vendor/bin/psalm test/static-analysis/unhappy-path/unexpected-package-name.php
-  - ./vendor/bin/phpunit --disallow-test-output --coverage-clover ./clover.xml
-  - if [[ $TRAVIS_PHP_VERSION = '7.3' && $DEPENDENCIES = '' ]]; then ./vendor/bin/phpcs; fi
-  - if [[ $TRAVIS_PHP_VERSION = '7.3' && $DEPENDENCIES = '' ]]; then ./vendor/bin/infection; fi
+  - ./vendor/bin/phpunit --disallow-test-output --coverage-clover=clover.xml
+  - if [[ $LOCKED_DEPENDENCIES = '1' ]]; then ./vendor/bin/phpcs; fi
+  - if [[ $LOCKED_DEPENDENCIES = '1' ]]; then ./vendor/bin/infection --min-msi=100 --min-covered-msi=100; fi
 
 after_script:
   - sh .travis.coverage.sh
