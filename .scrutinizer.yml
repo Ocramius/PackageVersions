@@ -4,8 +4,15 @@ before_commands:
     - "composer install"
 
 build:
+    environment:
+        php:
+            version: 7.4
     nodes:
         analysis:
+            dependencies:
+                before:
+                    - "git branch -D master || true"
+                    - "git checkout -b master"
             tests:
                 override:
                     - php-scrutinizer-run
