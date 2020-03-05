@@ -7,20 +7,12 @@ tools:
     php_code_coverage:
         enabled: true
     php_code_sniffer:
-        enabled: true
-        config:
-            standard: PSR2
-        filter:
-            paths: ["src/*", "tests/*"]
+        enabled: false
     php_cpd:
         enabled: true
         excluded_dirs: ["test", "vendor"]
     php_cs_fixer:
-        enabled: true
-        config:
-            level: all
-        filter:
-            paths: ["src/*", "tests/*"]
+        enabled: false
     php_loc:
         enabled: true
         excluded_dirs: ["test", "vendor"]
