@@ -29,4 +29,5 @@ script:
   - if [[ $LOCKED_DEPENDENCIES = '1' ]]; then ./vendor/bin/infection --min-msi=100 --min-covered-msi=100; fi
 
 after_script:
-  - sh .travis.coverage.sh
+  - if [[ $LOCKED_DEPENDENCIES = '1' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [[ $LOCKED_DEPENDENCIES = '1' ]]; then php ocular.phar code-coverage:upload --format=php-clover ./clover.xml; fi
