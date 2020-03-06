@@ -4,4 +4,8 @@ declare(strict_types=1);
 
 use PackageVersions\Versions;
 
-return Versions::getVersion('ocramius/package-versions');
+/** @psalm-pure */
+function getVersion() : string
+{
+    return Versions::getVersion('ocramius/package-versions');
+}
