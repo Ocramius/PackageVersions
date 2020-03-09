@@ -31,7 +31,7 @@ use function var_export;
 
 final class Installer implements PluginInterface, EventSubscriberInterface
 {
-    private static string $generatedClassTemplate = <<<'PHP'
+    private static $generatedClassTemplate = <<<'PHP'
 <?php
 
 declare(strict_types=1);
