@@ -73,6 +73,10 @@ final class FallbackVersionsTest extends TestCase
     public function testValidVersionsWithoutInstalledJson() : void
     {
         $packages = json_decode(file_get_contents(__DIR__ . '/../../vendor/composer/installed.json'), true);
+        // normalize composer 2.x installed.json format to the 1.x one
+        if (isset($packages['packages'])) {
+            $packages = $packages['packages'];
+        }
 
         if ($packages === []) {
             // In case of --no-dev flag
