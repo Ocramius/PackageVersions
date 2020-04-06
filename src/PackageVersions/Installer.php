@@ -12,7 +12,6 @@ use Composer\Package\AliasPackage;
 use Composer\Package\Locker;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
-use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Generator;
@@ -29,7 +28,7 @@ use function sprintf;
 use function uniqid;
 use function var_export;
 
-final class Installer implements PluginInterface, EventSubscriberInterface
+final class Installer implements ComposerV2PluginInterface, EventSubscriberInterface
 {
     private static string $generatedClassTemplate = <<<'PHP'
 <?php
@@ -83,6 +82,16 @@ use OutOfBoundsException;
 PHP;
 
     public function activate(Composer $composer, IOInterface $io) : void
+    {
+        // Nothing to do here, as all features are provided through event listeners
+    }
+
+    public function deactivate(Composer $composer, IOInterface $io) : void
+    {
+        // Nothing to do here, as all features are provided through event listeners
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io) : void
     {
         // Nothing to do here, as all features are provided through event listeners
     }

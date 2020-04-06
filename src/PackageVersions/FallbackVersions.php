@@ -78,7 +78,14 @@ final class FallbackVersions
             $data = json_decode(file_get_contents($path), true);
             switch (basename($path)) {
                 case 'installed.json':
-                    $packageData[] = $data;
+                    // composer 2.x installed.json format
+                    if (isset($data['packages'])) {
+                        $packageData[] = $data['packages'];
+                    } else {
+                        // composer 1.x installed.json format
+                        $packageData[] = $data;
+                    }
+
                     break;
                 case 'composer.lock':
                     $packageData[] = $data['packages'] + ($data['packages-dev'] ?? []);
