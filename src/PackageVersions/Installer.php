@@ -28,7 +28,7 @@ use function sprintf;
 use function uniqid;
 use function var_export;
 
-final class Installer implements ComposerV2PluginInterface, EventSubscriberInterface
+final class Installer implements ComposerV2Plugin, EventSubscriberInterface
 {
     private static string $generatedClassTemplate = <<<'PHP'
 <?php

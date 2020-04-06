@@ -12,7 +12,7 @@ use Composer\Plugin\PluginInterface;
  * @internal do not rely on this: it is only here to declare the composer V2 API explicitly, even
  *           in composer V1 context.
  */
-interface ComposerV2PluginInterface extends PluginInterface
+interface ComposerV2Plugin extends PluginInterface
 {
     public function deactivate(Composer $composer, IOInterface $io) : void;
 
