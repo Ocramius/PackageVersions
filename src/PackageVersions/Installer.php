@@ -12,7 +12,6 @@ use Composer\Package\AliasPackage;
 use Composer\Package\Locker;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
-use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Generator;
@@ -29,7 +28,7 @@ use function sprintf;
 use function uniqid;
 use function var_export;
 
-final class Installer implements PluginInterface, EventSubscriberInterface
+final class Installer implements ComposerV2PluginInterface, EventSubscriberInterface
 {
     private static string $generatedClassTemplate = <<<'PHP'
 <?php

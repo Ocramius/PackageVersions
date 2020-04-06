@@ -85,6 +85,7 @@ final class FallbackVersions
                         // composer 1.x installed.json format
                         $packageData[] = $data;
                     }
+
                     break;
                 case 'composer.lock':
                     $packageData[] = $data['packages'] + ($data['packages-dev'] ?? []);
