@@ -14,7 +14,7 @@
         "composer-plugin-api": "^1.1.0 || ^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit":          "^9.0.1",
+        "phpunit/phpunit":          "^9.1.1",
         "infection/infection":      "^0.15.3",
         "composer/composer":        "^1.9.3 || ^2.0@dev",
         "ext-zip":                  "^1.15.0",

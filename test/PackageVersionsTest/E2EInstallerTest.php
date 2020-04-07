@@ -49,7 +49,7 @@ class E2EInstallerTest extends TestCase
 
     private string $tempArtifact;
 
-    public function setUp() : void
+    protected function setUp() : void
     {
         $this->tempGlobalComposerHome = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/global';
         $this->tempLocalComposerHome  = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/local';
@@ -61,7 +61,7 @@ class E2EInstallerTest extends TestCase
         putenv('COMPOSER_HOME=' . $this->tempGlobalComposerHome);
     }
 
-    public function tearDown() : void
+    protected function tearDown() : void
     {
         $this->rmDir($this->tempGlobalComposerHome);
         $this->rmDir($this->tempLocalComposerHome);
@@ -108,7 +108,7 @@ class E2EInstallerTest extends TestCase
         );
 
         $this->execComposerInDir('update', $this->tempLocalComposerHome);
-        $this->assertFileNotExists(
+        self::assertFileDoesNotExist(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
         );
     }
@@ -137,13 +137,13 @@ class E2EInstallerTest extends TestCase
         );
 
         $this->execComposerInDir('update', $this->tempLocalComposerHome);
-        $this->assertFileExists(
+        self::assertFileExists(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
         );
 
         $this->execComposerInDir('remove ocramius/package-versions', $this->tempLocalComposerHome);
 
-        $this->assertFileNotExists(
+        self::assertFileDoesNotExist(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
         );
     }
@@ -173,13 +173,13 @@ class E2EInstallerTest extends TestCase
         );
 
         $this->execComposerInDir('update', $this->tempLocalComposerHome);
-        $this->assertFileExists(
+        self::assertFileExists(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
         );
 
         $this->execComposerInDir('install --no-dev', $this->tempLocalComposerHome);
 
-        $this->assertFileNotExists(
+        self::assertFileDoesNotExist(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
         );
     }
@@ -208,12 +208,12 @@ class E2EInstallerTest extends TestCase
         );
 
         $this->execComposerInDir('install --no-scripts', $this->tempLocalComposerHome);
-        $this->assertFileExists(
+        self::assertFileExists(
             $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions/Versions.php'
         );
 
         $this->writePackageVersionUsingFile($this->tempLocalComposerHome);
-        $this->assertPackageVersionsIsUsable($this->tempLocalComposerHome);
+        self::assertPackageVersionsIsUsable($this->tempLocalComposerHome);
     }
 
     private function createPackageVersionsArtifact() : void
@@ -306,7 +306,7 @@ PHP
 
         self::assertSame(0, $exitCode);
         self::assertCount(1, $output);
-        self::assertRegExp('/^1\\..*\\@[a-f0-9]*$/', $output[0]);
+        self::assertMatchesRegularExpression('/^1\\..*\\@[a-f0-9]*$/', $output[0]);
     }
 
     /**
@@ -317,7 +317,7 @@ PHP
         $currentDir = getcwd();
         chdir($dir);
         exec(__DIR__ . '/../../vendor/bin/composer ' . $command . ' 2> /dev/null', $output, $exitCode);
-        $this->assertEquals(0, $exitCode);
+        self::assertEquals(0, $exitCode);
         chdir($currentDir);
 
         return $output;
