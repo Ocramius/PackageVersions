@@ -661,7 +661,7 @@ PHP;
             $this->io
         ));
 
-        self::assertFileNotExists($expectedPath . '/Versions.php');
+        self::assertFileDoesNotExist($expectedPath . '/Versions.php');
 
         $this->rmDir($vendorDir);
     }
@@ -705,8 +705,8 @@ PHP;
             $this->io
         ));
 
-        self::assertFileNotExists($expectedPath . '/Versions.php');
-        self::assertFileNotExists($expectedPath . '/Versions.php');
+        self::assertFileDoesNotExist($expectedPath . '/Versions.php');
+        self::assertFileDoesNotExist($expectedPath . '/Versions.php');
     }
 
     public function testGeneratedVersionFileAccessRights() : void
