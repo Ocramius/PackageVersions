@@ -19,6 +19,7 @@ before_script:
   - composer self-update
   - if [[ $LOCKED_DEPENDENCIES = '1' ]]; then composer install; fi
   - if [[ $LOCKED_DEPENDENCIES = '' ]]; then composer update $DEPENDENCIES; fi
+  - git checkout ./src/PackageVersions/Versions.php
 
 script:
   - if [[ "$DEPENDENCIES" != '--no-scripts' ]]; then ./vendor/bin/psalm; fi
