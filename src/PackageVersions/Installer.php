@@ -30,7 +30,7 @@ use function var_export;
 
 final class Installer implements ComposerV2Plugin, EventSubscriberInterface
 {
-    private static string $generatedClassTemplate = <<<'PHP'
+    private static $generatedClassTemplate = <<<'PHP'
 <?php
 
 declare(strict_types=1);
