@@ -264,6 +264,7 @@ declare(strict_types=1);
 
 namespace PackageVersions;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
 
 /**
@@ -275,21 +276,6 @@ use OutOfBoundsException;
 final class Versions
 {
     public const ROOT_PACKAGE_NAME = 'root/package';
-    /**
-     * Array of all available composer packages.
-     * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
-     *
-     * @var array<string, string>
-     * @internal
-     */
-    public const VERSIONS          = array (
-  'ocramius/package-versions' => '1.0.0@',
-  'foo/bar' => '1.2.3@abc123',
-  'baz/tab' => '4.5.6@def456',
-  'tar/taz' => '7.8.9@ghi789',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
-  'root/package' => '1.3.5@aaabbbcccddd',
-);
 
     private function __construct()
     {
@@ -298,18 +284,12 @@ final class Versions
     /**
      * @throws OutOfBoundsException If a version cannot be located.
      *
-     * @psalm-param key-of<self::VERSIONS> $packageName
      * @psalm-pure
      */
     public static function getVersion(string $packageName) : string
     {
-        if (isset(self::VERSIONS[$packageName])) {
-            return self::VERSIONS[$packageName];
-        }
-
-        throw new OutOfBoundsException(
-            'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
-        );
+        return InstalledVersions::getPrettyVersion($packageName)
+            . '@' . InstalledVersions::getReference($packageName);
     }
 }
 
@@ -380,6 +360,7 @@ declare(strict_types=1);
 
 namespace PackageVersions;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
 
 /**
@@ -391,20 +372,6 @@ use OutOfBoundsException;
 final class Versions
 {
     public const ROOT_PACKAGE_NAME = 'root/package';
-    /**
-     * Array of all available composer packages.
-     * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
-     *
-     * @var array<string, string>
-     * @internal
-     */
-    public const VERSIONS          = array (
-  'ocramius/package-versions' => '1.0.0@',
-  'foo/bar' => '1.2.3@abc123',
-  'baz/tab' => '4.5.6@def456',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
-  'root/package' => '1.3.5@aaabbbcccddd',
-);
 
     private function __construct()
     {
@@ -413,18 +380,12 @@ final class Versions
     /**
      * @throws OutOfBoundsException If a version cannot be located.
      *
-     * @psalm-param key-of<self::VERSIONS> $packageName
      * @psalm-pure
      */
     public static function getVersion(string $packageName) : string
     {
-        if (isset(self::VERSIONS[$packageName])) {
-            return self::VERSIONS[$packageName];
-        }
-
-        throw new OutOfBoundsException(
-            'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
-        );
+        return InstalledVersions::getPrettyVersion($packageName)
+            . '@' . InstalledVersions::getReference($packageName);
     }
 }
 
@@ -499,6 +460,7 @@ declare(strict_types=1);
 
 namespace PackageVersions;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
 
 /**
@@ -510,20 +472,6 @@ use OutOfBoundsException;
 final class Versions
 {
     public const ROOT_PACKAGE_NAME = 'root/package';
-    /**
-     * Array of all available composer packages.
-     * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
-     *
-     * @var array<string, string>
-     * @internal
-     */
-    public const VERSIONS          = array (
-  'ocramius/package-versions' => '1.0.0@',
-  'foo/bar' => '1.2.3@abc123',
-  'baz/tab' => '4.5.6@',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
-  'root/package' => '1.3.5@aaabbbcccddd',
-);
 
     private function __construct()
     {
@@ -532,18 +480,12 @@ final class Versions
     /**
      * @throws OutOfBoundsException If a version cannot be located.
      *
-     * @psalm-param key-of<self::VERSIONS> $packageName
      * @psalm-pure
      */
     public static function getVersion(string $packageName) : string
     {
-        if (isset(self::VERSIONS[$packageName])) {
-            return self::VERSIONS[$packageName];
-        }
-
-        throw new OutOfBoundsException(
-            'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
-        );
+        return InstalledVersions::getPrettyVersion($packageName)
+            . '@' . InstalledVersions::getReference($packageName);
     }
 }
 
@@ -609,9 +551,16 @@ PHP;
             $this->io
         ));
 
+        $generatedSource = file_get_contents($expectedPath . '/Versions.php');
+
+        self::assertStringNotContainsString(
+            'unknown/root-package@UNKNOWN',
+            $generatedSource
+        );
+
         self::assertStringMatchesFormat(
-            '%Aclass Versions%A1.2.3@%A',
-            file_get_contents($expectedPath . '/Versions.php')
+            '%Aclass Versions%AROOT_PACKAGE_NAME%A',
+            $generatedSource
         );
 
         $this->rmDir($vendorDir);
@@ -912,6 +861,7 @@ declare(strict_types=1);
 
 namespace PackageVersions;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
 
 /**
@@ -923,18 +873,6 @@ use OutOfBoundsException;
 final class Versions
 {
     public const ROOT_PACKAGE_NAME = 'root/package';
-    /**
-     * Array of all available composer packages.
-     * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
-     *
-     * @var array<string, string>
-     * @internal
-     */
-    public const VERSIONS          = array (
-  'ocramius/package-versions' => '1.0.0@',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
-  'root/package' => '1.3.5@aaabbbcccddd',
-);
 
     private function __construct()
     {
@@ -943,18 +881,12 @@ final class Versions
     /**
      * @throws OutOfBoundsException If a version cannot be located.
      *
-     * @psalm-param key-of<self::VERSIONS> $packageName
      * @psalm-pure
      */
     public static function getVersion(string $packageName) : string
     {
-        if (isset(self::VERSIONS[$packageName])) {
-            return self::VERSIONS[$packageName];
-        }
-
-        throw new OutOfBoundsException(
-            'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
-        );
+        return InstalledVersions::getPrettyVersion($packageName)
+            . '@' . InstalledVersions::getReference($packageName);
     }
 }
 
