@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace PackageVersions;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
 
 /**
@@ -48,14 +49,6 @@ use OutOfBoundsException;
 %s
 {
     public const ROOT_PACKAGE_NAME = '%s';
-    /**
-     * Array of all available composer packages.
-     * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
-     *
-     * @var array<string, string>
-     * @internal
-     */
-    public const VERSIONS          = %s;
 
     private function __construct()
     {
@@ -64,18 +57,12 @@ use OutOfBoundsException;
     /**
      * @throws OutOfBoundsException If a version cannot be located.
      *
-     * @psalm-param key-of<self::VERSIONS> $packageName
      * @psalm-pure
      */
     public static function getVersion(string $packageName) : string
     {
-        if (isset(self::VERSIONS[$packageName])) {
-            return self::VERSIONS[$packageName];
-        }
-
-        throw new OutOfBoundsException(
-            'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
-        );
+        return InstalledVersions::getPrettyVersion($packageName)
+            . '@' . InstalledVersions::getReference($packageName);
     }
 }
 
@@ -119,7 +106,7 @@ PHP;
             return;
         }
 
-        $versionClass = self::generateVersionsClass($rootPackage->getName(), $versions);
+        $versionClass = self::generateVersionsClass($rootPackage->getName());
 
         self::writeVersionClassToFile($versionClass, $composer, $composerEvent->getIO());
     }
@@ -127,13 +114,12 @@ PHP;
     /**
      * @param string[] $versions
      */
-    private static function generateVersionsClass(string $rootPackageName, array $versions) : string
+    private static function generateVersionsClass(string $rootPackageName) : string
     {
         return sprintf(
             self::$generatedClassTemplate,
             'fin' . 'al ' . 'cla' . 'ss ' . 'Versions', // note: workaround for regex-based code parsers :-(
-            $rootPackageName,
-            var_export($versions, true)
+            $rootPackageName
         );
     }
 

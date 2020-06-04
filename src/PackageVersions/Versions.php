@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PackageVersions;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
-use UnexpectedValueException;
 
 /**
  * This is a stub class: it is in place only for scenarios where PackageVersions
@@ -17,19 +17,16 @@ use UnexpectedValueException;
  */
 final class Versions
 {
-    public const ROOT_PACKAGE_NAME = FallbackVersions::ROOT_PACKAGE_NAME;
-    public const VERSIONS          = [];
+    public const ROOT_PACKAGE_NAME = 'unknown/root-package@UNKNOWN';
 
     private function __construct()
     {
     }
 
-    /**
-     * @throws OutOfBoundsException if a version cannot be located.
-     * @throws UnexpectedValueException if the composer.lock file could not be located.
-     */
+    /** @throws OutOfBoundsException if a version cannot be located. */
     public static function getVersion(string $packageName) : string
     {
-        return FallbackVersions::getVersion($packageName);
+        return InstalledVersions::getPrettyVersion($packageName)
+            . '@' . InstalledVersions::getReference($packageName);
     }
 }
