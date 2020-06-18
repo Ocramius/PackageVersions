@@ -22,6 +22,7 @@ use function chmod;
 use function dirname;
 use function file_exists;
 use function file_put_contents;
+use function is_writable;
 use function iterator_to_array;
 use function rename;
 use function sprintf;
@@ -145,8 +146,20 @@ PHP;
         $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
             . '/src/PackageVersions/Versions.php';
 
-        if (! file_exists(dirname($installPath))) {
+        $installDir = dirname($installPath);
+        if (! file_exists($installDir)) {
             $io->write('<info>ocramius/package-versions:</info> Package not found (probably scheduled for removal); generation of version class skipped.');
+
+            return;
+        }
+
+        if (! is_writable($installDir)) {
+            $io->write(
+                sprintf(
+                    '<info>ocramius/package-versions:</info> %s is not writable; generation of version class skipped.',
+                    $installDir
+                )
+            );
 
             return;
         }

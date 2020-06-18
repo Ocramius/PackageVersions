@@ -14,6 +14,7 @@ use function array_filter;
 use function array_map;
 use function array_walk;
 use function chdir;
+use function chmod;
 use function escapeshellarg;
 use function exec;
 use function file_get_contents;
@@ -21,6 +22,7 @@ use function file_put_contents;
 use function getcwd;
 use function in_array;
 use function is_dir;
+use function is_writable;
 use function iterator_to_array;
 use function json_decode;
 use function json_encode;
@@ -184,6 +186,45 @@ class E2EInstallerTest extends TestCase
         );
     }
 
+    public function testOnReadonlyFilesystemDoesNotGenerateClasses() : void
+    {
+        $this->createPackageVersionsArtifact();
+        $this->createArtifact();
+
+        $this->writeComposerJsonFile(
+            [
+                'name'         => 'package-versions/e2e-local',
+                'require-dev'  => ['ocramius/package-versions' => '1.0.0'],
+                'repositories' => [
+                    ['packagist' => false],
+                    [
+                        'type' => 'artifact',
+                        'url' => $this->tempArtifact,
+                    ],
+                ],
+            ],
+            $this->tempLocalComposerHome
+        );
+
+        $this->execComposerInDir('install', $this->tempLocalComposerHome);
+
+        $versionsDir = $this->tempLocalComposerHome . '/vendor/ocramius/package-versions/src/PackageVersions';
+
+        $versionsFilePath = $versionsDir . '/Versions.php';
+
+        file_put_contents($versionsFilePath, 'NOT PHP!');
+
+        chmod($versionsFilePath, 0400);
+        chmod($versionsDir, 0400);
+
+        $this->execComposerInDir('update', $this->tempLocalComposerHome);
+
+        chmod($versionsDir, 0700);
+        chmod($versionsFilePath, 0600);
+
+        self::assertSame('NOT PHP!', file_get_contents($versionsFilePath));
+    }
+
     /**
      * @group 101
      */
@@ -325,6 +366,10 @@ PHP
 
     private function rmDir(string $directory) : void
     {
+        if (! is_writable($directory)) {
+            chmod($directory, 0700);
+        }
+
         if (! is_dir($directory)) {
             unlink($directory);
 
