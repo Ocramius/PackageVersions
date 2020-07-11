@@ -20,6 +20,8 @@ jobs:
           - "lowest"
           - "highest"
           - "locked"
+          - "classmap-authoritative"
+          - "no-scripts"
         php-version:
           - "7.4"
         operating-system:
@@ -58,6 +60,14 @@ jobs:
       - name: "Install locked dependencies"
         if: ${{ matrix.dependencies == 'locked' }}
         run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: "Install with classmap authoritative flag"
+        if: ${{ matrix.dependencies == 'classmap-authoritative' }}
+        run: "composer install --no-interaction --classmap-authoritative"
+
+      - name: "Install without scripts"
+        if: ${{ matrix.dependencies == 'no-scripts' }}
+        run: "composer install --no-scripts"
 
       - name: "Tests"
         run: "vendor/bin/phpunit"
