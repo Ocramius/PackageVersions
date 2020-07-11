@@ -6,6 +6,11 @@
         ]
     },
     "logs": {
-        "text": "php://stderr"
-    }
+        "text": "php://stderr",
+        "badge": {
+            "branch": "master"
+        }
+    },
+    "minMsi": 100,
+    "minCoveredMsi": 100
 }
