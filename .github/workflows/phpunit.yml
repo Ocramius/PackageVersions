@@ -32,6 +32,12 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v2"
 
+      # `master` has a branch-alias, allowing us to run installation of dependencies that depend on this package themselves
+      - name: "Switch active branch to master"
+        run: |
+          git branch -D master || true
+          git checkout -b master
+
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
