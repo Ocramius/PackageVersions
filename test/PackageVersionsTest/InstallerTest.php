@@ -23,6 +23,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use RuntimeException;
+
 use function array_filter;
 use function array_map;
 use function chmod;
@@ -42,6 +43,7 @@ use function substr;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
+
 use const PHP_OS;
 
 /**
@@ -65,7 +67,7 @@ final class InstallerTest extends TestCase
      *
      * @throws Exception
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -77,7 +79,7 @@ final class InstallerTest extends TestCase
         $this->composer->expects(self::any())->method('getEventDispatcher')->willReturn($this->eventDispatcher);
     }
 
-    public function testGetSubscribedEvents() : void
+    public function testGetSubscribedEvents(): void
     {
         $events = Installer::getSubscribedEvents();
 
@@ -91,7 +93,7 @@ final class InstallerTest extends TestCase
         }
     }
 
-    public function testDumpVersionsClassIfExistingFileIsNotWritable() : void
+    public function testDumpVersionsClassIfExistingFileIsNotWritable(): void
     {
         $config            = $this->createMock(Config::class);
         $locker            = $this->createMock(Locker::class);
@@ -142,7 +144,7 @@ final class InstallerTest extends TestCase
         $this->rmDir($vendorDir);
     }
 
-    public function testDumpVersionsClassIfReadonlyFilesystem() : void
+    public function testDumpVersionsClassIfReadonlyFilesystem(): void
     {
         $config            = $this->createMock(Config::class);
         $locker            = $this->createMock(Locker::class);
@@ -197,7 +199,7 @@ final class InstallerTest extends TestCase
         $this->rmDir($vendorDir);
     }
 
-    public function testDumpVersionsClass() : void
+    public function testDumpVersionsClass(): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -309,7 +311,7 @@ PHP;
         $this->rmDir($vendorDir);
     }
 
-    public function testDumpVersionsClassNoDev() : void
+    public function testDumpVersionsClassNoDev(): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -419,7 +421,7 @@ PHP;
      *
      * @group #12
      */
-    public function testDumpVersionsWithoutPackageSourceDetails() : void
+    public function testDumpVersionsWithoutPackageSourceDetails(): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -528,7 +530,7 @@ PHP;
      *
      * @dataProvider rootPackageProvider
      */
-    public function testDumpsVersionsClassToSpecificLocation(RootPackageInterface $rootPackage, bool $inVendor) : void
+    public function testDumpsVersionsClassToSpecificLocation(RootPackageInterface $rootPackage, bool $inVendor): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -597,7 +599,7 @@ PHP;
      * @return bool[][]|RootPackageInterface[][] the root package and whether the versions class is to be generated in
      *                                           the vendor dir or not
      */
-    public function rootPackageProvider() : array
+    public function rootPackageProvider(): array
     {
         $baseRootPackage                         = new RootPackage('root/package', '1.2.3', '1.2.3');
         $aliasRootPackage                        = new RootAliasPackage($baseRootPackage, '1.2.3', '1.2.3');
@@ -638,7 +640,7 @@ PHP;
         ];
     }
 
-    public function testVersionsAreNotDumpedIfPackageVersionsNotExplicitlyRequired() : void
+    public function testVersionsAreNotDumpedIfPackageVersionsNotExplicitlyRequired(): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -701,7 +703,7 @@ PHP;
      * @group #41
      * @group #46
      */
-    public function testVersionsAreNotDumpedIfPackageIsScheduledForRemoval() : void
+    public function testVersionsAreNotDumpedIfPackageIsScheduledForRemoval(): void
     {
         $config  = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker  = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -740,7 +742,7 @@ PHP;
         self::assertFileDoesNotExist($expectedPath . '/Versions.php');
     }
 
-    public function testGeneratedVersionFileAccessRights() : void
+    public function testGeneratedVersionFileAccessRights(): void
     {
         if (strpos(PHP_OS, 'WIN') === 0) {
             $this->markTestSkipped('Windows is kinda "meh" at file access levels');
@@ -801,7 +803,7 @@ PHP;
         $this->rmDir($vendorDir);
     }
 
-    private function rmDir(string $directory) : void
+    private function rmDir(string $directory): void
     {
         if (! is_dir($directory)) {
             unlink($directory);
@@ -810,7 +812,7 @@ PHP;
         }
 
         array_map(
-            function ($item) use ($directory) : void {
+            function ($item) use ($directory): void {
                 $this->rmDir($directory . '/' . $item);
             },
             array_filter(
@@ -827,7 +829,7 @@ PHP;
     /**
      * @group composer/composer#5237
      */
-    public function testWillEscapeRegexParsingOfClassDefinitions() : void
+    public function testWillEscapeRegexParsingOfClassDefinitions(): void
     {
         self::assertSame(
             1,
@@ -838,7 +840,7 @@ PHP;
         );
     }
 
-    public function testGetVersionsIsNotNormalizedForRootPackage() : void
+    public function testGetVersionsIsNotNormalizedForRootPackage(): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -933,7 +935,7 @@ PHP;
         $this->rmDir($vendorDir);
     }
 
-    private function getRootPackageMock() : RootPackageInterface
+    private function getRootPackageMock(): RootPackageInterface
     {
         $package = $this->createMock(RootPackageInterface::class);
         $package->expects(self::any())->method('getName')->willReturn('root/package');

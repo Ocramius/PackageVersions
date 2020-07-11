@@ -7,6 +7,7 @@ namespace PackageVersionsTest;
 use OutOfBoundsException;
 use PackageVersions\Versions;
 use PHPUnit\Framework\TestCase;
+
 use function array_merge;
 use function file_get_contents;
 use function json_decode;
@@ -19,7 +20,7 @@ use function uniqid;
  */
 final class VersionsTest extends TestCase
 {
-    public function testValidVersions() : void
+    public function testValidVersions(): void
     {
         $lockData = json_decode(file_get_contents(__DIR__ . '/../../composer.lock'), true);
 
@@ -35,7 +36,7 @@ final class VersionsTest extends TestCase
         }
     }
 
-    public function testInvalidVersionsAreRejected() : void
+    public function testInvalidVersionsAreRejected(): void
     {
         $this->expectException(OutOfBoundsException::class);
 

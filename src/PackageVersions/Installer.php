@@ -16,6 +16,7 @@ use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Generator;
 use RuntimeException;
+
 use function array_key_exists;
 use function array_merge;
 use function chmod;
@@ -27,7 +28,6 @@ use function iterator_to_array;
 use function rename;
 use function sprintf;
 use function uniqid;
-use function var_export;
 
 final class Installer implements ComposerV2Plugin, EventSubscriberInterface
 {
@@ -78,17 +78,17 @@ use OutOfBoundsException;
 
 PHP;
 
-    public function activate(Composer $composer, IOInterface $io) : void
+    public function activate(Composer $composer, IOInterface $io): void
     {
         // Nothing to do here, as all features are provided through event listeners
     }
 
-    public function deactivate(Composer $composer, IOInterface $io) : void
+    public function deactivate(Composer $composer, IOInterface $io): void
     {
         // Nothing to do here, as all features are provided through event listeners
     }
 
-    public function uninstall(Composer $composer, IOInterface $io) : void
+    public function uninstall(Composer $composer, IOInterface $io): void
     {
         // Nothing to do here, as all features are provided through event listeners
     }
@@ -96,7 +96,7 @@ PHP;
     /**
      * {@inheritDoc}
      */
-    public static function getSubscribedEvents() : array
+    public static function getSubscribedEvents(): array
     {
         return [ScriptEvents::POST_AUTOLOAD_DUMP => 'dumpVersionsClass'];
     }
@@ -104,7 +104,7 @@ PHP;
     /**
      * @throws RuntimeException
      */
-    public static function dumpVersionsClass(Event $composerEvent) : void
+    public static function dumpVersionsClass(Event $composerEvent): void
     {
         $composer    = $composerEvent->getComposer();
         $rootPackage = $composer->getPackage();
@@ -124,7 +124,7 @@ PHP;
     /**
      * @param string[] $versions
      */
-    private static function generateVersionsClass(string $rootPackageName) : string
+    private static function generateVersionsClass(string $rootPackageName): string
     {
         return sprintf(
             self::$generatedClassTemplate,
@@ -136,7 +136,7 @@ PHP;
     /**
      * @throws RuntimeException
      */
-    private static function writeVersionClassToFile(string $versionClassSource, Composer $composer, IOInterface $io) : void
+    private static function writeVersionClassToFile(string $versionClassSource, Composer $composer, IOInterface $io): void
     {
         $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
             . '/src/PackageVersions/Versions.php';
@@ -175,7 +175,7 @@ PHP;
     private static function locateRootPackageInstallPath(
         Config $composerConfig,
         RootPackageInterface $rootPackage
-    ) : string {
+    ): string {
         if (self::getRootPackageAlias($rootPackage)->getName() === 'ocramius/package-versions') {
             return dirname($composerConfig->get('vendor-dir'));
         }
@@ -183,7 +183,7 @@ PHP;
         return $composerConfig->get('vendor-dir') . '/ocramius/package-versions';
     }
 
-    private static function getRootPackageAlias(RootPackageInterface $rootPackage) : PackageInterface
+    private static function getRootPackageAlias(RootPackageInterface $rootPackage): PackageInterface
     {
         $package = $rootPackage;
 
@@ -199,15 +199,15 @@ PHP;
      *
      * @psalm-return Generator<string, string>
      */
-    private static function getVersions(Locker $locker, RootPackageInterface $rootPackage) : Generator
+    private static function getVersions(Locker $locker, RootPackageInterface $rootPackage): Generator
     {
         $lockData = $locker->getLockData();
 
-        $lockData['packages-dev'] = $lockData['packages-dev'] ?? [];
+        $lockData['packages-dev'] ??= [];
 
         foreach (array_merge($lockData['packages'], $lockData['packages-dev']) as $package) {
             yield $package['name'] => $package['version'] . '@' . (
-                $package['source']['reference']?? $package['dist']['reference'] ?? ''
+                $package['source']['reference'] ?? $package['dist']['reference'] ?? ''
             );
         }
 
