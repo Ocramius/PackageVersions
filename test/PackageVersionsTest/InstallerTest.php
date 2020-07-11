@@ -275,6 +275,12 @@ use OutOfBoundsException;
  */
 final class Versions
 {
+    /**
+     * @deprecated please use {@see \Composer\InstalledVersions::getRootPackage()} instead. The
+     *             equivalent expression for this constant's contents is
+     *             `\Composer\InstalledVersions::getRootPackage()['name']`.
+     *             This constant will be removed in version 2.0.0.
+     */
     public const ROOT_PACKAGE_NAME = 'root/package';
 
     private function __construct()
@@ -371,6 +377,12 @@ use OutOfBoundsException;
  */
 final class Versions
 {
+    /**
+     * @deprecated please use {@see \Composer\InstalledVersions::getRootPackage()} instead. The
+     *             equivalent expression for this constant's contents is
+     *             `\Composer\InstalledVersions::getRootPackage()['name']`.
+     *             This constant will be removed in version 2.0.0.
+     */
     public const ROOT_PACKAGE_NAME = 'root/package';
 
     private function __construct()
@@ -471,6 +483,12 @@ use OutOfBoundsException;
  */
 final class Versions
 {
+    /**
+     * @deprecated please use {@see \Composer\InstalledVersions::getRootPackage()} instead. The
+     *             equivalent expression for this constant's contents is
+     *             `\Composer\InstalledVersions::getRootPackage()['name']`.
+     *             This constant will be removed in version 2.0.0.
+     */
     public const ROOT_PACKAGE_NAME = 'root/package';
 
     private function __construct()
@@ -872,6 +890,12 @@ use OutOfBoundsException;
  */
 final class Versions
 {
+    /**
+     * @deprecated please use {@see \Composer\InstalledVersions::getRootPackage()} instead. The
+     *             equivalent expression for this constant's contents is
+     *             `\Composer\InstalledVersions::getRootPackage()['name']`.
+     *             This constant will be removed in version 2.0.0.
+     */
     public const ROOT_PACKAGE_NAME = 'root/package';
 
     private function __construct()
