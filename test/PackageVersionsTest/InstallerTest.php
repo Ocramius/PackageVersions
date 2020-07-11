@@ -23,6 +23,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use RuntimeException;
+
 use function array_filter;
 use function array_map;
 use function chmod;
@@ -42,6 +43,7 @@ use function substr;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
+
 use const PHP_OS;
 
 /**
@@ -65,7 +67,7 @@ final class InstallerTest extends TestCase
      *
      * @throws Exception
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -77,7 +79,7 @@ final class InstallerTest extends TestCase
         $this->composer->expects(self::any())->method('getEventDispatcher')->willReturn($this->eventDispatcher);
     }
 
-    public function testGetSubscribedEvents() : void
+    public function testGetSubscribedEvents(): void
     {
         $events = Installer::getSubscribedEvents();
 
@@ -91,7 +93,7 @@ final class InstallerTest extends TestCase
         }
     }
 
-    public function testDumpVersionsClassIfExistingFileIsNotWritable() : void
+    public function testDumpVersionsClassIfExistingFileIsNotWritable(): void
     {
         $config            = $this->createMock(Config::class);
         $locker            = $this->createMock(Locker::class);
@@ -142,7 +144,7 @@ final class InstallerTest extends TestCase
         $this->rmDir($vendorDir);
     }
 
-    public function testDumpVersionsClassIfReadonlyFilesystem() : void
+    public function testDumpVersionsClassIfReadonlyFilesystem(): void
     {
         $config            = $this->createMock(Config::class);
         $locker            = $this->createMock(Locker::class);
@@ -197,7 +199,7 @@ final class InstallerTest extends TestCase
         $this->rmDir($vendorDir);
     }
 
-    public function testDumpVersionsClass() : void
+    public function testDumpVersionsClass(): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -264,6 +266,7 @@ declare(strict_types=1);
 
 namespace PackageVersions;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
 
 /**
@@ -274,22 +277,13 @@ use OutOfBoundsException;
  */
 final class Versions
 {
-    public const ROOT_PACKAGE_NAME = 'root/package';
     /**
-     * Array of all available composer packages.
-     * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
-     *
-     * @var array<string, string>
-     * @internal
+     * @deprecated please use {@see \Composer\InstalledVersions::getRootPackage()} instead. The
+     *             equivalent expression for this constant's contents is
+     *             `\Composer\InstalledVersions::getRootPackage()['name']`.
+     *             This constant will be removed in version 2.0.0.
      */
-    public const VERSIONS          = array (
-  'ocramius/package-versions' => '1.0.0@',
-  'foo/bar' => '1.2.3@abc123',
-  'baz/tab' => '4.5.6@def456',
-  'tar/taz' => '7.8.9@ghi789',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
-  'root/package' => '1.3.5@aaabbbcccddd',
-);
+    public const ROOT_PACKAGE_NAME = 'root/package';
 
     private function __construct()
     {
@@ -298,18 +292,15 @@ final class Versions
     /**
      * @throws OutOfBoundsException If a version cannot be located.
      *
-     * @psalm-param key-of<self::VERSIONS> $packageName
      * @psalm-pure
+     *
+     * @psalm-suppress ImpureMethodCall we know that {@see InstalledVersions} interaction does not
+     *                                  cause any side effects here.
      */
     public static function getVersion(string $packageName) : string
     {
-        if (isset(self::VERSIONS[$packageName])) {
-            return self::VERSIONS[$packageName];
-        }
-
-        throw new OutOfBoundsException(
-            'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
-        );
+        return InstalledVersions::getPrettyVersion($packageName)
+            . '@' . InstalledVersions::getReference($packageName);
     }
 }
 
@@ -320,7 +311,7 @@ PHP;
         $this->rmDir($vendorDir);
     }
 
-    public function testDumpVersionsClassNoDev() : void
+    public function testDumpVersionsClassNoDev(): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -380,6 +371,7 @@ declare(strict_types=1);
 
 namespace PackageVersions;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
 
 /**
@@ -390,21 +382,13 @@ use OutOfBoundsException;
  */
 final class Versions
 {
-    public const ROOT_PACKAGE_NAME = 'root/package';
     /**
-     * Array of all available composer packages.
-     * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
-     *
-     * @var array<string, string>
-     * @internal
+     * @deprecated please use {@see \Composer\InstalledVersions::getRootPackage()} instead. The
+     *             equivalent expression for this constant's contents is
+     *             `\Composer\InstalledVersions::getRootPackage()['name']`.
+     *             This constant will be removed in version 2.0.0.
      */
-    public const VERSIONS          = array (
-  'ocramius/package-versions' => '1.0.0@',
-  'foo/bar' => '1.2.3@abc123',
-  'baz/tab' => '4.5.6@def456',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
-  'root/package' => '1.3.5@aaabbbcccddd',
-);
+    public const ROOT_PACKAGE_NAME = 'root/package';
 
     private function __construct()
     {
@@ -413,18 +397,15 @@ final class Versions
     /**
      * @throws OutOfBoundsException If a version cannot be located.
      *
-     * @psalm-param key-of<self::VERSIONS> $packageName
      * @psalm-pure
+     *
+     * @psalm-suppress ImpureMethodCall we know that {@see InstalledVersions} interaction does not
+     *                                  cause any side effects here.
      */
     public static function getVersion(string $packageName) : string
     {
-        if (isset(self::VERSIONS[$packageName])) {
-            return self::VERSIONS[$packageName];
-        }
-
-        throw new OutOfBoundsException(
-            'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
-        );
+        return InstalledVersions::getPrettyVersion($packageName)
+            . '@' . InstalledVersions::getReference($packageName);
     }
 }
 
@@ -440,7 +421,7 @@ PHP;
      *
      * @group #12
      */
-    public function testDumpVersionsWithoutPackageSourceDetails() : void
+    public function testDumpVersionsWithoutPackageSourceDetails(): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -499,6 +480,7 @@ declare(strict_types=1);
 
 namespace PackageVersions;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
 
 /**
@@ -509,21 +491,13 @@ use OutOfBoundsException;
  */
 final class Versions
 {
-    public const ROOT_PACKAGE_NAME = 'root/package';
     /**
-     * Array of all available composer packages.
-     * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
-     *
-     * @var array<string, string>
-     * @internal
+     * @deprecated please use {@see \Composer\InstalledVersions::getRootPackage()} instead. The
+     *             equivalent expression for this constant's contents is
+     *             `\Composer\InstalledVersions::getRootPackage()['name']`.
+     *             This constant will be removed in version 2.0.0.
      */
-    public const VERSIONS          = array (
-  'ocramius/package-versions' => '1.0.0@',
-  'foo/bar' => '1.2.3@abc123',
-  'baz/tab' => '4.5.6@',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
-  'root/package' => '1.3.5@aaabbbcccddd',
-);
+    public const ROOT_PACKAGE_NAME = 'root/package';
 
     private function __construct()
     {
@@ -532,18 +506,15 @@ final class Versions
     /**
      * @throws OutOfBoundsException If a version cannot be located.
      *
-     * @psalm-param key-of<self::VERSIONS> $packageName
      * @psalm-pure
+     *
+     * @psalm-suppress ImpureMethodCall we know that {@see InstalledVersions} interaction does not
+     *                                  cause any side effects here.
      */
     public static function getVersion(string $packageName) : string
     {
-        if (isset(self::VERSIONS[$packageName])) {
-            return self::VERSIONS[$packageName];
-        }
-
-        throw new OutOfBoundsException(
-            'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
-        );
+        return InstalledVersions::getPrettyVersion($packageName)
+            . '@' . InstalledVersions::getReference($packageName);
     }
 }
 
@@ -559,7 +530,7 @@ PHP;
      *
      * @dataProvider rootPackageProvider
      */
-    public function testDumpsVersionsClassToSpecificLocation(RootPackageInterface $rootPackage, bool $inVendor) : void
+    public function testDumpsVersionsClassToSpecificLocation(RootPackageInterface $rootPackage, bool $inVendor): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -609,9 +580,16 @@ PHP;
             $this->io
         ));
 
+        $generatedSource = file_get_contents($expectedPath . '/Versions.php');
+
+        self::assertStringNotContainsString(
+            'unknown/root-package@UNKNOWN',
+            $generatedSource
+        );
+
         self::assertStringMatchesFormat(
-            '%Aclass Versions%A1.2.3@%A',
-            file_get_contents($expectedPath . '/Versions.php')
+            '%Aclass Versions%AROOT_PACKAGE_NAME%A',
+            $generatedSource
         );
 
         $this->rmDir($vendorDir);
@@ -621,7 +599,7 @@ PHP;
      * @return bool[][]|RootPackageInterface[][] the root package and whether the versions class is to be generated in
      *                                           the vendor dir or not
      */
-    public function rootPackageProvider() : array
+    public function rootPackageProvider(): array
     {
         $baseRootPackage                         = new RootPackage('root/package', '1.2.3', '1.2.3');
         $aliasRootPackage                        = new RootAliasPackage($baseRootPackage, '1.2.3', '1.2.3');
@@ -662,7 +640,7 @@ PHP;
         ];
     }
 
-    public function testVersionsAreNotDumpedIfPackageVersionsNotExplicitlyRequired() : void
+    public function testVersionsAreNotDumpedIfPackageVersionsNotExplicitlyRequired(): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -725,7 +703,7 @@ PHP;
      * @group #41
      * @group #46
      */
-    public function testVersionsAreNotDumpedIfPackageIsScheduledForRemoval() : void
+    public function testVersionsAreNotDumpedIfPackageIsScheduledForRemoval(): void
     {
         $config  = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker  = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -764,7 +742,7 @@ PHP;
         self::assertFileDoesNotExist($expectedPath . '/Versions.php');
     }
 
-    public function testGeneratedVersionFileAccessRights() : void
+    public function testGeneratedVersionFileAccessRights(): void
     {
         if (strpos(PHP_OS, 'WIN') === 0) {
             $this->markTestSkipped('Windows is kinda "meh" at file access levels');
@@ -825,7 +803,7 @@ PHP;
         $this->rmDir($vendorDir);
     }
 
-    private function rmDir(string $directory) : void
+    private function rmDir(string $directory): void
     {
         if (! is_dir($directory)) {
             unlink($directory);
@@ -834,7 +812,7 @@ PHP;
         }
 
         array_map(
-            function ($item) use ($directory) : void {
+            function ($item) use ($directory): void {
                 $this->rmDir($directory . '/' . $item);
             },
             array_filter(
@@ -851,7 +829,7 @@ PHP;
     /**
      * @group composer/composer#5237
      */
-    public function testWillEscapeRegexParsingOfClassDefinitions() : void
+    public function testWillEscapeRegexParsingOfClassDefinitions(): void
     {
         self::assertSame(
             1,
@@ -862,7 +840,7 @@ PHP;
         );
     }
 
-    public function testGetVersionsIsNotNormalizedForRootPackage() : void
+    public function testGetVersionsIsNotNormalizedForRootPackage(): void
     {
         $config            = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $locker            = $this->getMockBuilder(Locker::class)->disableOriginalConstructor()->getMock();
@@ -912,6 +890,7 @@ declare(strict_types=1);
 
 namespace PackageVersions;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
 
 /**
@@ -922,19 +901,13 @@ use OutOfBoundsException;
  */
 final class Versions
 {
-    public const ROOT_PACKAGE_NAME = 'root/package';
     /**
-     * Array of all available composer packages.
-     * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
-     *
-     * @var array<string, string>
-     * @internal
+     * @deprecated please use {@see \Composer\InstalledVersions::getRootPackage()} instead. The
+     *             equivalent expression for this constant's contents is
+     *             `\Composer\InstalledVersions::getRootPackage()['name']`.
+     *             This constant will be removed in version 2.0.0.
      */
-    public const VERSIONS          = array (
-  'ocramius/package-versions' => '1.0.0@',
-  'some-replaced/package' => '1.3.5@aaabbbcccddd',
-  'root/package' => '1.3.5@aaabbbcccddd',
-);
+    public const ROOT_PACKAGE_NAME = 'root/package';
 
     private function __construct()
     {
@@ -943,18 +916,15 @@ final class Versions
     /**
      * @throws OutOfBoundsException If a version cannot be located.
      *
-     * @psalm-param key-of<self::VERSIONS> $packageName
      * @psalm-pure
+     *
+     * @psalm-suppress ImpureMethodCall we know that {@see InstalledVersions} interaction does not
+     *                                  cause any side effects here.
      */
     public static function getVersion(string $packageName) : string
     {
-        if (isset(self::VERSIONS[$packageName])) {
-            return self::VERSIONS[$packageName];
-        }
-
-        throw new OutOfBoundsException(
-            'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
-        );
+        return InstalledVersions::getPrettyVersion($packageName)
+            . '@' . InstalledVersions::getReference($packageName);
     }
 }
 
@@ -965,7 +935,7 @@ PHP;
         $this->rmDir($vendorDir);
     }
 
-    private function getRootPackageMock() : RootPackageInterface
+    private function getRootPackageMock(): RootPackageInterface
     {
         $package = $this->createMock(RootPackageInterface::class);
         $package->expects(self::any())->method('getName')->willReturn('root/package');

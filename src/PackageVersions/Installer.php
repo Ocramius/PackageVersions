@@ -16,6 +16,7 @@ use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Generator;
 use RuntimeException;
+
 use function array_key_exists;
 use function array_merge;
 use function chmod;
@@ -27,7 +28,6 @@ use function iterator_to_array;
 use function rename;
 use function sprintf;
 use function uniqid;
-use function var_export;
 
 final class Installer implements ComposerV2Plugin, EventSubscriberInterface
 {
@@ -38,6 +38,7 @@ declare(strict_types=1);
 
 namespace PackageVersions;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
 
 /**
@@ -48,15 +49,13 @@ use OutOfBoundsException;
  */
 %s
 {
-    public const ROOT_PACKAGE_NAME = '%s';
     /**
-     * Array of all available composer packages.
-     * Dont read this array from your calling code, but use the \PackageVersions\Versions::getVersion() method instead.
-     *
-     * @var array<string, string>
-     * @internal
+     * @deprecated please use {@see \Composer\InstalledVersions::getRootPackage()} instead. The
+     *             equivalent expression for this constant's contents is
+     *             `\Composer\InstalledVersions::getRootPackage()['name']`.
+     *             This constant will be removed in version 2.0.0.
      */
-    public const VERSIONS          = %s;
+    public const ROOT_PACKAGE_NAME = '%s';
 
     private function __construct()
     {
@@ -65,34 +64,31 @@ use OutOfBoundsException;
     /**
      * @throws OutOfBoundsException If a version cannot be located.
      *
-     * @psalm-param key-of<self::VERSIONS> $packageName
      * @psalm-pure
+     *
+     * @psalm-suppress ImpureMethodCall we know that {@see InstalledVersions} interaction does not
+     *                                  cause any side effects here.
      */
     public static function getVersion(string $packageName) : string
     {
-        if (isset(self::VERSIONS[$packageName])) {
-            return self::VERSIONS[$packageName];
-        }
-
-        throw new OutOfBoundsException(
-            'Required package "' . $packageName . '" is not installed: check your ./vendor/composer/installed.json and/or ./composer.lock files'
-        );
+        return InstalledVersions::getPrettyVersion($packageName)
+            . '@' . InstalledVersions::getReference($packageName);
     }
 }
 
 PHP;
 
-    public function activate(Composer $composer, IOInterface $io) : void
+    public function activate(Composer $composer, IOInterface $io): void
     {
         // Nothing to do here, as all features are provided through event listeners
     }
 
-    public function deactivate(Composer $composer, IOInterface $io) : void
+    public function deactivate(Composer $composer, IOInterface $io): void
     {
         // Nothing to do here, as all features are provided through event listeners
     }
 
-    public function uninstall(Composer $composer, IOInterface $io) : void
+    public function uninstall(Composer $composer, IOInterface $io): void
     {
         // Nothing to do here, as all features are provided through event listeners
     }
@@ -100,7 +96,7 @@ PHP;
     /**
      * {@inheritDoc}
      */
-    public static function getSubscribedEvents() : array
+    public static function getSubscribedEvents(): array
     {
         return [ScriptEvents::POST_AUTOLOAD_DUMP => 'dumpVersionsClass'];
     }
@@ -108,7 +104,7 @@ PHP;
     /**
      * @throws RuntimeException
      */
-    public static function dumpVersionsClass(Event $composerEvent) : void
+    public static function dumpVersionsClass(Event $composerEvent): void
     {
         $composer    = $composerEvent->getComposer();
         $rootPackage = $composer->getPackage();
@@ -120,7 +116,7 @@ PHP;
             return;
         }
 
-        $versionClass = self::generateVersionsClass($rootPackage->getName(), $versions);
+        $versionClass = self::generateVersionsClass($rootPackage->getName());
 
         self::writeVersionClassToFile($versionClass, $composer, $composerEvent->getIO());
     }
@@ -128,20 +124,19 @@ PHP;
     /**
      * @param string[] $versions
      */
-    private static function generateVersionsClass(string $rootPackageName, array $versions) : string
+    private static function generateVersionsClass(string $rootPackageName): string
     {
         return sprintf(
             self::$generatedClassTemplate,
             'fin' . 'al ' . 'cla' . 'ss ' . 'Versions', // note: workaround for regex-based code parsers :-(
-            $rootPackageName,
-            var_export($versions, true)
+            $rootPackageName
         );
     }
 
     /**
      * @throws RuntimeException
      */
-    private static function writeVersionClassToFile(string $versionClassSource, Composer $composer, IOInterface $io) : void
+    private static function writeVersionClassToFile(string $versionClassSource, Composer $composer, IOInterface $io): void
     {
         $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
             . '/src/PackageVersions/Versions.php';
@@ -180,7 +175,7 @@ PHP;
     private static function locateRootPackageInstallPath(
         Config $composerConfig,
         RootPackageInterface $rootPackage
-    ) : string {
+    ): string {
         if (self::getRootPackageAlias($rootPackage)->getName() === 'ocramius/package-versions') {
             return dirname($composerConfig->get('vendor-dir'));
         }
@@ -188,7 +183,7 @@ PHP;
         return $composerConfig->get('vendor-dir') . '/ocramius/package-versions';
     }
 
-    private static function getRootPackageAlias(RootPackageInterface $rootPackage) : PackageInterface
+    private static function getRootPackageAlias(RootPackageInterface $rootPackage): PackageInterface
     {
         $package = $rootPackage;
 
@@ -204,15 +199,15 @@ PHP;
      *
      * @psalm-return Generator<string, string>
      */
-    private static function getVersions(Locker $locker, RootPackageInterface $rootPackage) : Generator
+    private static function getVersions(Locker $locker, RootPackageInterface $rootPackage): Generator
     {
         $lockData = $locker->getLockData();
 
-        $lockData['packages-dev'] = $lockData['packages-dev'] ?? [];
+        $lockData['packages-dev'] ??= [];
 
         foreach (array_merge($lockData['packages'], $lockData['packages-dev']) as $package) {
             yield $package['name'] => $package['version'] . '@' . (
-                $package['source']['reference']?? $package['dist']['reference'] ?? ''
+                $package['source']['reference'] ?? $package['dist']['reference'] ?? ''
             );
         }
 

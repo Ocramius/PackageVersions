@@ -10,16 +10,17 @@
         }
     ],
     "require": {
-        "php":                 "^7.4.0",
-        "composer-plugin-api": "^1.1.0 || ^2.0"
+        "php":                  "^7.4.7",
+        "composer-plugin-api":  "^2.0.0",
+        "composer-runtime-api": "^2.0.0"
     },
     "require-dev": {
-        "phpunit/phpunit":          "^9.1.1",
-        "infection/infection":      "^0.15.3",
-        "composer/composer":        "^1.9.3 || ^2.0@dev",
+        "composer/composer":        "^2.0.0@dev",
+        "doctrine/coding-standard": "^8.1.0",
         "ext-zip":                  "^1.15.0",
-        "doctrine/coding-standard": "^7.0.2",
-        "vimeo/psalm":              "^3.9.3"
+        "infection/infection":      "^0.16.4",
+        "phpunit/phpunit":          "^9.1.5",
+        "vimeo/psalm":              "^3.12.2"
     },
     "autoload": {
         "psr-4": {

@@ -10,6 +10,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 use ZipArchive;
+
 use function array_filter;
 use function array_map;
 use function array_walk;
@@ -36,6 +37,7 @@ use function substr;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
+
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const PHP_BINARY;
@@ -51,7 +53,7 @@ class E2EInstallerTest extends TestCase
 
     private string $tempArtifact;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->tempGlobalComposerHome = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/global';
         $this->tempLocalComposerHome  = sys_get_temp_dir() . '/' . uniqid('InstallerTest', true) . '/local';
@@ -63,7 +65,7 @@ class E2EInstallerTest extends TestCase
         putenv('COMPOSER_HOME=' . $this->tempGlobalComposerHome);
     }
 
-    protected function tearDown() : void
+    protected function tearDown(): void
     {
         $this->rmDir($this->tempGlobalComposerHome);
         $this->rmDir($this->tempLocalComposerHome);
@@ -72,7 +74,7 @@ class E2EInstallerTest extends TestCase
         putenv('COMPOSER_HOME');
     }
 
-    public function testGloballyInstalledPluginDoesNotGenerateVersionsForLocalProject() : void
+    public function testGloballyInstalledPluginDoesNotGenerateVersionsForLocalProject(): void
     {
         $this->createPackageVersionsArtifact();
 
@@ -115,7 +117,7 @@ class E2EInstallerTest extends TestCase
         );
     }
 
-    public function testRemovingPluginDoesNotAttemptToGenerateVersions() : void
+    public function testRemovingPluginDoesNotAttemptToGenerateVersions(): void
     {
         $this->createPackageVersionsArtifact();
         $this->createArtifact();
@@ -154,7 +156,7 @@ class E2EInstallerTest extends TestCase
      * @group #41
      * @group #46
      */
-    public function testRemovingPluginWithNoDevDoesNotAttemptToGenerateVersions() : void
+    public function testRemovingPluginWithNoDevDoesNotAttemptToGenerateVersions(): void
     {
         $this->createPackageVersionsArtifact();
         $this->createArtifact();
@@ -186,7 +188,7 @@ class E2EInstallerTest extends TestCase
         );
     }
 
-    public function testOnReadonlyFilesystemDoesNotGenerateClasses() : void
+    public function testOnReadonlyFilesystemDoesNotGenerateClasses(): void
     {
         $this->createPackageVersionsArtifact();
         $this->createArtifact();
@@ -228,7 +230,7 @@ class E2EInstallerTest extends TestCase
     /**
      * @group 101
      */
-    public function testInstallingPluginWithNoScriptsLeadsToUsableVersionsClass() : void
+    public function testInstallingPluginWithNoScriptsLeadsToUsableVersionsClass(): void
     {
         $this->createPackageVersionsArtifact();
         $this->createArtifact();
@@ -257,7 +259,7 @@ class E2EInstallerTest extends TestCase
         self::assertPackageVersionsIsUsable($this->tempLocalComposerHome);
     }
 
-    private function createPackageVersionsArtifact() : void
+    private function createPackageVersionsArtifact(): void
     {
         $zip = new ZipArchive();
 
@@ -298,7 +300,7 @@ class E2EInstallerTest extends TestCase
         $zip->close();
     }
 
-    private function createArtifact() : void
+    private function createArtifact(): void
     {
         $zip = new ZipArchive();
 
@@ -319,7 +321,7 @@ class E2EInstallerTest extends TestCase
     /**
      * @param mixed[] $config
      */
-    private function writeComposerJsonFile(array $config, string $directory) : void
+    private function writeComposerJsonFile(array $config, string $directory): void
     {
         file_put_contents(
             $directory . '/composer.json',
@@ -327,7 +329,7 @@ class E2EInstallerTest extends TestCase
         );
     }
 
-    private function writePackageVersionUsingFile(string $directory) : void
+    private function writePackageVersionUsingFile(string $directory): void
     {
         file_put_contents(
             $directory . '/use-package-versions.php',
@@ -341,7 +343,7 @@ PHP
         );
     }
 
-    private function assertPackageVersionsIsUsable(string $directory) : void
+    private function assertPackageVersionsIsUsable(string $directory): void
     {
         exec(PHP_BINARY . ' ' . escapeshellarg($directory . '/use-package-versions.php'), $output, $exitCode);
 
@@ -353,7 +355,7 @@ PHP
     /**
      * @return mixed[]
      */
-    private function execComposerInDir(string $command, string $dir) : array
+    private function execComposerInDir(string $command, string $dir): array
     {
         $currentDir = getcwd();
         chdir($dir);
@@ -364,7 +366,7 @@ PHP
         return $output;
     }
 
-    private function rmDir(string $directory) : void
+    private function rmDir(string $directory): void
     {
         if (! is_writable($directory)) {
             chmod($directory, 0700);
@@ -377,7 +379,7 @@ PHP
         }
 
         array_map(
-            function ($item) use ($directory) : void {
+            function ($item) use ($directory): void {
                 $this->rmDir($directory . '/' . $item);
             },
             array_filter(

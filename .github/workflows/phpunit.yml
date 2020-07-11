@@ -1,0 +1,78 @@
+# https://help.github.com/en/categories/automating-your-workflow-with-github-actions
+
+name: "PHPUnit tests"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  phpunit:
+    name: "PHPUnit tests"
+
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        dependencies:
+          - "lowest"
+          - "highest"
+          - "locked"
+          - "classmap-authoritative"
+          - "no-scripts"
+        php-version:
+          - "7.4"
+        operating-system:
+          - "ubuntu-latest"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      # `master` has a branch-alias, allowing us to run installation of dependencies that depend on this package themselves
+      - name: "Switch active branch to master"
+        run: |
+          git branch -D master || true
+          git checkout -b master
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "pcov"
+          php-version: "${{ matrix.php-version }}"
+          ini-values: memory_limit=-1
+          tools: composer:v2
+
+      - name: "Cache dependencies"
+        uses: "actions/cache@v2"
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
+          restore-keys: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
+
+      - name: "Install lowest dependencies"
+        if: ${{ matrix.dependencies == 'lowest' }}
+        run: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
+
+      - name: "Install highest dependencies"
+        if: ${{ matrix.dependencies == 'highest' }}
+        run: "composer update --no-interaction --no-progress --no-suggest"
+
+      - name: "Install locked dependencies"
+        if: ${{ matrix.dependencies == 'locked' }}
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: "Install with classmap authoritative flag"
+        if: ${{ matrix.dependencies == 'classmap-authoritative' }}
+        run: "composer install --no-interaction --classmap-authoritative"
+
+      - name: "Install without scripts"
+        if: ${{ matrix.dependencies == 'no-scripts' }}
+        run: "composer install --no-scripts"
+
+      - name: "Tests"
+        run: "vendor/bin/phpunit"

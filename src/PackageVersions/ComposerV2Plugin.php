@@ -14,7 +14,7 @@ use Composer\Plugin\PluginInterface;
  */
 interface ComposerV2Plugin extends PluginInterface
 {
-    public function deactivate(Composer $composer, IOInterface $io) : void;
+    public function deactivate(Composer $composer, IOInterface $io): void;
 
-    public function uninstall(Composer $composer, IOInterface $io) : void;
+    public function uninstall(Composer $composer, IOInterface $io): void;
 }
