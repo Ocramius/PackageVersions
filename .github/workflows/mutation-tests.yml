@@ -31,7 +31,7 @@ jobs:
       - name: "Switch active branch to master"
         run: |
           git branch -D master || true
-          git checkout -b master
+          git checkout -b master || true
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
