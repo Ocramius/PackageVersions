@@ -29,7 +29,14 @@ final class Versions
     {
     }
 
-    /** @throws OutOfBoundsException if a version cannot be located. */
+    /**
+     * @throws OutOfBoundsException if a version cannot be located.
+     *
+     * @psalm-pure
+     *
+     * @psalm-suppress ImpureMethodCall we know that {@see InstalledVersions} interaction does not
+     *                                  cause any side effects here.
+     */
     public static function getVersion(string $packageName) : string
     {
         return InstalledVersions::getPrettyVersion($packageName)
