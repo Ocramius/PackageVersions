@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.10.1 - TBD
+
+Introduced release automation tooling, which should also help us
+with keeping the changelog up-to-date long-term.
+
 ## 1.1.3 - 2017-09-06
 
 This release fixes a bug that caused PackageVersions to prevent
