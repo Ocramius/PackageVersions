@@ -36,6 +36,13 @@ final class VersionsTest extends TestCase
         }
     }
 
+    /** @group #148 */
+    public function testCanRetrieveRootPackageVersion(): void
+    {
+        /** @psalm-suppress DeprecatedConstant */
+        self::assertMatchesRegularExpression('/^.+\@[0-9a-f]+$/', Versions::getVersion(Versions::ROOT_PACKAGE_NAME));
+    }
+
     public function testInvalidVersionsAreRejected(): void
     {
         $this->expectException(OutOfBoundsException::class);
