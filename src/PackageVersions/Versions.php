@@ -39,6 +39,13 @@ final class Versions
      */
     public static function getVersion(string $packageName) : string
     {
+        /** @psalm-suppress DeprecatedConstant */
+        if ($packageName === self::ROOT_PACKAGE_NAME) {
+            $rootPackage = InstalledVersions::getRootPackage();
+
+            return $rootPackage['pretty_version'] . '@' . $rootPackage['reference'];
+        }
+
         return InstalledVersions::getPrettyVersion($packageName)
             . '@' . InstalledVersions::getReference($packageName);
     }
