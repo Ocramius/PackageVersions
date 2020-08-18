@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 1.10.1 - TBD
+## 1.10.1 - 2020-08-18
 
 Introduced release automation tooling, which should also help us
 with keeping the changelog up-to-date long-term.
