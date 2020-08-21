@@ -13,11 +13,7 @@ use function file_get_contents;
 use function json_decode;
 use function uniqid;
 
-/**
- * @uses \PackageVersions\FallbackVersions
- *
- * @covers \PackageVersions\Versions
- */
+/** @covers \PackageVersions\Versions */
 final class VersionsTest extends TestCase
 {
     public function testValidVersions(): void
@@ -41,6 +37,12 @@ final class VersionsTest extends TestCase
     {
         /** @psalm-suppress DeprecatedConstant */
         self::assertMatchesRegularExpression('/^.+\@[0-9a-f]+$/', Versions::getVersion(Versions::ROOT_PACKAGE_NAME));
+    }
+
+    /** @group #153 */
+    public function testCanRetrieveRootPackageName(): void
+    {
+        self::assertMatchesRegularExpression('/^[a-z0-9\\-]+\\/[a-z0-9\\-]+$/', Versions::rootPackageName());
     }
 
     public function testInvalidVersionsAreRejected(): void
