@@ -1,6 +1,6 @@
 {
     "name": "ocramius/package-versions",
-    "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
+    "description": "Provides efficient querying for installed package versions (no runtime IO)",
     "type": "library",
     "license": "MIT",
     "authors": [
