@@ -18,15 +18,24 @@ use OutOfBoundsException;
 final class Versions
 {
     /**
-     * @deprecated please use {@see \Composer\InstalledVersions::getRootPackage()} instead. The
-     *             equivalent expression for this constant's contents is
-     *             `\Composer\InstalledVersions::getRootPackage()['name']`.
+     * @deprecated please use {@see self::rootPackageName()} instead.
      *             This constant will be removed in version 2.0.0.
      */
     public const ROOT_PACKAGE_NAME = 'unknown/root-package@UNKNOWN';
 
     private function __construct()
     {
+    }
+
+    /**
+     * @psalm-pure
+     *
+     * @psalm-suppress ImpureMethodCall we know that {@see InstalledVersions} interaction does not
+     *                                  cause any side effects here.
+     */
+    public static function rootPackageName() : string
+    {
+        return InstalledVersions::getRootPackage()['name'];
     }
 
     /**
