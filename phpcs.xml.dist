@@ -11,11 +11,5 @@
     <file>src</file>
     <file>test</file>
 
-    <rule ref="Doctrine">
-        <exclude-pattern>src/PackageVersions/Versions.php</exclude-pattern>
-    </rule>
-
-    <rule ref="Generic.Strings.UnnecessaryStringConcat.Found">
-        <exclude-pattern>src/PackageVersions/Installer.php</exclude-pattern>
-    </rule>
+    <rule ref="Doctrine"/>
 </ruleset>

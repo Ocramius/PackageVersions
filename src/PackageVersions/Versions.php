@@ -15,11 +15,10 @@ final class Versions
 
     /**
      * @psalm-pure
-     *
      * @psalm-suppress ImpureMethodCall we know that {@see InstalledVersions} interaction does not
      *                                  cause any side effects here.
      */
-    public static function rootPackageName() : string
+    public static function rootPackageName(): string
     {
         return InstalledVersions::getRootPackage()['name'];
     }
@@ -32,7 +31,7 @@ final class Versions
      * @psalm-suppress ImpureMethodCall we know that {@see InstalledVersions} interaction does not
      *                                  cause any side effects here.
      */
-    public static function getVersion(string $packageName) : string
+    public static function getVersion(string $packageName): string
     {
         return InstalledVersions::getPrettyVersion($packageName)
             . '@' . InstalledVersions::getReference($packageName);

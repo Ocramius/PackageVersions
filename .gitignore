@@ -1,5 +1,4 @@
 /vendor/
-/src/PackageVersions/Versions.php
 /clover.xml
 /phpcs.xml
 /.phpcs-cache

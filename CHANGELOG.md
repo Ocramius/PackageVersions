@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## 2.0.0 - TBD
+
+This release turns the package into a library (previously, it was
+a composer plugin).
+
+Relevant change is that the `PackageVersions\Versions::ROOT_PACKAGE_NAME`
+constant no longer exists: please use `PackageVersions\Versions::rootPackageName()`
+instead.
+
+This slims down the complexity of the package massively, and removes
+multiple known bugs.
+
+Total issues resolved: **5**
+
+- [107: Unable to install on vboxfs](https://github.com/Ocramius/PackageVersions/issues/107) thanks to @alexgit2k
+- [138: `src/Packages/Versions.php` changes detected in `composer install`](https://github.com/Ocramius/PackageVersions/issues/138) thanks to @Taluu
+- [142: Option to ignore version of rootPackage](https://github.com/Ocramius/PackageVersions/issues/142) thanks to @qurben
+- [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
+- [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
+
 ## 1.10.1 - 2020-08-18
 
 Introduced release automation tooling, which should also help us

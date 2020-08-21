@@ -25,11 +25,10 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v2"
 
-      # `master` has a branch-alias, allowing us to run installation of dependencies that depend on this package themselves
-      - name: "Switch active branch to master"
-        run: |
-          git branch -D master || true
-          git checkout -b master || true
+      # Many tools rely on this tool staying as `1.x`, therefore we check out the current workdir as
+      # a compatible branch name
+      - name: "Switch active branch to 1.99.x"
+        run: git checkout -b 1.99.x || true
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
