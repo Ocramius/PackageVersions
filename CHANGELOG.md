@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 2.0.0 - TBD
+## 2.0.0 - 2020-08-21
 
 This release turns the package into a library (previously, it was
 a composer plugin).
