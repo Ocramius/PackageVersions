@@ -36,7 +36,7 @@ final class VersionsTest extends TestCase
     public function testCanRetrieveRootPackageVersion(): void
     {
         /** @psalm-suppress DeprecatedConstant */
-        self::assertMatchesRegularExpression('/^.+\@[0-9a-f]+$/', Versions::getVersion(Versions::ROOT_PACKAGE_NAME));
+        self::assertMatchesRegularExpression('/^.+\@[0-9a-f]+$/', Versions::getVersion(Versions::rootPackageName()));
     }
 
     /** @group #153 */
