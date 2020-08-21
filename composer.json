@@ -18,7 +18,7 @@
         "doctrine/coding-standard": "^8.1.0",
         "ext-zip":                  "^1.15.0",
         "infection/infection":      "^0.17.2",
-        "phpunit/phpunit":          "^9.3.7",
+        "phpunit/phpunit":          "^9.2.6",
         "vimeo/psalm":              "^3.12.2"
     },
     "autoload": {
