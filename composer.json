@@ -21,6 +21,9 @@
         "phpunit/phpunit":          "^9.2.6",
         "vimeo/psalm":              "^3.12.2"
     },
+    "replace": {
+        "composer/package-versions-deprecated": "^1"
+    },
     "autoload": {
         "psr-4": {
             "PackageVersions\\": "src/PackageVersions"
