@@ -17,13 +17,13 @@ jobs:
     strategy:
       matrix:
         dependencies:
-          - "lowest"
           - "highest"
           - "locked"
           - "classmap-authoritative"
           - "no-scripts"
         php-version:
           - "7.4"
+          - "8.0"
         operating-system:
           - "ubuntu-latest"
 
@@ -53,25 +53,21 @@ jobs:
           key: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
           restore-keys: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
 
-      - name: "Install lowest dependencies"
-        if: ${{ matrix.dependencies == 'lowest' }}
-        run: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
-
       - name: "Install highest dependencies"
         if: ${{ matrix.dependencies == 'highest' }}
-        run: "composer update --no-interaction --no-progress --no-suggest"
+        run: "composer update --no-interaction --no-progress --no-suggest --ignore-platform-req=php"
 
       - name: "Install locked dependencies"
         if: ${{ matrix.dependencies == 'locked' }}
-        run: "composer install --no-interaction --no-progress --no-suggest"
+        run: "composer install --no-interaction --no-progress --no-suggest --ignore-platform-req=php"
 
       - name: "Install with classmap authoritative flag"
         if: ${{ matrix.dependencies == 'classmap-authoritative' }}
-        run: "composer install --no-interaction --classmap-authoritative"
+        run: "composer install --no-interaction --classmap-authoritative --ignore-platform-req=php"
 
       - name: "Install without scripts"
         if: ${{ matrix.dependencies == 'no-scripts' }}
-        run: "composer install --no-scripts"
+        run: "composer install --no-scripts --ignore-platform-req=php"
 
       - name: "Tests"
         run: "vendor/bin/phpunit"

@@ -20,6 +20,7 @@ jobs:
           - "locked"
         php-version:
           - "7.4"
+          - "8.0"
         operating-system:
           - "ubuntu-latest"
 
@@ -49,17 +50,13 @@ jobs:
           key: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
           restore-keys: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
 
-      - name: "Install lowest dependencies"
-        if: ${{ matrix.dependencies == 'lowest' }}
-        run: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
-
       - name: "Install highest dependencies"
         if: ${{ matrix.dependencies == 'highest' }}
-        run: "composer update --no-interaction --no-progress --no-suggest"
+        run: "composer update --no-interaction --no-progress --no-suggest --ignore-platform-req=php"
 
       - name: "Install locked dependencies"
         if: ${{ matrix.dependencies == 'locked' }}
-        run: "composer install --no-interaction --no-progress --no-suggest"
+        run: "composer install --no-interaction --no-progress --no-suggest --ignore-platform-req=php"
 
       - name: "psalm"
         run: "vendor/bin/psalm --shepherd --stats"
