@@ -18,6 +18,7 @@ jobs:
           - "locked"
         php-version:
           - "7.4"
+          - "8.0"
         operating-system:
           - "ubuntu-latest"
 
@@ -49,15 +50,15 @@ jobs:
 
       - name: "Install lowest dependencies"
         if: ${{ matrix.dependencies == 'lowest' }}
-        run: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
+        run: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest --ignore-platform-req=php"
 
       - name: "Install highest dependencies"
         if: ${{ matrix.dependencies == 'highest' }}
-        run: "composer update --no-interaction --no-progress --no-suggest"
+        run: "composer update --no-interaction --no-progress --no-suggest --ignore-platform-req=php"
 
       - name: "Install locked dependencies"
         if: ${{ matrix.dependencies == 'locked' }}
-        run: "composer install --no-interaction --no-progress --no-suggest"
+        run: "composer install --no-interaction --no-progress --no-suggest --ignore-platform-req=php"
 
       - name: "Coding Standard"
         run: "vendor/bin/phpcs"
