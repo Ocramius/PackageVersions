@@ -20,27 +20,24 @@ Total issues resolved: **5**
 - [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
 - [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
 
-## 2.3.0 - TBD
+## 2.3.0 - 2020-12-23
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [2.3.0](https://github.com/Ocramius/PackageVersions/milestone/28)
 
-- Nothing.
 
-### Deprecated
 
-- Nothing.
+### 2.3.0
 
-### Removed
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
 
-- Nothing.
+#### enhancement
 
-### Fixed
-
-- Nothing.
+ - [164: Update `.gitattributes` to avoid exporting phpcs artifacts](https://github.com/Ocramius/PackageVersions/pull/164) thanks to @reedy
 
 ## 1.10.1 - 2020-08-18
 
