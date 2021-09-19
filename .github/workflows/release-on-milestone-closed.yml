@@ -55,3 +55,13 @@ jobs:
           "SIGNING_SECRET_KEY": ${{ secrets.SIGNING_SECRET_KEY }}
           "GIT_AUTHOR_NAME": ${{ secrets.GIT_AUTHOR_NAME }}
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
+
+      - name: "Create new milestones"
+        uses: "laminas/automatic-releases@v1"
+        with:
+          command-name: "laminas:automatic-releases:create-milestones"
+        env:
+          "GITHUB_TOKEN": ${{ secrets.GITHUB_TOKEN }}
+          "SIGNING_SECRET_KEY": ${{ secrets.SIGNING_SECRET_KEY }}
+          "GIT_AUTHOR_NAME": ${{ secrets.GIT_AUTHOR_NAME }}
+          "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
