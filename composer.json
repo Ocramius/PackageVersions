@@ -11,7 +11,7 @@
     ],
     "require": {
         "php":                  "~8.0.0 || ~8.1.0",
-        "composer-runtime-api": "^2.0.0"
+        "composer-runtime-api": "^2.1.0"
     },
     "require-dev": {
         "composer/composer":                      "^2.1.8",
