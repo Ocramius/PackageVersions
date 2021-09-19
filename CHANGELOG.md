@@ -20,27 +20,28 @@ Total issues resolved: **5**
 - [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
 - [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
 
-## 2.4.0 - TBD
+## 2.4.0 - 2021-09-19
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [2.4.0](https://github.com/Ocramius/PackageVersions/milestone/29)
 
-- Nothing.
 
-### Deprecated
 
-- Nothing.
+### 2.4.0
 
-### Removed
+- Total issues resolved: **0**
+- Total pull requests resolved: **2**
+- Total contributors: **2**
 
-- Nothing.
+#### enhancement
 
-### Fixed
+ - [169: PHP 8.1 compatibility, upgrade CI dependencies, enable dependabot](https://github.com/Ocramius/PackageVersions/pull/169) thanks to @Ocramius
 
-- Nothing.
+#### dependencies
+
+ - [168: Upgrade to GitHub-native Dependabot](https://github.com/Ocramius/PackageVersions/pull/168) thanks to @dependabot-preview[bot]
 
 ## 2.3.0 - 2020-12-23
 
