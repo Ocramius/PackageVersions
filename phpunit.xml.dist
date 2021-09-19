@@ -15,9 +15,9 @@
     <testsuite name="PackageVersions tests">
         <directory>./test/PackageVersionsTest</directory>
     </testsuite>
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
+    <coverage>
+        <include>
             <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
+        </include>
+    </coverage>
 </phpunit>
