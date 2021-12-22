@@ -11,10 +11,10 @@
     ],
     "require": {
         "php":                  "~8.0.0 || ~8.1.0",
-        "composer-runtime-api": "^2.1.0"
+        "composer-runtime-api": "^2.2.0"
     },
     "require-dev": {
-        "composer/composer":                      "^2.1.8",
+        "composer/composer":                      "^2.2.0",
         "doctrine/coding-standard":               "^9.0.0",
         "ext-zip":                                "^1.15.0",
         "roave/infection-static-analysis-plugin": "^1.10.0",
@@ -32,6 +32,11 @@
     "autoload-dev": {
         "psr-4": {
             "PackageVersionsTest\\": "test/PackageVersionsTest"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }
