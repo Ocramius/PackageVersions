@@ -17,9 +17,9 @@
         "composer/composer":                      "^2.2.0",
         "doctrine/coding-standard":               "^9.0.0",
         "ext-zip":                                "^1.15.0",
-        "roave/infection-static-analysis-plugin": "^1.10.0",
-        "phpunit/phpunit":                        "^9.5.9",
-        "vimeo/psalm":                            "^4.10.0"
+        "roave/infection-static-analysis-plugin": "^1.13.0",
+        "phpunit/phpunit":                        "^9.5.10",
+        "vimeo/psalm":                            "^4.15.0"
     },
     "replace": {
         "composer/package-versions-deprecated": "*"
