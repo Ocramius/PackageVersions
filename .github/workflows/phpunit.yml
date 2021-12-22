@@ -66,7 +66,7 @@ jobs:
 
       - name: "Install without scripts"
         if: ${{ matrix.dependencies == 'no-scripts' }}
-        run: "composer install --no-scripts --ignore-platform-req=php"
+        run: "composer install --no-interaction --no-scripts --ignore-platform-req=php"
 
       - name: "Tests"
         run: "vendor/bin/phpunit"
