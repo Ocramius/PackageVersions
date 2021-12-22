@@ -20,27 +20,32 @@ Total issues resolved: **5**
 - [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
 - [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
 
-## 2.5.0 - TBD
+## 2.5.0 - 2021-12-22
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [2.5.0](https://github.com/Ocramius/PackageVersions/milestone/31)
 
-- Nothing.
+Feature release (minor)
 
-### Deprecated
+### 2.5.0
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **6**
+- Total contributors: **2**
 
-### Removed
+#### dependencies,enhancement
 
-- Nothing.
+ - [192: Upgrade to `composer/composer:2.2.0`, trust `dealerdirect/phpcodesniffer-composer-installer` and run everything in CI with `--no-interaction`](https://github.com/Ocramius/PackageVersions/pull/192) thanks to @Ocramius
 
-### Fixed
+#### dependencies,github_actions
 
-- Nothing.
+ - [188: Bump ridedott/merge-me-action from 2.9.54 to 2.9.60](https://github.com/Ocramius/PackageVersions/pull/188) thanks to @dependabot[bot]
+ - [182: Bump ridedott/merge-me-action from 2.9.48 to 2.9.52](https://github.com/Ocramius/PackageVersions/pull/182) thanks to @dependabot[bot]
+ - [179: Bump ridedott/merge-me-action from 2.9.46 to 2.9.48](https://github.com/Ocramius/PackageVersions/pull/179) thanks to @dependabot[bot]
+ - [177: Bump ridedott/merge-me-action from 2.9.42 to 2.9.46](https://github.com/Ocramius/PackageVersions/pull/177) thanks to @dependabot[bot]
+ - [175: Bump ridedott/merge-me-action from 2.9.40 to 2.9.42](https://github.com/Ocramius/PackageVersions/pull/175) thanks to @dependabot[bot]
 
 ## 2.4.0 - 2021-09-19
 
