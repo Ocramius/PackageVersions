@@ -1,5 +1,11 @@
 # Package Versions
 
+## A message to Russian 🇷🇺 people
+
+If you currently live in Russia, please read [this message](./ToRussianPeople.md).
+
+### Purpose
+
 This utility provides quick and easy access to version information of composer dependencies.
 
 This information is derived from the ```composer.lock``` file which is (re)generated during ```composer install``` or ```composer update```.
