@@ -23,6 +23,28 @@ Total issues resolved: **5**
 -----
 
 
+## 2.4.2 - TBD
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.3.0 - 2020-12-23
 
 
