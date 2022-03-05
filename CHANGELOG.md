@@ -20,24 +20,8 @@ Total issues resolved: **5**
 - [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
 - [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
 
-## 2.3.1 - 2022-03-05
-
-
 -----
 
-### Release Notes for [2.3.1](https://github.com/Ocramius/PackageVersions/milestone/41)
-
-
-
-### 2.3.1
-
-- Total issues resolved: **0**
-- Total pull requests resolved: **1**
-- Total contributors: **1**
-
-#### enhancement,help wanted
-
- - [199: Raise awareness of current Russia-Ukraine situation, targeting Russian 🇷🇺  readers](https://github.com/Ocramius/PackageVersions/pull/199) thanks to @github-actions[bot]
 
 ## 2.3.0 - 2020-12-23
 
