@@ -39,7 +39,7 @@ jobs:
           tools: composer:v2
 
       - name: "Cache dependencies"
-        uses: "actions/cache@v2"
+        uses: "actions/cache@v3"
         with:
           path: |
             ~/.composer/cache
