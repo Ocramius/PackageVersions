@@ -20,6 +20,28 @@ Total issues resolved: **5**
 - [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
 - [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
 
+## 2.6.1 - TBD
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.3.0 - 2020-12-23
 
 
