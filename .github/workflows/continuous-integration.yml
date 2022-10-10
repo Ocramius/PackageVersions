@@ -1,0 +1,36 @@
+# See https://github.com/laminas/laminas-continuous-integration-action
+# Generates a job matrix based on current dependencies and supported version
+# ranges, then runs all those jobs
+name: "Continuous Integration"
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  matrix:
+    name: Generate job matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - name: Gather CI configuration
+        id: matrix
+        uses: laminas/laminas-ci-matrix-action@1.18.0
+
+  qa:
+    name: QA Checks
+    needs: [ matrix ]
+    runs-on: ${{ matrix.operatingSystem }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
+    steps:
+      - name: ${{ matrix.name }}
+        uses: laminas/laminas-continuous-integration-action@1.26.0
+        env:
+          "GITHUB_TOKEN": ${{ secrets.GITHUB_TOKEN }}
+          "INFECTION_DASHBOARD_API_KEY": ${{ secrets.INFECTION_DASHBOARD_API_KEY }}
+          "STRYKER_DASHBOARD_API_KEY": ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+        with:
+          job: ${{ matrix.job }}
