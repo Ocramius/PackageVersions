@@ -20,27 +20,38 @@ Total issues resolved: **5**
 - [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
 - [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
 
-## 2.7.0 - TBD
+## 2.7.0 - 2022-10-31
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [2.7.0](https://github.com/Ocramius/PackageVersions/milestone/46)
 
-- Nothing.
+Feature release (minor)
 
-### Deprecated
+### 2.7.0
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **6**
+- Total contributors: **2**
 
-### Removed
+#### dependencies
 
-- Nothing.
+ - [243: Update dependency composer/composer to ^2.4.4](https://github.com/Ocramius/PackageVersions/pull/243) thanks to @Ocramius
 
-### Fixed
+#### renovate
 
-- Nothing.
+ - [242: Update all non-major dependencies, dropping PHP 8.0 support](https://github.com/Ocramius/PackageVersions/pull/242) thanks to @renovate[bot]
+ - [240: Update dependency doctrine/coding-standard to v10](https://github.com/Ocramius/PackageVersions/pull/240) thanks to @renovate[bot]
+ - [238: Configure Renovate](https://github.com/Ocramius/PackageVersions/pull/238) thanks to @renovate[bot]
+
+#### security
+
+ - [239: Update dependency composer/composer to ^2.2.12 &#91;SECURITY&#93; - autoclosed](https://github.com/Ocramius/PackageVersions/pull/239) thanks to @renovate[bot]
+
+#### enhancement
+
+ - [233: Streamlined CI setup with `laminas/laminas-ci-matrix-action`](https://github.com/Ocramius/PackageVersions/pull/233) thanks to @Ocramius
 
 ## 2.3.0 - 2020-12-23
 
