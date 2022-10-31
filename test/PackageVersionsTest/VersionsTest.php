@@ -18,6 +18,24 @@ final class VersionsTest extends TestCase
 {
     public function testValidVersions(): void
     {
+        /**
+         * @var array{
+         *     packages: array<string, array{
+         *         name: string,
+         *         version: string,
+         *         source: array{
+         *             reference: string
+         *         }
+         *     }>,
+         *     packages-dev: array<string, array{
+         *         name: string,
+         *         version: string,
+         *         source: array{
+         *             reference: string
+         *         }
+         *     }>,
+         * } $lockData
+         */
         $lockData = json_decode(file_get_contents(__DIR__ . '/../../composer.lock'), true);
 
         $packages = array_merge($lockData['packages'], $lockData['packages-dev']);
