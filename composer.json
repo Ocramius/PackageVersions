@@ -14,7 +14,7 @@
         "composer-runtime-api": "^2.2.0"
     },
     "require-dev": {
-        "composer/composer":                      "^2.2.0",
+        "composer/composer":                      "^2.4.4",
         "doctrine/coding-standard":               "^10.0.0",
         "ext-zip":                                "^1.15.0",
         "roave/infection-static-analysis-plugin": "^1.25.0",
