@@ -7,8 +7,8 @@
     },
     "logs": {
         "text": "php://stderr",
-        "badge": {
-            "branch": "2.0.x"
+        "stryker": {
+            "report": "/^\\d\\.\\d\\.x$/"
         }
     },
     "minMsi": 100,
