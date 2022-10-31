@@ -30,6 +30,7 @@ final class Versions
      *
      * @psalm-suppress ImpureMethodCall we know that {@see InstalledVersions} interaction does not
      *                                  cause any side effects here.
+     * @psalm-suppress PossiblyNullOperand we know that {@see InstalledVersions} may return `null` values
      */
     public static function getVersion(string $packageName): string
     {

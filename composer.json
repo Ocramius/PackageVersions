@@ -10,16 +10,16 @@
         }
     ],
     "require": {
-        "php":                  "~8.0.0 || ~8.1.0 || ~8.2.0",
+        "php":                  "~8.1.0 || ~8.2.0",
         "composer-runtime-api": "^2.2.0"
     },
     "require-dev": {
         "composer/composer":                      "^2.2.0",
         "doctrine/coding-standard":               "^10.0.0",
         "ext-zip":                                "^1.15.0",
-        "roave/infection-static-analysis-plugin": "^1.13.0",
-        "phpunit/phpunit":                        "^9.5.10",
-        "vimeo/psalm":                            "^4.15.0"
+        "roave/infection-static-analysis-plugin": "^1.25.0",
+        "phpunit/phpunit":                        "^9.5.26",
+        "vimeo/psalm":                            "^4.29.0"
     },
     "replace": {
         "composer/package-versions-deprecated": "*"
@@ -38,6 +38,9 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "infection/extension-installer": false
+        },
+        "platform": {
+            "php": "8.1.99"
         }
     }
 }
