@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3403aa7e79004dc9008d66ba7ff1a55d",
+    "content-hash": "64268d2ee52f80bada95ff4e9380e514",
     "packages": [],
     "packages-dev": [
         {
@@ -2822,28 +2822,28 @@
         },
         {
             "name": "roave/infection-static-analysis-plugin",
-            "version": "1.25.0",
+            "version": "1.26.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/infection-static-analysis-plugin.git",
-                "reference": "f0b6b72dc9e378fdf0cadf440bc2b8061333392e"
+                "reference": "63f3fe01f0d29409501a9999f60ef0602ddfb4cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/infection-static-analysis-plugin/zipball/f0b6b72dc9e378fdf0cadf440bc2b8061333392e",
-                "reference": "f0b6b72dc9e378fdf0cadf440bc2b8061333392e",
+                "url": "https://api.github.com/repos/Roave/infection-static-analysis-plugin/zipball/63f3fe01f0d29409501a9999f60ef0602ddfb4cb",
+                "reference": "63f3fe01f0d29409501a9999f60ef0602ddfb4cb",
                 "shasum": ""
             },
             "require": {
                 "infection/infection": "0.26.16",
-                "ocramius/package-versions": "^1.9.0 || ^2.0.0",
-                "php": "~8.0.0|~8.1.0|~8.2.0",
+                "ocramius/package-versions": "^2.7.0",
+                "php": "~8.1.0 || ~8.2.0",
                 "sanmai/later": "^0.1.2",
-                "vimeo/psalm": "^4.29.0"
+                "vimeo/psalm": "^4.30.0 || ^5.0.0"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^10.0.0",
-                "phpunit/phpunit": "^9.5.25"
+                "phpunit/phpunit": "^9.5.26"
             },
             "bin": [
                 "bin/roave-infection-static-analysis-plugin"
@@ -2867,9 +2867,9 @@
             "description": "Static analysis on top of mutation testing - prevents escaped mutants from being invalid according to static analysis",
             "support": {
                 "issues": "https://github.com/Roave/infection-static-analysis-plugin/issues",
-                "source": "https://github.com/Roave/infection-static-analysis-plugin/tree/1.25.0"
+                "source": "https://github.com/Roave/infection-static-analysis-plugin/tree/1.26.0"
             },
-            "time": "2022-10-22T11:43:05+00:00"
+            "time": "2022-11-30T16:04:59+00:00"
         },
         {
             "name": "sanmai/later",
@@ -2931,16 +2931,16 @@
         },
         {
             "name": "sanmai/pipeline",
-            "version": "v6.2",
+            "version": "v6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sanmai/pipeline.git",
-                "reference": "1c14946cb089776fb024807f1e4f5a985db0ce3c"
+                "reference": "929b115ca58d62b6b2574702df1ebde4562c7c43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sanmai/pipeline/zipball/1c14946cb089776fb024807f1e4f5a985db0ce3c",
-                "reference": "1c14946cb089776fb024807f1e4f5a985db0ce3c",
+                "url": "https://api.github.com/repos/sanmai/pipeline/zipball/929b115ca58d62b6b2574702df1ebde4562c7c43",
+                "reference": "929b115ca58d62b6b2574702df1ebde4562c7c43",
                 "shasum": ""
             },
             "require": {
@@ -2984,7 +2984,7 @@
             "description": "General-purpose collections pipeline",
             "support": {
                 "issues": "https://github.com/sanmai/pipeline/issues",
-                "source": "https://github.com/sanmai/pipeline/tree/v6.2"
+                "source": "https://github.com/sanmai/pipeline/tree/v6.3"
             },
             "funding": [
                 {
@@ -2992,7 +2992,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-11-09T05:47:57+00:00"
+            "time": "2022-11-30T06:07:06+00:00"
         },
         {
             "name": "sebastian/cli-parser",
