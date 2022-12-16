@@ -27,7 +27,7 @@ jobs:
       matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
     steps:
       - name: ${{ matrix.name }}
-        uses: laminas/laminas-continuous-integration-action@1.31.0
+        uses: laminas/laminas-continuous-integration-action@1.32.0
         env:
           "GITHUB_TOKEN": ${{ secrets.GITHUB_TOKEN }}
           "INFECTION_DASHBOARD_API_KEY": ${{ secrets.INFECTION_DASHBOARD_API_KEY }}
