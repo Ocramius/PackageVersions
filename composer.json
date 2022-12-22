@@ -14,10 +14,10 @@
         "composer-runtime-api": "^2.2.0"
     },
     "require-dev": {
-        "composer/composer":                      "^2.5.0",
+        "composer/composer":                      "^2.5.1",
         "doctrine/coding-standard":               "^11.0.0",
         "ext-zip":                                "^1.15.0",
-        "roave/infection-static-analysis-plugin": "^1.26.0",
+        "roave/infection-static-analysis-plugin": "^1.27.0",
         "phpunit/phpunit":                        "^9.5.27",
         "vimeo/psalm":                            "^5.4.0"
     },
