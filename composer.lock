@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0461b1e7c8bc3a82bf96d661decd3c91",
+    "content-hash": "8ceedc8425292604db0bf3001c381ac1",
     "packages": [],
     "packages-dev": [
         {
@@ -1007,20 +1007,20 @@
         },
         {
             "name": "doctrine/coding-standard",
-            "version": "11.0.0",
+            "version": "11.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/coding-standard.git",
-                "reference": "b6660e1e57dd1c0a38d335b7f6495b0c06abc270"
+                "reference": "4bcfa9d922e13cb3b8078d4752e3ba276f959c88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/coding-standard/zipball/b6660e1e57dd1c0a38d335b7f6495b0c06abc270",
-                "reference": "b6660e1e57dd1c0a38d335b7f6495b0c06abc270",
+                "url": "https://api.github.com/repos/doctrine/coding-standard/zipball/4bcfa9d922e13cb3b8078d4752e3ba276f959c88",
+                "reference": "4bcfa9d922e13cb3b8078d4752e3ba276f959c88",
                 "shasum": ""
             },
             "require": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2 || ^0.7",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2 || ^0.7 || ^1.0.0",
                 "php": "^7.2 || ^8.0",
                 "slevomat/coding-standard": "^8.6.2",
                 "squizlabs/php_codesniffer": "^3.7"
@@ -1057,9 +1057,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/coding-standard/issues",
-                "source": "https://github.com/doctrine/coding-standard/tree/11.0.0"
+                "source": "https://github.com/doctrine/coding-standard/tree/11.1.0"
             },
-            "time": "2022-12-11T22:31:43+00:00"
+            "time": "2023-01-06T09:12:24+00:00"
         },
         {
             "name": "doctrine/instantiator",
