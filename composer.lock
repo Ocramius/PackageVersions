@@ -2241,16 +2241,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.18.1",
+            "version": "1.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "22dcdfd725ddf99583bfe398fc624ad6c5004a0f"
+                "reference": "10553ab3f0337ff1a71433c3417d7eb2a3eec1fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/22dcdfd725ddf99583bfe398fc624ad6c5004a0f",
-                "reference": "22dcdfd725ddf99583bfe398fc624ad6c5004a0f",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/10553ab3f0337ff1a71433c3417d7eb2a3eec1fd",
+                "reference": "10553ab3f0337ff1a71433c3417d7eb2a3eec1fd",
                 "shasum": ""
             },
             "require": {
@@ -2280,9 +2280,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.18.1"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.20.0"
             },
-            "time": "2023-04-07T11:51:11+00:00"
+            "time": "2023-04-20T11:18:07+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2995,16 +2995,16 @@
         },
         {
             "name": "sanmai/pipeline",
-            "version": "v6.5",
+            "version": "v6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sanmai/pipeline.git",
-                "reference": "dd7c3c890b6d2d40a2ea1cf0d49281c17832de2d"
+                "reference": "12289ac9c50819d28bf8171ea6ec9579de3325aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sanmai/pipeline/zipball/dd7c3c890b6d2d40a2ea1cf0d49281c17832de2d",
-                "reference": "dd7c3c890b6d2d40a2ea1cf0d49281c17832de2d",
+                "url": "https://api.github.com/repos/sanmai/pipeline/zipball/12289ac9c50819d28bf8171ea6ec9579de3325aa",
+                "reference": "12289ac9c50819d28bf8171ea6ec9579de3325aa",
                 "shasum": ""
             },
             "require": {
@@ -3018,7 +3018,7 @@
                 "phan/phan": ">=1.1",
                 "php-coveralls/php-coveralls": "^2.4.1",
                 "phpstan/phpstan": ">=0.10",
-                "phpunit/phpunit": "^7.4 || ^8.1 || ^9.4",
+                "phpunit/phpunit": ">=9.4",
                 "vimeo/psalm": ">=2"
             },
             "type": "library",
@@ -3048,7 +3048,7 @@
             "description": "General-purpose collections pipeline",
             "support": {
                 "issues": "https://github.com/sanmai/pipeline/issues",
-                "source": "https://github.com/sanmai/pipeline/tree/v6.5"
+                "source": "https://github.com/sanmai/pipeline/tree/v6.6"
             },
             "funding": [
                 {
@@ -3056,7 +3056,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-04-15T00:28:41+00:00"
+            "time": "2023-04-21T23:30:37+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -4197,32 +4197,32 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "8.10.0",
+            "version": "8.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "c4e213e6e57f741451a08e68ef838802eec92287"
+                "reference": "91428d5bcf7db93a842bcf97f465edf62527f3ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/c4e213e6e57f741451a08e68ef838802eec92287",
-                "reference": "c4e213e6e57f741451a08e68ef838802eec92287",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/91428d5bcf7db93a842bcf97f465edf62527f3ea",
+                "reference": "91428d5bcf7db93a842bcf97f465edf62527f3ea",
                 "shasum": ""
             },
             "require": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2 || ^0.7 || ^1.0",
                 "php": "^7.2 || ^8.0",
-                "phpstan/phpdoc-parser": ">=1.18.0 <1.19.0",
+                "phpstan/phpdoc-parser": ">=1.20.0 <1.21.0",
                 "squizlabs/php_codesniffer": "^3.7.1"
             },
             "require-dev": {
                 "phing/phing": "2.17.4",
                 "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpstan/phpstan": "1.4.10|1.10.11",
+                "phpstan/phpstan": "1.10.14",
                 "phpstan/phpstan-deprecation-rules": "1.1.3",
-                "phpstan/phpstan-phpunit": "1.0.0|1.3.11",
+                "phpstan/phpstan-phpunit": "1.3.11",
                 "phpstan/phpstan-strict-rules": "1.5.1",
-                "phpunit/phpunit": "7.5.20|8.5.21|9.6.6|10.0.19"
+                "phpunit/phpunit": "7.5.20|8.5.21|9.6.6|10.1.1"
             },
             "type": "phpcodesniffer-standard",
             "extra": {
@@ -4246,7 +4246,7 @@
             ],
             "support": {
                 "issues": "https://github.com/slevomat/coding-standard/issues",
-                "source": "https://github.com/slevomat/coding-standard/tree/8.10.0"
+                "source": "https://github.com/slevomat/coding-standard/tree/8.11.0"
             },
             "funding": [
                 {
@@ -4258,7 +4258,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-10T07:39:29+00:00"
+            "time": "2023-04-21T15:51:44+00:00"
         },
         {
             "name": "spatie/array-to-xml",
