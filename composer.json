@@ -18,7 +18,7 @@
         "doctrine/coding-standard":               "^11.1.0",
         "ext-zip":                                "^1.15.0",
         "roave/infection-static-analysis-plugin": "^1.31.0",
-        "phpunit/phpunit":                        "^9.6.7",
+        "phpunit/phpunit":                        "^9.6.8",
         "vimeo/psalm":                            "^5.11.0"
     },
     "replace": {
