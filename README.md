@@ -29,6 +29,7 @@ composer require ocramius/package-versions
 ```
 
 It is suggested that you use [an optimized composer autoloader](https://getcomposer.org/doc/06-config.md#optimize-autoloader) (to prevent autoload I/O when accessing the `PackageVersions\Versions` API) in your composer.json:
+
 ```
 ...
     "config": {
