@@ -20,27 +20,30 @@ Total issues resolved: **5**
 - [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
 - [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
 
-## 2.8.0 - TBD
+## 2.8.0 - 2023-09-15
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [2.8.0](https://github.com/Ocramius/PackageVersions/milestone/48)
 
-- Nothing.
+Feature release (minor)
 
-### Deprecated
+### 2.8.0
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **4**
+- Total contributors: **2**
 
-### Removed
+#### enhancement
 
-- Nothing.
+ - [250: Allow php 8.3](https://github.com/Ocramius/PackageVersions/pull/250) thanks to @fezfez
 
-### Fixed
+#### renovate
 
-- Nothing.
+ - [249: Update actions/checkout action to v4](https://github.com/Ocramius/PackageVersions/pull/249) thanks to @renovate[bot]
+ - [245: Update dependency doctrine/coding-standard to v11](https://github.com/Ocramius/PackageVersions/pull/245) thanks to @renovate[bot]
+ - [244: Update dependency vimeo/psalm to v5](https://github.com/Ocramius/PackageVersions/pull/244) thanks to @renovate[bot]
 
 ## 2.7.0 - 2022-10-31
 
