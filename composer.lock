@@ -2944,16 +2944,16 @@
         },
         {
             "name": "sanmai/later",
-            "version": "0.1.3",
+            "version": "0.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sanmai/later.git",
-                "reference": "88a1d39965aa3659ceb96622e2801b9194d16e2c"
+                "reference": "e24c4304a4b1349c2a83151a692cec0c10579f60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sanmai/later/zipball/88a1d39965aa3659ceb96622e2801b9194d16e2c",
-                "reference": "88a1d39965aa3659ceb96622e2801b9194d16e2c",
+                "url": "https://api.github.com/repos/sanmai/later/zipball/e24c4304a4b1349c2a83151a692cec0c10579f60",
+                "reference": "e24c4304a4b1349c2a83151a692cec0c10579f60",
                 "shasum": ""
             },
             "require": {
@@ -2996,7 +2996,7 @@
             "description": "Later: deferred wrapper object",
             "support": {
                 "issues": "https://github.com/sanmai/later/issues",
-                "source": "https://github.com/sanmai/later/tree/0.1.3"
+                "source": "https://github.com/sanmai/later/tree/0.1.4"
             },
             "funding": [
                 {
@@ -3004,7 +3004,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-23T13:38:10+00:00"
+            "time": "2023-10-24T00:25:28+00:00"
         },
         {
             "name": "sanmai/pipeline",
