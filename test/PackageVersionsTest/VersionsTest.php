@@ -6,6 +6,7 @@ namespace PackageVersionsTest;
 
 use OutOfBoundsException;
 use PackageVersions\Versions;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function array_merge;
@@ -13,7 +14,7 @@ use function file_get_contents;
 use function json_decode;
 use function uniqid;
 
-/** @covers \PackageVersions\Versions */
+#[CoversClass(Versions::class)]
 final class VersionsTest extends TestCase
 {
     public function testValidVersions(): void
