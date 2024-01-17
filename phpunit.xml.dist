@@ -4,20 +4,18 @@
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
     bootstrap="./vendor/autoload.php"
     colors="true"
-    verbose="true"
     columns="max"
-    beStrictAboutCoversAnnotation="true"
-    beStrictAboutResourceUsageDuringSmallTests="true"
     beStrictAboutChangesToGlobalState="true"
     beStrictAboutOutputDuringTests="true"
     beStrictAboutTodoAnnotatedTests="true"
+    beStrictAboutCoverageMetadata="true"
 >
     <testsuite name="PackageVersions tests">
         <directory>./test/PackageVersionsTest</directory>
     </testsuite>
-    <coverage>
+    <source>
         <include>
-            <directory suffix=".php">./src</directory>
+            <directory>./src</directory>
         </include>
-    </coverage>
+    </source>
 </phpunit>
