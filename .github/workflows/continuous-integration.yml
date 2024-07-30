@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Gather CI configuration
         id: matrix
-        uses: laminas/laminas-ci-matrix-action@5c34e3c43584e2b1e432824ec0a43a3ae684f294 # 1.26.0
+        uses: laminas/laminas-ci-matrix-action@38e146b542b4952fea583408acff8dcddf20b427 # 1.27.0
 
   qa:
     name: QA Checks
@@ -27,7 +27,7 @@ jobs:
       matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
     steps:
       - name: ${{ matrix.name }}
-        uses: laminas/laminas-continuous-integration-action@4ff5d8c2b58817008e8b436241093c2321875a7f # 1.39.0
+        uses: laminas/laminas-continuous-integration-action@f474cab0f489b50c3b31d6ae04f0a5fc189c796d # 1.40.0
         env:
           "GITHUB_TOKEN": ${{ secrets.GITHUB_TOKEN }}
           "INFECTION_DASHBOARD_API_KEY": ${{ secrets.INFECTION_DASHBOARD_API_KEY }}
