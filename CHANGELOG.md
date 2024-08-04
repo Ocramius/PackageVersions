@@ -20,27 +20,28 @@ Total issues resolved: **5**
 - [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
 - [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
 
-## 2.9.0 - TBD
+## 2.9.0 - 2024-08-04
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [2.9.0](https://github.com/Ocramius/PackageVersions/milestone/50)
 
-- Nothing.
+Feature release (minor)
 
-### Deprecated
+### 2.9.0
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **2**
+- Total contributors: **2**
 
-### Removed
+#### dependencies,enhancement
 
-- Nothing.
+ - [256: Allow PHP 8.4](https://github.com/Ocramius/PackageVersions/pull/256) thanks to @fezfez
 
-### Fixed
+#### security
 
-- Nothing.
+ - [253: Update dependency composer/composer to ^2.7.0 &#91;SECURITY&#93;](https://github.com/Ocramius/PackageVersions/pull/253) thanks to @renovate[bot]
 
 ## 2.8.0 - 2023-09-15
 
