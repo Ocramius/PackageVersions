@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d91f4f0b3985613b1db18a00e576140",
+    "content-hash": "2c32e483503b0ae9561d24870d2e6303",
     "packages": [],
     "packages-dev": [
         {
@@ -409,21 +409,21 @@
         },
         {
             "name": "composer/composer",
-            "version": "2.8.0",
+            "version": "2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "d5e75c21ceeb6829918a75ed63b56c576b4a6261"
+                "reference": "e52b8672276cf436670cdd6bd5de4353740e83b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/d5e75c21ceeb6829918a75ed63b56c576b4a6261",
-                "reference": "d5e75c21ceeb6829918a75ed63b56c576b4a6261",
+                "url": "https://api.github.com/repos/composer/composer/zipball/e52b8672276cf436670cdd6bd5de4353740e83b2",
+                "reference": "e52b8672276cf436670cdd6bd5de4353740e83b2",
                 "shasum": ""
             },
             "require": {
                 "composer/ca-bundle": "^1.5",
-                "composer/class-map-generator": "^1.3.3",
+                "composer/class-map-generator": "^1.4.0",
                 "composer/metadata-minifier": "^1.0",
                 "composer/pcre": "^2.2 || ^3.2",
                 "composer/semver": "^3.3",
@@ -503,7 +503,7 @@
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/composer/issues",
                 "security": "https://github.com/composer/composer/security/policy",
-                "source": "https://github.com/composer/composer/tree/2.8.0"
+                "source": "https://github.com/composer/composer/tree/2.8.1"
             },
             "funding": [
                 {
@@ -519,7 +519,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-02T14:40:29+00:00"
+            "time": "2024-10-04T09:31:01+00:00"
         },
         {
             "name": "composer/metadata-minifier",
