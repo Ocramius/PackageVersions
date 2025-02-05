@@ -9,6 +9,7 @@ use OutOfBoundsException;
 
 final class Versions
 {
+    /** @psalm-suppress UnusedConstructor */
     private function __construct()
     {
     }

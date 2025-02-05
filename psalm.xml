@@ -6,6 +6,10 @@
     rememberPropertyAssignmentsAfterCall="false"
     errorLevel="1"
 >
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+    </plugins>
+
     <projectFiles>
         <directory name="src"/>
         <directory name="test/PackageVersionsTest"/>
@@ -14,27 +18,4 @@
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
-
-    <issueHandlers>
-        <InternalClass>
-            <errorLevel type="suppress">
-                <directory name="test/PackageVersionsTest"/>
-            </errorLevel>
-        </InternalClass>
-        <InternalMethod>
-            <errorLevel type="suppress">
-                <directory name="test/PackageVersionsTest"/>
-            </errorLevel>
-        </InternalMethod>
-        <PropertyNotSetInConstructor>
-            <errorLevel type="suppress">
-                <directory name="test/PackageVersionsTest"/>
-            </errorLevel>
-        </PropertyNotSetInConstructor>
-        <DeprecatedMethod>
-            <errorLevel type="suppress">
-                <directory name="test/PackageVersionsTest"/>
-            </errorLevel>
-        </DeprecatedMethod>
-    </issueHandlers>
 </psalm>
