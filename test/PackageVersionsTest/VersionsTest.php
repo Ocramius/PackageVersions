@@ -6,6 +6,8 @@ namespace PackageVersionsTest;
 
 use OutOfBoundsException;
 use PackageVersions\Versions;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 use function array_merge;
@@ -17,7 +19,7 @@ use function uniqid;
 
 use const JSON_THROW_ON_ERROR;
 
-/** @covers \PackageVersions\Versions */
+#[CoversClass(Versions::class)]
 final class VersionsTest extends TestCase
 {
     public function testValidVersions(): void
@@ -58,14 +60,14 @@ final class VersionsTest extends TestCase
         }
     }
 
-    /** @group #148 */
+    #[Group('#148')]
     public function testCanRetrieveRootPackageVersion(): void
     {
         /** @psalm-suppress DeprecatedConstant */
         self::assertMatchesRegularExpression('/^.+\@[0-9a-f]+$/', Versions::getVersion(Versions::rootPackageName()));
     }
 
-    /** @group #153 */
+    #[Group('#153')]
     public function testCanRetrieveRootPackageName(): void
     {
         self::assertMatchesRegularExpression('/^[a-z0-9\\-]+\\/[a-z0-9\\-]+$/', Versions::rootPackageName());
