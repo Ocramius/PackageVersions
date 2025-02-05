@@ -20,27 +20,27 @@ Total issues resolved: **5**
 - [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
 - [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
 
-## 2.10.0 - TBD
+## 2.10.0 - 2025-02-05
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [2.10.0](https://github.com/Ocramius/PackageVersions/milestone/52)
 
-- Nothing.
+Feature release (minor)
 
-### Deprecated
+### 2.10.0
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **4**
+- Total contributors: **1**
 
-### Removed
+#### renovate
 
-- Nothing.
-
-### Fixed
-
-- Nothing.
+ - [261: Update dependency vimeo/psalm to v6](https://github.com/Ocramius/PackageVersions/pull/261) thanks to @renovate[bot]
+ - [257: Roll back laminas/automatic-releases action to 1.24.0 - autoclosed](https://github.com/Ocramius/PackageVersions/pull/257) thanks to @renovate[bot]
+ - [252: Update dependency phpunit/phpunit to v11](https://github.com/Ocramius/PackageVersions/pull/252) thanks to @renovate[bot]
+ - [246: Update dependency phpunit/phpunit to v10 - abandoned](https://github.com/Ocramius/PackageVersions/pull/246) thanks to @renovate[bot]
 
 ## 2.9.0 - 2024-08-04
 
