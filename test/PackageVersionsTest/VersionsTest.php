@@ -9,15 +9,23 @@ use PackageVersions\Versions;
 use PHPUnit\Framework\TestCase;
 
 use function array_merge;
+use function assert;
 use function file_get_contents;
+use function is_string;
 use function json_decode;
 use function uniqid;
+
+use const JSON_THROW_ON_ERROR;
 
 /** @covers \PackageVersions\Versions */
 final class VersionsTest extends TestCase
 {
     public function testValidVersions(): void
     {
+        $contents = file_get_contents(__DIR__ . '/../../composer.lock');
+
+        assert(is_string($contents));
+
         /**
          * @var array{
          *     packages: array<string, array{
@@ -36,7 +44,7 @@ final class VersionsTest extends TestCase
          *     }>,
          * } $lockData
          */
-        $lockData = json_decode(file_get_contents(__DIR__ . '/../../composer.lock'), true);
+        $lockData = json_decode($contents, true, flags: JSON_THROW_ON_ERROR);
 
         $packages = array_merge($lockData['packages'], $lockData['packages-dev']);
 
