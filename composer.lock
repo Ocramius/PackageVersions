@@ -5339,16 +5339,16 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "8.16.1",
+            "version": "8.16.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "490023f23813483b5f75381c4ee07d26d9edced1"
+                "reference": "8bf0408a9cf30687d87957d364de9a3d5d00d948"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/490023f23813483b5f75381c4ee07d26d9edced1",
-                "reference": "490023f23813483b5f75381c4ee07d26d9edced1",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/8bf0408a9cf30687d87957d364de9a3d5d00d948",
+                "reference": "8bf0408a9cf30687d87957d364de9a3d5d00d948",
                 "shasum": ""
             },
             "require": {
@@ -5360,11 +5360,11 @@
             "require-dev": {
                 "phing/phing": "3.0.1",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpstan/phpstan": "2.1.6",
+                "phpstan/phpstan": "2.1.11",
                 "phpstan/phpstan-deprecation-rules": "2.0.1",
-                "phpstan/phpstan-phpunit": "2.0.4",
-                "phpstan/phpstan-strict-rules": "2.0.3",
-                "phpunit/phpunit": "9.6.8|10.5.45|11.4.4|11.5.9|12.0.4"
+                "phpstan/phpstan-phpunit": "2.0.6",
+                "phpstan/phpstan-strict-rules": "2.0.4",
+                "phpunit/phpunit": "9.6.8|10.5.45|11.4.4|11.5.15|12.0.10"
             },
             "type": "phpcodesniffer-standard",
             "extra": {
@@ -5388,7 +5388,7 @@
             ],
             "support": {
                 "issues": "https://github.com/slevomat/coding-standard/issues",
-                "source": "https://github.com/slevomat/coding-standard/tree/8.16.1"
+                "source": "https://github.com/slevomat/coding-standard/tree/8.16.2"
             },
             "funding": [
                 {
@@ -5400,7 +5400,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-23T16:33:42+00:00"
+            "time": "2025-03-27T19:37:58+00:00"
         },
         {
             "name": "spatie/array-to-xml",
