@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af5c4be9d935aa4faab1a8a270d995cc",
+    "content-hash": "c5833c1f721e83383beba802d73b7fe4",
     "packages": [],
     "packages-dev": [
         {
@@ -1754,22 +1754,22 @@
         },
         {
             "name": "doctrine/coding-standard",
-            "version": "12.0.0",
+            "version": "13.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/coding-standard.git",
-                "reference": "1b2b7dc58c68833af481fb9325c25abd40681c79"
+                "reference": "0affd62169186f32de725ca612e6129e81186a21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/coding-standard/zipball/1b2b7dc58c68833af481fb9325c25abd40681c79",
-                "reference": "1b2b7dc58c68833af481fb9325c25abd40681c79",
+                "url": "https://api.github.com/repos/doctrine/coding-standard/zipball/0affd62169186f32de725ca612e6129e81186a21",
+                "reference": "0affd62169186f32de725ca612e6129e81186a21",
                 "shasum": ""
             },
             "require": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2 || ^0.7 || ^1.0.0",
-                "php": "^7.2 || ^8.0",
-                "slevomat/coding-standard": "^8.11",
+                "php": "^7.4 || ^8.0",
+                "slevomat/coding-standard": "^8.16",
                 "squizlabs/php_codesniffer": "^3.7"
             },
             "type": "phpcodesniffer-standard",
@@ -1804,9 +1804,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/coding-standard/issues",
-                "source": "https://github.com/doctrine/coding-standard/tree/12.0.0"
+                "source": "https://github.com/doctrine/coding-standard/tree/13.0.1"
             },
-            "time": "2023-04-24T17:43:28+00:00"
+            "time": "2025-05-14T10:54:19+00:00"
         },
         {
             "name": "doctrine/deprecations",
