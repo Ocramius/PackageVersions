@@ -20,7 +20,7 @@
         "roave/infection-static-analysis-plugin": "^1.38.0",
         "phpunit/phpunit":                        "^11.5.27",
         "psalm/plugin-phpunit":                   "^0.19.5",
-        "vimeo/psalm":                            "^6.12.1"
+        "vimeo/psalm":                            "^6.13.0"
     },
     "replace": {
         "composer/package-versions-deprecated": "*"
