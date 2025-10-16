@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Gather CI configuration
         id: matrix
-        uses: laminas/laminas-ci-matrix-action@6592abedb54bc8a3e725a034e1ca2afb49af53a6 # 1.30.0
+        uses: laminas/laminas-ci-matrix-action@cb19bb402f3be76292a08b6632e1ecdb9fdd22bc # 1.31.0
 
   qa:
     name: QA Checks
