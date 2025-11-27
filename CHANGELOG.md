@@ -20,27 +20,30 @@ Total issues resolved: **5**
 - [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
 - [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
 
-## 2.11.0 - TBD
+## 2.11.0 - 2025-11-27
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [2.11.0](https://github.com/Ocramius/PackageVersions/milestone/54)
 
-- Nothing.
+Feature release (minor)
 
-### Deprecated
+### 2.11.0
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **4**
+- Total contributors: **2**
 
-### Removed
+#### dependencies,enhancement
 
-- Nothing.
+ - [270: Add PHP 8.5 support](https://github.com/Ocramius/PackageVersions/pull/270) thanks to @samsonasik
 
-### Fixed
+#### renovate
 
-- Nothing.
+ - [269: Update dependency doctrine/coding-standard to v14](https://github.com/Ocramius/PackageVersions/pull/269) thanks to @renovate[bot]
+ - [268: Update actions/checkout action to v5](https://github.com/Ocramius/PackageVersions/pull/268) thanks to @renovate[bot]
+ - [266: Update dependency doctrine/coding-standard to v13](https://github.com/Ocramius/PackageVersions/pull/266) thanks to @renovate[bot]
 
 ## 2.10.0 - 2025-02-05
 
