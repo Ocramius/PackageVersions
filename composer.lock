@@ -4279,16 +4279,16 @@
         },
         {
             "name": "sanmai/di-container",
-            "version": "0.1.10",
+            "version": "0.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sanmai/di-container.git",
-                "reference": "7a7f82ee7084de134b9f0d5e2e8926693cc977a2"
+                "reference": "4723e235e04589f88c0a114a4e438ff57a7cbb8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sanmai/di-container/zipball/7a7f82ee7084de134b9f0d5e2e8926693cc977a2",
-                "reference": "7a7f82ee7084de134b9f0d5e2e8926693cc977a2",
+                "url": "https://api.github.com/repos/sanmai/di-container/zipball/4723e235e04589f88c0a114a4e438ff57a7cbb8a",
+                "reference": "4723e235e04589f88c0a114a4e438ff57a7cbb8a",
                 "shasum": ""
             },
             "require": {
@@ -4299,14 +4299,18 @@
             "require-dev": {
                 "ergebnis/composer-normalize": "^2.8",
                 "friendsofphp/php-cs-fixer": "^3.17",
-                "infection/infection": ">=0.29",
+                "infection/infection": ">=0.31",
                 "php-coveralls/php-coveralls": "^2.4.1",
+                "phpbench/phpbench": "^1.4",
                 "phpstan/extension-installer": "^1.4",
                 "phpunit/phpunit": "^11.5.25",
                 "sanmai/phpstan-rules": "^0.3.10"
             },
             "type": "library",
             "extra": {
+                "branch-alias": {
+                    "dev-main": "0.1.x-dev"
+                },
                 "preferred-install": "dist"
             },
             "autoload": {
@@ -4342,7 +4346,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sanmai/di-container/issues",
-                "source": "https://github.com/sanmai/di-container/tree/0.1.10"
+                "source": "https://github.com/sanmai/di-container/tree/0.1.11"
             },
             "funding": [
                 {
@@ -4350,7 +4354,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-12T23:28:14+00:00"
+            "time": "2026-01-13T07:38:17+00:00"
         },
         {
             "name": "sanmai/duoclock",
