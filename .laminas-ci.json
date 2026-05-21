@@ -6,7 +6,7 @@
     "memory_limit=-1"
   ],
   "exclude": [
-    {"name": "Infection [8.2, locked]"}
+    {"name": "Infection [8.4, locked]"}
   ],
   "additional_checks": [
     {

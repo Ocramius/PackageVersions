@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php":                  "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+        "php":                  "~8.4.0 || ~8.5.0",
         "composer-runtime-api": "^2.2.0"
     },
     "require-dev": {
@@ -41,7 +41,7 @@
             "infection/extension-installer": false
         },
         "platform": {
-            "php": "8.2.99"
+            "php": "8.4.99"
         }
     }
 }
