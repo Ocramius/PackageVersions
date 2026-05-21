@@ -19,7 +19,7 @@
         "ext-zip":                                "^1.15.0",
         "roave/infection-static-analysis-plugin": "^1.44.0",
         "phpunit/phpunit":                        "^13.1.11",
-        "psalm/plugin-phpunit":                   "^0.20.1",
+        "psalm/plugin-phpunit":                   "^0.19.7",
         "vimeo/psalm":                            "^6.16.1"
     },
     "replace": {
