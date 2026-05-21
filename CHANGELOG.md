@@ -20,27 +20,29 @@ Total issues resolved: **5**
 - [152: Ocramius/PackageVersions is not compatible with composer configuration &quot;lock: false&quot;](https://github.com/Ocramius/PackageVersions/issues/152) thanks to @windaishi
 - [155: BC break: removed deprecated `PackageVersions\Versions::ROOT_PACKAGE_NAME` constant](https://github.com/Ocramius/PackageVersions/pull/155) thanks to @Ocramius
 
-## 2.12.0 - TBD
+## 2.12.0 - 2026-05-21
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [2.12.0](https://github.com/Ocramius/PackageVersions/milestone/56)
 
-- Nothing.
+Feature release (minor)
 
-### Deprecated
+### 2.12.0
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **3**
+- Total contributors: **1**
 
-### Removed
+#### dependencies,enhancement,renovate
 
-- Nothing.
+ - [275: Update dependency phpunit/phpunit to v13, dropped PHP 8.2, 8.3 support, upgraded dependencies](https://github.com/Ocramius/PackageVersions/pull/275) thanks to @renovate[bot]
+ - [272: Update all non-major dependencies](https://github.com/Ocramius/PackageVersions/pull/272) thanks to @renovate[bot]
 
-### Fixed
+#### renovate
 
-- Nothing.
+ - [271: Update actions/checkout action to v6](https://github.com/Ocramius/PackageVersions/pull/271) thanks to @renovate[bot]
 
 ## 2.11.0 - 2025-11-27
 
