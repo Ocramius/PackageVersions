@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php":                  "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+        "php":                  "~8.4.0 || ~8.5.0",
         "composer-runtime-api": "^2.2.0"
     },
     "require-dev": {
@@ -18,7 +18,7 @@
         "doctrine/coding-standard":               "^14.0.0",
         "ext-zip":                                "^1.15.0",
         "roave/infection-static-analysis-plugin": "^1.39.0",
-        "phpunit/phpunit":                        "^11.5.44",
+        "phpunit/phpunit":                        "^13.1.11",
         "psalm/plugin-phpunit":                   "^0.19.5",
         "vimeo/psalm":                            "^6.13.1"
     },
@@ -41,7 +41,7 @@
             "infection/extension-installer": false
         },
         "platform": {
-            "php": "8.2.99"
+            "php": "8.4.99"
         }
     }
 }
