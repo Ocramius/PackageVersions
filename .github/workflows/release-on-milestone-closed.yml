@@ -27,7 +27,7 @@ jobs:
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
 
       - name: "Create Merge-Up Pull Request"
-        uses: "laminas/automatic-releases@935a44be31998a35d0cc57c32f0cc50ccc2b7b54" # v1
+        uses: "laminas/automatic-releases@ef538023efb250f43f96aa999a19188016534da7" # v1
         with:
           command-name: "laminas:automatic-releases:create-merge-up-pull-request"
         env:
@@ -37,7 +37,7 @@ jobs:
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
 
       - name: "Create and/or Switch to new Release Branch"
-        uses: "laminas/automatic-releases@935a44be31998a35d0cc57c32f0cc50ccc2b7b54" # v1
+        uses: "laminas/automatic-releases@ef538023efb250f43f96aa999a19188016534da7" # v1
         with:
           command-name: "laminas:automatic-releases:switch-default-branch-to-next-minor"
         env:
@@ -47,7 +47,7 @@ jobs:
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
 
       - name: "Bump Changelog Version On Originating Release Branch"
-        uses: "laminas/automatic-releases@935a44be31998a35d0cc57c32f0cc50ccc2b7b54" # v1
+        uses: "laminas/automatic-releases@ef538023efb250f43f96aa999a19188016534da7" # v1
         with:
           command-name: "laminas:automatic-releases:bump-changelog"
         env:
@@ -57,7 +57,7 @@ jobs:
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
 
       - name: "Create new milestones"
-        uses: "laminas/automatic-releases@935a44be31998a35d0cc57c32f0cc50ccc2b7b54" # v1
+        uses: "laminas/automatic-releases@ef538023efb250f43f96aa999a19188016534da7" # v1
         with:
           command-name: "laminas:automatic-releases:create-milestones"
         env:
