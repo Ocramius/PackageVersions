@@ -14,12 +14,12 @@
         "composer-runtime-api": "^2.2.0"
     },
     "require-dev": {
-        "composer/composer":                      "^2.9.8",
+        "composer/composer":                      "^2.10.3",
         "doctrine/coding-standard":               "^14.0.0",
         "ext-zip":                                "^1.15.0",
         "roave/infection-static-analysis-plugin": "^1.44.0",
-        "phpunit/phpunit":                        "^13.1.11",
-        "psalm/plugin-phpunit":                   "^0.19.7",
+        "phpunit/phpunit":                        "^13.3.2",
+        "psalm/plugin-phpunit":                   "^0.20.2",
         "vimeo/psalm":                            "^6.16.1"
     },
     "replace": {
